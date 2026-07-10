@@ -1,0 +1,31 @@
+{
+  "name": "izbutik",
+  "version": "1.0.0",
+  "description": "İzbutik - Modern online giyim mağazası (Node.js + PostgreSQL)",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:start": "bash scripts/start-db.sh",
+    "db:migrate": "node src/db/migrate.js",
+    "db:seed": "node src/db/seed.js",
+    "setup": "bash scripts/start-db.sh && node src/db/migrate.js && node src/db/seed.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "boutique",
+    "nodejs",
+    "express",
+    "postgresql"
+  ],
+  "author": "izbutik",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.12.0"
+  }
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="İzbutik - Kadın giyimde trend ve şıklık. Elbise, üst giyim, dış giyim ve daha fazlası." />
+  <title>İzbutik · Modern Kadın Giyim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>" />
+</head>
+<body>
+  <!-- Duyuru çubuğu -->
+  <div class="announce">
+    <div class="announce__track">
+      <span>✦ 1000₺ üzeri kargo bedava ✦ Yeni sezon ürünleri geldi ✦ Sezon sonu indirimleri %50'ye varan fırsatlar ✦ Aynı gün kargo ✦</span>
+      <span>✦ 1000₺ üzeri kargo bedava ✦ Yeni sezon ürünleri geldi ✦ Sezon sonu indirimleri %50'ye varan fırsatlar ✦ Aynı gün kargo ✦</span>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <button class="nav__toggle" id="navToggle" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="#" class="brand" data-scroll>
+        <span class="brand__mark">İZ</span>BUTİK
+      </a>
+      <nav class="nav__links" id="navLinks">
+        <a href="#kategoriler" data-scroll>Kategoriler</a>
+        <a href="#yeni" data-scroll>Yeni Gelenler</a>
+        <a href="#urunler" data-scroll>Tüm Ürünler</a>
+        <a href="#hikaye" data-scroll>Hakkımızda</a>
+      </nav>
+      <div class="nav__actions">
+        <button class="icon-btn" id="searchToggle" aria-label="Ara">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" id="cartToggle" aria-label="Sepet">
+          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+    <!-- Arama çubuğu -->
+    <div class="searchbar" id="searchbar">
+      <div class="container">
+        <input type="text" id="searchInput" placeholder="Ürün ara... (örn. elbise, ceket, çanta)" />
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg">
+      <div class="blob blob--1"></div>
+      <div class="blob blob--2"></div>
+      <div class="blob blob--3"></div>
+    </div>
+    <div class="hero__content container">
+      <div class="hero__text">
+        <p class="hero__eyebrow reveal">YENİ SEZON · 2026</p>
+        <h1 class="hero__title">
+          <span class="reveal" style="--d:.05s">Zarafetin</span>
+          <span class="reveal italic" style="--d:.15s">yeni adresi</span>
+        </h1>
+        <p class="hero__sub reveal" style="--d:.3s">
+          İzbutik ile gardırobunu yenile. Trend parçalar, özenle seçilmiş koleksiyonlar ve sana özel şıklık.
+        </p>
+        <div class="hero__cta reveal" style="--d:.45s">
+          <a href="#urunler" class="btn btn--primary" data-scroll>Koleksiyonu Keşfet</a>
+          <a href="#kategoriler" class="btn btn--ghost" data-scroll>Kategoriler</a>
+        </div>
+        <div class="hero__stats reveal" style="--d:.6s">
+          <div><strong data-count="2500">0</strong><span>Mutlu Müşteri</span></div>
+          <div><strong data-count="180">0</strong><span>Ürün Çeşidi</span></div>
+          <div><strong data-count="4.9" data-decimal="1">0</strong><span>Puan ★</span></div>
+        </div>
+      </div>
+      <div class="hero__gallery">
+        <div class="hero__card hero__card--1 floaty"></div>
+        <div class="hero__card hero__card--2 floaty floaty--slow"></div>
+        <div class="hero__card hero__card--3 floaty floaty--fast"></div>
+        <div class="hero__badge floaty--slow">El emeği seçkiler ✦</div>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      <span>Aşağı kaydır</span>
+      <div class="mouse"><span></span></div>
+    </div>
+  </section>
+
+  <!-- Marka şeridi -->
+  <div class="ticker reveal">
+    <div class="ticker__track">
+      <span>ÜCRETSİZ KARGO</span><span>·</span><span>KOLAY İADE</span><span>·</span><span>GÜVENLİ ÖDEME</span><span>·</span><span>AYNI GÜN KARGO</span><span>·</span><span>%100 ORİJİNAL</span><span>·</span>
+      <span>ÜCRETSİZ KARGO</span><span>·</span><span>KOLAY İADE</span><span>·</span><span>GÜVENLİ ÖDEME</span><span>·</span><span>AYNI GÜN KARGO</span><span>·</span><span>%100 ORİJİNAL</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- KATEGORİLER -->
+  <section class="section" id="kategoriler">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow">KOLEKSİYONLAR</p>
+        <h2 class="section__title">Kategorilere Göz At</h2>
+        <p class="section__desc">Aradığın tarzı bul: her zevke ve her ana uygun parçalar.</p>
+      </div>
+      <div class="cat-grid" id="categoryGrid"></div>
+    </div>
+  </section>
+
+  <!-- YENİ GELENLER -->
+  <section class="section section--tint" id="yeni">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow">İLK SENİN İÇİN</p>
+        <h2 class="section__title">Yeni Gelenler</h2>
+        <p class="section__desc">Sezonun en taze parçaları raflarda. Kaçırma!</p>
+      </div>
+      <div class="product-rail" id="newRail"></div>
+    </div>
+  </section>
+
+  <!-- TÜM ÜRÜNLER + FİLTRE -->
+  <section class="section" id="urunler">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow">MAĞAZA</p>
+        <h2 class="section__title">Tüm Ürünler</h2>
+      </div>
+
+      <div class="toolbar reveal">
+        <div class="filter-pills" id="filterPills"></div>
+        <div class="toolbar__right">
+          <select id="sortSelect" class="select">
+            <option value="featured">Öne Çıkanlar</option>
+            <option value="newest">En Yeni</option>
+            <option value="price_asc">Fiyat: Artan</option>
+            <option value="price_desc">Fiyat: Azalan</option>
+            <option value="rating">En Beğenilen</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+      <div class="empty" id="emptyState" hidden>
+        <p>Aramana uygun ürün bulunamadı 🔍</p>
+        <button class="btn btn--ghost" id="clearFilters">Filtreleri Temizle</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HİKAYE -->
+  <section class="story" id="hikaye">
+    <div class="container story__inner">
+      <div class="story__media reveal">
+        <div class="story__img"></div>
+        <div class="story__img story__img--2 floaty--slow"></div>
+      </div>
+      <div class="story__text reveal" style="--d:.15s">
+        <p class="eyebrow">HİKAYEMİZ</p>
+        <h2 class="section__title">İzbutik'in zarafet anlayışı</h2>
+        <p>
+          İzbutik olarak; kaliteli kumaşları, özenle seçilmiş tasarımları ve uygun fiyatları
+          bir araya getiriyoruz. Her kadının kendini özel hissetmesi için trendleri yakından
+          takip ediyor, koleksiyonlarımızı sevgiyle hazırlıyoruz.
+        </p>
+        <ul class="story__list">
+          <li>✦ Özenle seçilmiş, kaliteli kumaşlar</li>
+          <li>✦ Hızlı ve güvenli kargo</li>
+          <li>✦ Kolay iade & değişim</li>
+        </ul>
+        <a href="https://www.instagram.com/izbutik20/" target="_blank" rel="noopener" class="btn btn--primary">
+          Instagram'da Takip Et
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BÜLTEN -->
+  <section class="newsletter reveal">
+    <div class="container newsletter__inner">
+      <h2>Fırsatları kaçırma</h2>
+      <p>Bültene katıl, yeni koleksiyon ve indirimlerden ilk sen haberdar ol.</p>
+      <form class="newsletter__form" id="newsletterForm">
+        <input type="email" placeholder="E-posta adresin" required />
+        <button class="btn btn--primary" type="submit">Abone Ol</button>
+      </form>
+      <p class="newsletter__note" id="newsletterNote" hidden>Teşekkürler! Aramıza hoş geldin ✦</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__col footer__brand">
+        <a href="#" class="brand brand--light" data-scroll><span class="brand__mark">İZ</span>BUTİK</a>
+        <p>Kadın giyimde trend ve şıklık. Gardırobunu İzbutik ile yenile.</p>
+        <a href="https://www.instagram.com/izbutik20/" target="_blank" rel="noopener" class="footer__ig">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          @izbutik20
+        </a>
+      </div>
+      <div class="footer__col">
+        <h4>Mağaza</h4>
+        <a href="#kategoriler" data-scroll>Kategoriler</a>
+        <a href="#yeni" data-scroll>Yeni Gelenler</a>
+        <a href="#urunler" data-scroll>Tüm Ürünler</a>
+      </div>
+      <div class="footer__col">
+        <h4>Yardım</h4>
+        <a href="#">Kargo & Teslimat</a>
+        <a href="#">İade & Değişim</a>
+        <a href="#">Sıkça Sorulanlar</a>
+      </div>
+      <div class="footer__col">
+        <h4>İletişim</h4>
+        <a href="https://www.instagram.com/izbutik20/" target="_blank" rel="noopener">Instagram DM</a>
+        <a href="mailto:info@izbutik.com">info@izbutik.com</a>
+      </div>
+    </div>
+    <div class="footer__bottom container">
+      <span>© <span id="year"></span> İzbutik. Tüm hakları saklıdır.</span>
+      <span>Güvenli ödeme ✦ Visa · Mastercard · Havale</span>
+    </div>
+  </footer>
+
+  <!-- SEPET DRAWER -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="cart" id="cart" aria-hidden="true">
+    <div class="cart__head">
+      <h3>Sepetim</h3>
+      <button class="icon-btn" id="cartClose" aria-label="Kapat">✕</button>
+    </div>
+    <div class="cart__body" id="cartBody"></div>
+    <div class="cart__foot">
+      <div class="cart__total"><span>Toplam</span><strong id="cartTotal">0,00 ₺</strong></div>
+      <button class="btn btn--primary btn--block" id="checkoutBtn">Siparişi Tamamla</button>
+    </div>
+  </aside>
+
+  <!-- ÜRÜN DETAY MODAL -->
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog" id="modalDialog"></div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog modal__dialog--form" id="checkoutDialog"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
