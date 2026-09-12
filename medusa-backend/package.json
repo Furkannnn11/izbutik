@@ -1,0 +1,42 @@
+{
+  "name": "izbutik-medusa-backend",
+  "version": "0.0.1",
+  "description": "İzbutik headless commerce backend (Medusa v2) — izole medusa-backend/ iskeleti. Kök izbutik Express projesinden bağımsızdır.",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.19.0 <25"
+  },
+  "scripts": {
+    "build": "medusa build",
+    "seed": "medusa exec ./src/scripts/seed.ts",
+    "migrate:izbutik": "medusa exec ./src/scripts/migrate-izbutik-data.ts",
+    "start": "medusa start",
+    "dev": "medusa develop",
+    "predeploy": "medusa db:migrate"
+  },
+  "dependencies": {
+    "@medusajs/admin-sdk": "2.21.0",
+    "@medusajs/cli": "2.21.0",
+    "@medusajs/framework": "2.21.0",
+    "@medusajs/medusa": "2.21.0",
+    "@mikro-orm/core": "6.6.14",
+    "@mikro-orm/knex": "6.6.14",
+    "@mikro-orm/migrations": "6.6.14",
+    "@mikro-orm/postgresql": "6.6.14",
+    "awilix": "8.0.1",
+    "pg": "8.13.0"
+  },
+  "devDependencies": {
+    "@medusajs/test-utils": "2.21.0",
+    "@mikro-orm/cli": "6.6.14",
+    "@swc/core": "1.16.2",
+    "@swc/jest": "0.2.36",
+    "@types/jest": "29.5.13",
+    "@types/node": "20.17.6",
+    "jest": "29.7.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.6.2",
+    "vite": "5.4.11"
+  }
+}

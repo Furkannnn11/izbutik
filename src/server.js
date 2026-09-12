@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 
 import categoriesRouter from './routes/categories.js';
 import productsRouter from './routes/products.js';
+import cartRouter from './routes/cart.js';
 import ordersRouter from './routes/orders.js';
 
 dotenv.config();
@@ -14,6 +15,7 @@ dotenv.config();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '127.0.0.1';
 
 // Middleware
 app.use(compression());
@@ -24,6 +26,7 @@ app.use(morgan('dev'));
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', service: 'izbutik' }));
 app.use('/api/categories', categoriesRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/cart', cartRouter);
 app.use('/api/orders', ordersRouter);
 
 // Statik frontend
@@ -43,11 +46,15 @@ app.get('*', (req, res, next) => {
 // Hata yakalayıcı
 app.use((err, _req, res, _next) => {
   console.error('API hatası:', err);
-  res.status(500).json({ error: 'Sunucu hatası', detail: err.message });
+  const status = Number(err.status) || 500;
+  res.status(status).json({
+    error: status >= 500 ? 'Commerce servisi hatası' : err.message,
+    detail: err.message,
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`İzbutik sunucusu çalışıyor: http://localhost:${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`İzbutik sunucusu çalışıyor: http://${HOST}:${PORT}`);
 });
 
 export default app;

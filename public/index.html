@@ -15,8 +15,8 @@
   <!-- Duyuru çubuğu -->
   <div class="announce">
     <div class="announce__track">
-      <span>✦ 1000₺ üzeri kargo bedava ✦ Yeni sezon ürünleri geldi ✦ Sezon sonu indirimleri %50'ye varan fırsatlar ✦ Aynı gün kargo ✦</span>
-      <span>✦ 1000₺ üzeri kargo bedava ✦ Yeni sezon ürünleri geldi ✦ Sezon sonu indirimleri %50'ye varan fırsatlar ✦ Aynı gün kargo ✦</span>
+      <span>✦ 1000₺ üzeri kargo bedava ✦ Tüm kartlara 3 taksit imkanı ✦ Yeni sezon geldi ✦ 14 gün içinde kolay iade ✦ Sezon sonu %50'ye varan indirimler ✦</span>
+      <span>✦ 1000₺ üzeri kargo bedava ✦ Tüm kartlara 3 taksit imkanı ✦ Yeni sezon geldi ✦ 14 gün içinde kolay iade ✦ Sezon sonu %50'ye varan indirimler ✦</span>
     </div>
   </div>
 
@@ -30,7 +30,13 @@
         <span class="brand__mark">İZ</span>BUTİK
       </a>
       <nav class="nav__links" id="navLinks">
-        <a href="#kategoriler" data-scroll>Kategoriler</a>
+        <div class="nav__dropdown" id="navCatDropdown">
+          <a href="#kategoriler" data-scroll data-dropdown-toggle>
+            Kategoriler
+            <svg class="nav__chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <div class="nav__dropdown-menu" id="navCatMenu"></div>
+        </div>
         <a href="#yeni" data-scroll>Yeni Gelenler</a>
         <a href="#urunler" data-scroll>Tüm Ürünler</a>
         <a href="#hikaye" data-scroll>Hakkımızda</a>

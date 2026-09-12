@@ -1,9 +1,14 @@
 import { Router } from 'express';
 import { query } from '../db/index.js';
+import {
+  getMedusaProductByHandle,
+  isMedusaCommerce,
+  listMedusaProducts,
+} from '../lib/medusa.js';
 
 const router = Router();
 
-// Ürünleri JSON'a dönüştüren yardımcı (görseller + bedenler dizi olarak)
+// Legacy PostgreSQL fallback'i: COMMERCE_BACKEND=legacy ile kullanılabilir.
 const SELECT_PRODUCT = `
   SELECT p.id, p.slug, p.name, p.description, p.price, p.old_price,
          p.stock, p.rating, p.is_new, p.is_featured, p.created_at,
@@ -22,9 +27,42 @@ const SELECT_PRODUCT = `
     JOIN categories c ON c.id = p.category_id
 `;
 
+function filterAndSort(products, requestQuery) {
+  const { category, search, sort, featured, isNew, limit } = requestQuery;
+  let rows = products;
+
+  if (category) rows = rows.filter((product) => product.category_slug === category);
+  if (search) {
+    const needle = String(search).toLocaleLowerCase('tr-TR');
+    rows = rows.filter(
+      (product) =>
+        product.name.toLocaleLowerCase('tr-TR').includes(needle) ||
+        product.description.toLocaleLowerCase('tr-TR').includes(needle)
+    );
+  }
+  if (featured === 'true') rows = rows.filter((product) => product.is_featured);
+  if (isNew === 'true') rows = rows.filter((product) => product.is_new);
+
+  const sorters = {
+    price_asc: (a, b) => a.price - b.price,
+    price_desc: (a, b) => b.price - a.price,
+    rating: (a, b) => b.rating - a.rating,
+    newest: (a, b) => new Date(b.created_at) - new Date(a.created_at),
+  };
+  rows = [...rows].sort(
+    sorters[sort] || ((a, b) => Number(b.is_featured) - Number(a.is_featured))
+  );
+  return rows.slice(0, Math.min(Number(limit) || 100, 200));
+}
+
 // GET /api/products?category=elbise&search=...&sort=price_asc&featured=true&limit=50
 router.get('/', async (req, res, next) => {
   try {
+    if (isMedusaCommerce()) {
+      const products = await listMedusaProducts({ limit: 200 });
+      return res.json(filterAndSort(products, req.query));
+    }
+
     const { category, search, sort, featured, isNew, limit } = req.query;
     const where = [];
     const params = [];
@@ -51,27 +89,32 @@ router.get('/', async (req, res, next) => {
     };
     sql += ` ORDER BY ${sortMap[sort] || 'p.is_featured DESC, p.id ASC'}`;
 
-    const lim = Math.min(Number(limit) || 100, 200);
-    params.push(lim);
+    const maxRows = Math.min(Number(limit) || 100, 200);
+    params.push(maxRows);
     sql += ` LIMIT $${params.length}`;
 
     const { rows } = await query(sql, params);
     res.json(rows);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
 
-// Tekil ürün (slug ile)
 router.get('/:slug', async (req, res, next) => {
   try {
+    if (isMedusaCommerce()) {
+      const product = await getMedusaProductByHandle(req.params.slug);
+      if (!product) return res.status(404).json({ error: 'Ürün bulunamadı' });
+      return res.json(product);
+    }
+
     const { rows } = await query(`${SELECT_PRODUCT} WHERE p.slug = $1 LIMIT 1`, [
       req.params.slug,
     ]);
     if (!rows.length) return res.status(404).json({ error: 'Ürün bulunamadı' });
     res.json(rows[0]);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
 

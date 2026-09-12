@@ -11,12 +11,15 @@
       `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800"><rect width="100%" height="100%" fill="#f3ebe2"/><text x="50%" y="50%" font-family="serif" font-size="42" fill="#c2607f" text-anchor="middle" dominant-baseline="middle">İzbutik</text></svg>`
     );
 
+  const CART_ID_KEY = 'izbutik_medusa_cart_id';
+
   // ---- Durum ----
   const state = {
     products: [],
     categories: [],
     filter: { category: 'all', search: '', sort: 'featured' },
     cart: loadCart(),
+    cartId: localStorage.getItem(CART_ID_KEY),
   };
 
   // ---- Yardımcılar ----
@@ -33,10 +36,42 @@
   }
   function saveCart() { localStorage.setItem('izbutik_cart', JSON.stringify(state.cart)); }
 
-  async function api(path) {
-    const res = await fetch(API + path);
-    if (!res.ok) throw new Error('İstek başarısız: ' + path);
-    return res.json();
+  async function api(path, options = {}) {
+    const request = { ...options };
+    if (request.body && typeof request.body !== 'string') {
+      request.headers = { 'Content-Type': 'application/json', ...(request.headers || {}) };
+      request.body = JSON.stringify(request.body);
+    }
+    const res = await fetch(API + path, request);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || data.detail || 'İstek başarısız: ' + path);
+    return data;
+  }
+
+  function syncCart(cart) {
+    if (!cart) return;
+    state.cartId = cart.id;
+    localStorage.setItem(CART_ID_KEY, cart.id);
+    state.cart = (cart.items || []).map((item) => ({
+      key: item.id,
+      line_id: item.id,
+      variant_id: item.variant_id,
+      id: item.product_id,
+      name: item.product_title || item.title,
+      price: Number(item.unit_price || 0),
+      image: item.thumbnail || FALLBACK_IMG,
+      size: item.variant_title || item.variant?.title || 'STD',
+      quantity: Number(item.quantity || 1),
+    }));
+    saveCart();
+    updateCartUI();
+  }
+
+  async function ensureCart() {
+    if (state.cartId) return state.cartId;
+    const data = await api('/cart', { method: 'POST', body: {} });
+    syncCart(data.cart);
+    return state.cartId;
   }
 
   // ====================================================
@@ -54,6 +89,7 @@
     const badges = [];
     if (p.is_new) badges.push('<span class="badge badge--new">YENİ</span>');
     if (disc > 0) badges.push(`<span class="badge badge--sale">%${disc} İNDİRİM</span>`);
+    if (p.stock > 0 && p.stock <= 5) badges.push(`<span class="badge badge--stock">Son ${p.stock} ürün</span>`);
     const fav = state.favs?.has(p.id) ? 'active' : '';
     return `
       <article class="product-card" data-id="${p.id}">
@@ -97,6 +133,16 @@
       )
       .join('');
     observeReveal();
+  }
+
+  function renderNavDropdown() {
+    const menu = $('#navCatMenu');
+    if (!menu) return;
+    menu.innerHTML = state.categories
+      .map(
+        (c) => `<a href="#urunler" data-nav-cat="${c.slug}">${esc(c.name)}<span>${c.product_count}</span></a>`
+      )
+      .join('');
   }
 
   function renderFilterPills() {
@@ -148,36 +194,54 @@
   function cartCount() { return state.cart.reduce((s, i) => s + i.quantity, 0); }
   function cartTotal() { return state.cart.reduce((s, i) => s + i.price * i.quantity, 0); }
 
-  function addToCart(productId, size = null, qty = 1) {
-    const p = state.products.find((x) => x.id === Number(productId));
+  async function addToCart(productId, size = null, qty = 1) {
+    const p = state.products.find((x) => String(x.id) === String(productId));
     if (!p) return;
     const sz = size || (p.sizes && p.sizes[0]) || 'STD';
-    const key = `${p.id}-${sz}`;
-    const existing = state.cart.find((i) => i.key === key);
-    if (existing) existing.quantity += qty;
-    else
-      state.cart.push({
-        key, id: p.id, name: p.name, price: Number(p.price),
-        image: (p.images && p.images[0]) || FALLBACK_IMG, size: sz, quantity: qty,
+    const variant = (p.variants || []).find((item) => item.size === sz) || p.variants?.[0];
+    if (!variant) { toast('Bu ürün için satılabilir varyant bulunamadı.'); return; }
+
+    try {
+      const cartId = await ensureCart();
+      const data = await api(`/cart/${cartId}/items`, {
+        method: 'POST',
+        body: { variant_id: variant.id, quantity: qty },
       });
-    saveCart();
-    updateCartUI();
-    toast(`${p.name} sepete eklendi ✦`);
-    bumpCart();
+      syncCart(data.cart);
+      toast(`${p.name} sepete eklendi ✦`);
+      bumpCart();
+    } catch (err) {
+      toast('Sepet hatası: ' + err.message);
+    }
   }
 
-  function changeQty(key, delta) {
+  async function changeQty(key, delta) {
     const item = state.cart.find((i) => i.key === key);
-    if (!item) return;
-    item.quantity += delta;
-    if (item.quantity <= 0) state.cart = state.cart.filter((i) => i.key !== key);
-    saveCart();
-    updateCartUI();
+    if (!item || !state.cartId) return;
+    const quantity = item.quantity + delta;
+    if (quantity <= 0) return removeItem(key);
+
+    try {
+      const data = await api(`/cart/${state.cartId}/items/${item.line_id}`, {
+        method: 'POST',
+        body: { quantity },
+      });
+      syncCart(data.cart);
+    } catch (err) {
+      toast('Sepet güncellenemedi: ' + err.message);
+    }
   }
-  function removeItem(key) {
-    state.cart = state.cart.filter((i) => i.key !== key);
-    saveCart();
-    updateCartUI();
+  async function removeItem(key) {
+    const item = state.cart.find((i) => i.key === key);
+    if (!item || !state.cartId) return;
+    try {
+      const data = await api(`/cart/${state.cartId}/items/${item.line_id}`, {
+        method: 'DELETE',
+      });
+      syncCart(data.cart);
+    } catch (err) {
+      toast('Ürün kaldırılamadı: ' + err.message);
+    }
   }
 
   function updateCartUI() {
@@ -257,7 +321,7 @@
           <div class="pd__sizes" id="pdSizes">
             ${(p.sizes || ['STD']).map((s, idx) => `<button class="size-opt ${idx === 0 ? 'active' : ''}" data-size="${esc(s)}">${esc(s)}</button>`).join('')}
           </div>
-          <div class="pd__stock">${p.stock > 0 ? `✓ Stokta (${p.stock} adet)` : 'Tükendi'}</div>
+          <div class="pd__stock ${p.stock > 0 && p.stock <= 5 ? 'low' : ''}">${p.stock > 0 ? (p.stock <= 5 ? `⚡ Son ${p.stock} adet kaldı` : `✓ Stokta (${p.stock} adet)`) : 'Tükendi'}</div>
           <div class="pd__actions">
             <button class="btn btn--primary btn--block" id="pdAdd" data-id="${p.id}">Sepete Ekle</button>
           </div>
@@ -327,6 +391,7 @@
     const btn = $('#placeOrder');
     const fd = new FormData(form);
     const payload = {
+      cart_id: state.cartId,
       customer: {
         name: fd.get('name'), email: fd.get('email'),
         phone: fd.get('phone'), address: fd.get('address'),
@@ -354,6 +419,8 @@
           <button class="btn btn--primary" style="margin-top:22px" data-close-modal>Alışverişe Devam Et</button>
         </div>`;
       state.cart = [];
+      state.cartId = null;
+      localStorage.removeItem(CART_ID_KEY);
       saveCart();
       updateCartUI();
     } catch (err) {
@@ -423,10 +490,18 @@
       const catCard = t.closest('[data-cat]');
       const qty = t.closest('[data-qty]');
       const rem = t.closest('[data-remove]');
+      const navCat = t.closest('[data-nav-cat]');
+      const dropdownToggle = t.closest('[data-dropdown-toggle]');
 
       if (add) { e.stopPropagation(); addToCart(add.dataset.add); return; }
       if (fav) { e.stopPropagation(); fav.classList.toggle('active'); return; }
       if (quick && !add && !fav) { openProduct(quick.dataset.quickview); return; }
+      if (navCat) { setCategory(navCat.dataset.navCat); $('#navCatDropdown').classList.remove('open'); $('#navLinks').classList.remove('open'); return; }
+      if (dropdownToggle && window.matchMedia('(max-width: 680px)').matches) {
+        e.preventDefault();
+        $('#navCatDropdown').classList.toggle('open');
+        return;
+      }
       if (pill) { setCategory(pill.dataset.pill); return; }
       if (catCard) { setCategory(catCard.dataset.cat); $('#urunler').scrollIntoView({ behavior: 'smooth' }); return; }
       if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta)); return; }
@@ -465,7 +540,10 @@
 
     // Mobil menü
     $('#navToggle').addEventListener('click', () => $('#navLinks').classList.toggle('open'));
-    $$('#navLinks a, [data-scroll]').forEach((a) => a.addEventListener('click', () => $('#navLinks').classList.remove('open')));
+    $$('#navLinks a, [data-scroll]').forEach((a) => {
+      if (a.hasAttribute('data-dropdown-toggle')) return; // dropdown açma/kapama kendi mantığında yönetilir
+      a.addEventListener('click', () => { $('#navLinks').classList.remove('open'); $('#navCatDropdown').classList.remove('open'); });
+    });
 
     // Navbar scroll
     const nav = $('#nav');
@@ -501,7 +579,20 @@
       const [cats, prods] = await Promise.all([api('/categories'), api('/products?limit=100')]);
       state.categories = cats;
       state.products = prods;
+      if (state.cartId) {
+        try {
+          const cartData = await api('/cart/' + encodeURIComponent(state.cartId));
+          syncCart(cartData.cart);
+        } catch {
+          state.cartId = null;
+          state.cart = [];
+          localStorage.removeItem(CART_ID_KEY);
+          saveCart();
+          updateCartUI();
+        }
+      }
       renderCategories();
+      renderNavDropdown();
       renderFilterPills();
       renderNewRail();
       renderProducts();

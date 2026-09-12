@@ -1,79 +1,196 @@
 import { Router } from 'express';
 import pool, { getClient } from '../db/index.js';
+import { isMedusaCommerce, medusaRequest } from '../lib/medusa.js';
 
 const router = Router();
 
-// Yeni sipariş oluştur
-// body: { customer: {name,email,phone,address}, items: [{id, size, quantity}] }
-router.post('/', async (req, res, next) => {
-  const { customer, items } = req.body || {};
+function splitName(value = '') {
+  const parts = String(value).trim().split(/\s+/).filter(Boolean);
+  return {
+    first_name: parts.shift() || 'Müşteri',
+    last_name: parts.join(' ') || '-',
+  };
+}
 
-  if (!customer || !customer.name || !customer.email) {
-    return res.status(400).json({ error: 'Ad ve e-posta zorunludur.' });
-  }
-  if (!Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ error: 'Sepet boş olamaz.' });
+async function completeMedusaOrder({ cart_id, customer }) {
+  if (!cart_id) {
+    const error = new Error('Medusa cart_id zorunludur.');
+    error.status = 400;
+    throw error;
   }
 
+  const name = splitName(customer.name);
+  const address = {
+    ...name,
+    address_1: customer.address || 'Adres belirtilmedi',
+    city: customer.city || 'İstanbul',
+    postal_code: customer.postal_code || '34000',
+    country_code: 'tr',
+    phone: customer.phone || undefined,
+  };
+
+  let cartData = await medusaRequest(`/store/carts/${encodeURIComponent(cart_id)}`, {
+    method: 'POST',
+    body: {
+      email: customer.email,
+      shipping_address: address,
+      billing_address: address,
+    },
+  });
+
+  if (!cartData.cart?.shipping_methods?.length) {
+    const shippingData = await medusaRequest(
+      `/store/shipping-options?cart_id=${encodeURIComponent(cart_id)}`
+    );
+    const shippingOption = shippingData.shipping_options?.[0];
+    if (!shippingOption) {
+      const error = new Error('Bu sepet için uygun Medusa kargo seçeneği bulunamadı.');
+      error.status = 422;
+      throw error;
+    }
+    cartData = await medusaRequest(
+      `/store/carts/${encodeURIComponent(cart_id)}/shipping-methods`,
+      { method: 'POST', body: { option_id: shippingOption.id } }
+    );
+  }
+
+  let paymentCollection = cartData.cart?.payment_collection;
+  if (!paymentCollection?.id) {
+    const paymentData = await medusaRequest('/store/payment-collections', {
+      method: 'POST',
+      body: { cart_id },
+    });
+    paymentCollection = paymentData.payment_collection;
+  }
+
+  const initializedSession = paymentCollection?.payment_sessions?.find(
+    (session) => session.provider_id === 'pp_system_default'
+  );
+  if (!initializedSession) {
+    await medusaRequest(
+      `/store/payment-collections/${encodeURIComponent(paymentCollection.id)}/payment-sessions`,
+      {
+        method: 'POST',
+        body: { provider_id: 'pp_system_default' },
+      }
+    );
+  }
+
+  const completion = await medusaRequest(
+    `/store/carts/${encodeURIComponent(cart_id)}/complete`,
+    { method: 'POST', body: {} }
+  );
+  if (completion.type !== 'order' || !completion.order) {
+    const error = new Error(completion.error?.message || 'Medusa siparişi tamamlanamadı.');
+    error.status = 422;
+    throw error;
+  }
+
+  return completion.order;
+}
+
+async function createLegacyOrder({ customer, items }) {
   const client = await getClient();
   try {
     await client.query('BEGIN');
 
-    // Ürünleri DB'den doğrula ve fiyatları güvenli şekilde al
-    const ids = items.map((i) => Number(i.id)).filter(Boolean);
+    const ids = items.map((item) => Number(item.id)).filter(Boolean);
     const { rows: dbProducts } = await client.query(
       `SELECT id, name, price, stock FROM products WHERE id = ANY($1)`,
       [ids]
     );
-    const byId = new Map(dbProducts.map((p) => [p.id, p]));
+    const byId = new Map(dbProducts.map((product) => [product.id, product]));
 
     let total = 0;
     const lineItems = [];
     for (const item of items) {
-      const prod = byId.get(Number(item.id));
-      if (!prod) {
-        await client.query('ROLLBACK');
-        return res.status(400).json({ error: `Ürün bulunamadı: ${item.id}` });
+      const product = byId.get(Number(item.id));
+      if (!product) {
+        const error = new Error(`Ürün bulunamadı: ${item.id}`);
+        error.status = 400;
+        throw error;
       }
-      const qty = Math.max(1, Number(item.quantity) || 1);
-      const price = Number(prod.price);
-      total += price * qty;
-      lineItems.push({ product_id: prod.id, name: prod.name, size: item.size || null, qty, price });
+      const quantity = Math.max(1, Number(item.quantity) || 1);
+      const price = Number(product.price);
+      total += price * quantity;
+      lineItems.push({
+        product_id: product.id,
+        name: product.name,
+        size: item.size || null,
+        quantity,
+        price,
+      });
     }
 
-    const orderRes = await client.query(
+    const orderResult = await client.query(
       `INSERT INTO orders (customer_name, email, phone, address, total, status)
        VALUES ($1,$2,$3,$4,$5,'pending') RETURNING id, created_at`,
       [customer.name, customer.email, customer.phone || null, customer.address || null, total]
     );
-    const orderId = orderRes.rows[0].id;
+    const orderId = orderResult.rows[0].id;
 
-    for (const li of lineItems) {
+    for (const item of lineItems) {
       await client.query(
         `INSERT INTO order_items (order_id, product_id, name, size, quantity, price)
          VALUES ($1,$2,$3,$4,$5,$6)`,
-        [orderId, li.product_id, li.name, li.size, li.qty, li.price]
+        [orderId, item.product_id, item.name, item.size, item.quantity, item.price]
       );
     }
 
     await client.query('COMMIT');
-    res.status(201).json({
+    return {
       id: orderId,
       total,
       status: 'pending',
-      created_at: orderRes.rows[0].created_at,
-      message: 'Siparişiniz alındı! Teşekkür ederiz.',
-    });
-  } catch (err) {
+      created_at: orderResult.rows[0].created_at,
+    };
+  } catch (error) {
     await client.query('ROLLBACK');
-    next(err);
+    throw error;
   } finally {
     client.release();
   }
+}
+
+// Yeni sipariş oluştur.
+router.post('/', async (req, res, next) => {
+  const { cart_id, customer, items } = req.body || {};
+
+  if (!customer?.name || !customer?.email) {
+    return res.status(400).json({ error: 'Ad ve e-posta zorunludur.' });
+  }
+
+  try {
+    if (isMedusaCommerce()) {
+      const order = await completeMedusaOrder({ cart_id, customer });
+      return res.status(201).json({
+        id: order.display_id || order.id,
+        medusa_id: order.id,
+        total: Number(order.total || 0),
+        status: order.status,
+        created_at: order.created_at,
+        message: 'Siparişiniz Medusa üzerinden alındı! Teşekkür ederiz.',
+      });
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Sepet boş olamaz.' });
+    }
+    const order = await createLegacyOrder({ customer, items });
+    res.status(201).json({ ...order, message: 'Siparişiniz alındı! Teşekkür ederiz.' });
+  } catch (error) {
+    next(error);
+  }
 });
 
-// Sipariş detayı
+// Legacy sipariş detayı. Medusa siparişleri Admin/Store API üzerinden yönetilir.
 router.get('/:id', async (req, res, next) => {
+  if (isMedusaCommerce()) {
+    return res.status(410).json({
+      error: 'Medusa sipariş detayı için Admin panelini veya müşteri Store API akışını kullanın.',
+    });
+  }
+
   try {
     const { rows } = await pool.query(`SELECT * FROM orders WHERE id = $1`, [req.params.id]);
     if (!rows.length) return res.status(404).json({ error: 'Sipariş bulunamadı' });
@@ -82,8 +199,8 @@ router.get('/:id', async (req, res, next) => {
       [req.params.id]
     );
     res.json({ ...rows[0], items: itemRows });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
 
