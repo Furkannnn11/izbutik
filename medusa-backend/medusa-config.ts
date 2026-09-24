@@ -76,5 +76,24 @@ module.exports = defineConfig({
     backendUrl: process.env.MEDUSA_BACKEND_URL || "http://127.0.0.1:9000",
     disable: process.env.MEDUSA_DISABLE_ADMIN === "true",
   },
-  modules: [...redisBackedModules],
+  modules: [
+    ...redisBackedModules,
+    // Auth modülü + emailpass sağlayıcısı AÇIKÇA kayıtlı.
+    // Medusa v2 framework varsayılanı emailpass'i zaten aktif eder; burada
+    // configde açıkça bildirerek admin/store email+password girişini kaynak
+    // düzeyinde garanti altına alıyoruz (yerel email/password auth provider).
+    {
+      resolve: "@medusajs/medusa/auth",
+      key: Modules.AUTH,
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+            options: {},
+          },
+        ],
+      },
+    },
+  ],
 })

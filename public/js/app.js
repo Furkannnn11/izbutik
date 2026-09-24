@@ -105,7 +105,6 @@
         <div class="product-card__body">
           <span class="product-card__cat">${esc(p.category_name || '')}</span>
           <h3 class="product-card__name" data-quickview="${p.slug}">${esc(p.name)}</h3>
-          <div class="product-card__rating">${'★'.repeat(Math.round(p.rating))}<span style="color:var(--ink-soft)"> ${Number(p.rating).toFixed(1)}</span></div>
           <div class="product-card__price">
             <span class="now">${fmt(p.price)}</span>
             ${p.old_price ? `<span class="old">${fmt(p.old_price)}</span>` : ''}
@@ -166,7 +165,6 @@
     const sorters = {
       price_asc: (a, b) => a.price - b.price,
       price_desc: (a, b) => b.price - a.price,
-      rating: (a, b) => b.rating - a.rating,
       newest: (a, b) => new Date(b.created_at) - new Date(a.created_at),
       featured: (a, b) => (b.is_featured - a.is_featured) || (a.id - b.id),
     };
@@ -197,9 +195,19 @@
   async function addToCart(productId, size = null, qty = 1) {
     const p = state.products.find((x) => String(x.id) === String(productId));
     if (!p) return;
-    const sz = size || (p.sizes && p.sizes[0]) || 'STD';
-    const variant = (p.variants || []).find((item) => item.size === sz) || p.variants?.[0];
+    const variants = p.variants || [];
+    const inStock = (v) => Number(v?.inventory_quantity ?? 0) > 0;
+    let variant;
+    if (size) {
+      // Kullanıcı bedeni açıkça seçti: o bedene sadık kal.
+      variant = variants.find((item) => item.size === size);
+    } else {
+      // Kart hızlı ekleme: ilk bedeni körlemesine seçme (tükenmiş olabilir).
+      // Stokta olan İLK varyantı tercih et; hiçbiri stokta değilse ilkine düş.
+      variant = variants.find(inStock) || variants[0];
+    }
     if (!variant) { toast('Bu ürün için satılabilir varyant bulunamadı.'); return; }
+    if (!inStock(variant)) { toast(`${p.name} için stokta beden kalmadı.`); return; }
 
     try {
       const cartId = await ensureCart();
@@ -310,7 +318,6 @@
         <div class="pd__info">
           <div class="pd__cat">${esc(p.category_name || '')}</div>
           <h2 class="pd__name">${esc(p.name)}</h2>
-          <div class="pd__rating">${'★'.repeat(Math.round(p.rating))} <span style="color:var(--ink-soft)">${Number(p.rating).toFixed(1)} / 5</span></div>
           <div class="pd__price">
             <span class="now">${fmt(p.price)}</span>
             ${p.old_price ? `<span class="old">${fmt(p.old_price)}</span>` : ''}
@@ -319,7 +326,17 @@
           <p class="pd__desc">${esc(p.description || '')}</p>
           <div class="pd__label">Beden Seç</div>
           <div class="pd__sizes" id="pdSizes">
-            ${(p.sizes || ['STD']).map((s, idx) => `<button class="size-opt ${idx === 0 ? 'active' : ''}" data-size="${esc(s)}">${esc(s)}</button>`).join('')}
+            ${(() => {
+              const vmap = new Map((p.variants || []).map((v) => [v.size, Number(v.inventory_quantity ?? 0)]));
+              const sizes = p.sizes && p.sizes.length ? p.sizes : ['STD'];
+              const firstInStock = sizes.find((s) => (vmap.get(s) ?? 0) > 0);
+              return sizes.map((s) => {
+                const qty = vmap.get(s) ?? 0;
+                const out = qty <= 0;
+                const active = !out && s === firstInStock;
+                return `<button class="size-opt ${active ? 'active' : ''}" data-size="${esc(s)}"${out ? ' disabled data-out="1"' : ''}>${esc(s)}</button>`;
+              }).join('');
+            })()}
           </div>
           <div class="pd__stock ${p.stock > 0 && p.stock <= 5 ? 'low' : ''}">${p.stock > 0 ? (p.stock <= 5 ? `⚡ Son ${p.stock} adet kaldı` : `✓ Stokta (${p.stock} adet)`) : 'Tükendi'}</div>
           <div class="pd__actions">
@@ -336,10 +353,12 @@
         t.classList.add('active');
       })
     );
-    // Beden seçimi
-    let chosen = (p.sizes && p.sizes[0]) || 'STD';
+    // Beden seçimi — varsayılan: stokta olan ilk beden (aktif işaretli buton).
+    const activeBtn = $('#pdSizes .size-opt.active', dialog);
+    let chosen = activeBtn?.dataset.size || (p.sizes && p.sizes[0]) || 'STD';
     $$('#pdSizes .size-opt', dialog).forEach((b) =>
       b.addEventListener('click', () => {
+        if (b.disabled || b.dataset.out === '1') return; // tükenmiş beden seçilemez
         $$('#pdSizes .size-opt', dialog).forEach((x) => x.classList.remove('active'));
         b.classList.add('active');
         chosen = b.dataset.size;
@@ -363,8 +382,8 @@
     dialog.innerHTML = `
       <button class="modal__close" data-close-modal>✕</button>
       <div class="checkout">
-        <h3>Siparişi Tamamla</h3>
-        <p class="sub">Bilgilerini gir, siparişini hemen oluşturalım.</p>
+        <h3>Sipariş Talebi Oluştur</h3>
+        <p class="sub">Bilgilerini gir, sipariş talebini bize ulaştıralım.</p>
         <form id="checkoutForm">
           <div class="field"><label>Ad Soyad *</label><input name="name" required placeholder="Adın Soyadın" /></div>
           <div class="field--row">
@@ -374,9 +393,10 @@
           <div class="field"><label>Adres</label><textarea name="address" rows="2" placeholder="Teslimat adresi"></textarea></div>
           <div class="checkout__summary">
             ${state.cart.map((i) => `<div class="row"><span>${esc(i.name)} × ${i.quantity} (${esc(i.size)})</span><span>${fmt(i.price * i.quantity)}</span></div>`).join('')}
-            <div class="row" style="border-top:1px solid var(--line);margin-top:6px;padding-top:8px"><span>Toplam</span><strong>${fmt(cartTotal())}</strong></div>
+            <div class="row" style="border-top:1px solid var(--line);margin-top:6px;padding-top:8px"><span>Ürün toplamı</span><strong>${fmt(cartTotal())}</strong></div>
           </div>
-          <button type="submit" class="btn btn--primary btn--block" id="placeOrder">Siparişi Onayla · ${fmt(cartTotal())}</button>
+          <p class="checkout__note">Ödeme ve kargo bu mağazada henüz manuel yürütülüyor. Formu gönderdiğinde sipariş talebin bize ulaşır; ödeme yöntemi ve kargo ücreti @izbutik20 üzerinden seninle netleştirilir. Bu adımda kart bilgisi alınmaz ve tahsilat yapılmaz.</p>
+          <button type="submit" class="btn btn--primary btn--block" id="placeOrder">Sipariş Talebi Gönder · ${fmt(cartTotal())}</button>
         </form>
       </div>`;
 
@@ -399,7 +419,7 @@
       items: state.cart.map((i) => ({ id: i.id, size: i.size, quantity: i.quantity })),
     };
     btn.disabled = true;
-    btn.textContent = 'Sipariş oluşturuluyor...';
+    btn.textContent = 'Sipariş talebi gönderiliyor...';
     try {
       const res = await fetch(API + '/orders', {
         method: 'POST',
@@ -412,10 +432,10 @@
       $('#checkoutDialog').innerHTML = `
         <div class="success">
           <div class="check">✓</div>
-          <h3>Siparişin alındı!</h3>
-          <p>Sipariş No: <strong>#${data.id}</strong></p>
-          <p>Toplam: <strong>${fmt(data.total)}</strong></p>
-          <p style="margin-top:14px">Teşekkürler! En kısa sürede seninle iletişime geçeceğiz ✦</p>
+          <h3>Sipariş talebin alındı!</h3>
+          <p>Talep No: <strong>#${data.id}</strong></p>
+          <p>Ürün toplamı: <strong>${fmt(data.total)}</strong></p>
+          <p style="margin-top:14px">Teşekkürler! Ödeme ve kargo detayları için @izbutik20 üzerinden en kısa sürede seninle iletişime geçeceğiz ✦</p>
           <button class="btn btn--primary" style="margin-top:22px" data-close-modal>Alışverişe Devam Et</button>
         </div>`;
       state.cart = [];
@@ -549,8 +569,8 @@
     const nav = $('#nav');
     window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20), { passive: true });
 
-    // Bülten
-    $('#newsletterForm').addEventListener('submit', (e) => { e.preventDefault(); e.target.reset(); $('#newsletterNote').hidden = false; toast('Bültene abone oldun ✦'); });
+    // Bülten formu kaldırıldı — sahte "abone oldun" bildirimi yerine
+    // Instagram'a yönlendiren gerçek CTA kullanılıyor (bkz. index.html).
   }
 
   function setCategory(slug) {

@@ -11,6 +11,11 @@
     "build": "medusa build",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "migrate:izbutik": "medusa exec ./src/scripts/migrate-izbutik-data.ts",
+    "sync:shopier": "medusa exec ./src/scripts/sync-shopier-catalog.ts",
+    "sync:shopier:apply": "medusa exec ./src/scripts/sync-shopier-catalog.ts -- --apply",
+    "sync:shopier:remove-demo": "medusa exec ./src/scripts/sync-shopier-catalog.ts -- --apply --force-remove-demo",
+    "sync:shopier:restore": "medusa exec ./src/scripts/sync-shopier-catalog.ts -- --apply --restore-archived",
+    "test:sync": "node ./src/scripts/sync-shopier-catalog.test.mjs",
     "start": "medusa start",
     "dev": "medusa develop",
     "predeploy": "medusa db:migrate"

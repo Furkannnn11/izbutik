@@ -1,0 +1,783 @@
+{
+  "generated_at": "2026-09-24T15:07:22.574Z",
+  "task": "T04_medusa_shopier_mapping_and_demo_classification",
+  "inputs": {
+    "shopier_instock_manifest": "03_product_manifest.json (29 ürün, Task 3)",
+    "medusa_demo_source": "src/db/seed.js → izbutik_db (26 ürün, external_id=izbutik:product:<id>)",
+    "schema_verified": "schema_analysis.json: 26 ürün / 7 kategori / 52 görsel / 79 beden"
+  },
+  "rules": {
+    "ambiguous_never_auto_removed": true,
+    "no_db_or_service_writes": true,
+    "archive_is_reversible_unpublish": true
+  },
+  "counts": {
+    "total_demo_products": 26,
+    "update": 0,
+    "archive-demo": 13,
+    "manual-review": 13,
+    "shopier_instock": 29,
+    "shopier_new_to_add": 29
+  },
+  "classifications": [
+    {
+      "medusa_external_id": "izbutik:product:1",
+      "demo_id": 1,
+      "demo_name": "Saten Askılı Midi Elbise",
+      "demo_category": "elbise",
+      "demo_price_try": 749.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [
+          "elbise"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.167,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0.167). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:2",
+      "demo_id": 2,
+      "demo_name": "Çiçek Desenli Yazlık Elbise",
+      "demo_category": "elbise",
+      "demo_price_try": 459.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [
+          "cicek",
+          "elbise"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.4,
+        "price_within_10pct": false,
+        "score": 2
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [cicek, elbise], ayırt edici: [], jaccard=0.4, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:3",
+      "demo_id": 3,
+      "demo_name": "Siyah Mini Kokteyl Elbise",
+      "demo_category": "elbise",
+      "demo_price_try": 689.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [
+          "elbise"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.167,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0.167). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:4",
+      "demo_id": 4,
+      "demo_name": "Triko Kemerli Uzun Elbise",
+      "demo_category": "elbise",
+      "demo_price_try": 599.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [
+          "elbise"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.167,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0.167). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:5",
+      "demo_id": 5,
+      "demo_name": "Saten Gömlek",
+      "demo_category": "ust-giyim",
+      "demo_price_try": 389.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 34240431,
+        "shopier_name": "Poplin tasarım gömlek",
+        "shopier_price": 1299,
+        "shared_tokens": [
+          "gomlek"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.25,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [gomlek], ayırt edici: [], jaccard=0.25, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:6",
+      "demo_id": 6,
+      "demo_name": "Fırfır Detaylı Bluz",
+      "demo_category": "ust-giyim",
+      "demo_price_try": 299.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": false,
+        "score": 0
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:7",
+      "demo_id": 7,
+      "demo_name": "Basic Pamuklu Body",
+      "demo_category": "ust-giyim",
+      "demo_price_try": 219.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": false,
+        "score": 0
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:8",
+      "demo_id": 8,
+      "demo_name": "Keten Oversize Gömlek",
+      "demo_category": "ust-giyim",
+      "demo_price_try": 349.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 34240431,
+        "shopier_name": "Poplin tasarım gömlek",
+        "shopier_price": 1299,
+        "shared_tokens": [
+          "gomlek"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.2,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Poplin tasarım gömlek\" id=34240431, jaccard=0.2). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:9",
+      "demo_id": 9,
+      "demo_name": "Yüksek Bel Palazzo Pantolon",
+      "demo_category": "alt-giyim",
+      "demo_price_try": 429.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 31150786,
+        "shopier_name": "Zara yüksek bel pantolon",
+        "shopier_price": 1050,
+        "shared_tokens": [
+          "yuksek",
+          "bel",
+          "pantolon"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.6,
+        "price_within_10pct": false,
+        "score": 3
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [yuksek, bel, pantolon], ayırt edici: [], jaccard=0.6, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:10",
+      "demo_id": 10,
+      "demo_name": "Saten Midi Etek",
+      "demo_category": "alt-giyim",
+      "demo_price_try": 359.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 40491941,
+        "shopier_name": "Siyah balon etek",
+        "shopier_price": 1500,
+        "shared_tokens": [
+          "etek"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.2,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Siyah balon etek\" id=40491941, jaccard=0.2). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:11",
+      "demo_id": 11,
+      "demo_name": "Mom Jean Pantolon",
+      "demo_category": "alt-giyim",
+      "demo_price_try": 469.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 31150786,
+        "shopier_name": "Zara yüksek bel pantolon",
+        "shopier_price": 1050,
+        "shared_tokens": [
+          "pantolon"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.167,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Zara yüksek bel pantolon\" id=31150786, jaccard=0.167). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:12",
+      "demo_id": 12,
+      "demo_name": "Pileli Mini Etek",
+      "demo_category": "alt-giyim",
+      "demo_price_try": 279.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 34432859,
+        "shopier_name": "Mini goyard",
+        "shopier_price": 850,
+        "shared_tokens": [
+          "mini"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.25,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [mini], ayırt edici: [], jaccard=0.25, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:13",
+      "demo_id": 13,
+      "demo_name": "Blazer Ceket",
+      "demo_category": "dis-giyim",
+      "demo_price_try": 799.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 30569990,
+        "shopier_name": "Blazer ceket",
+        "shopier_price": 1700,
+        "shared_tokens": [
+          "blazer",
+          "ceket"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 1,
+        "price_within_10pct": false,
+        "score": 2
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [blazer, ceket], ayırt edici: [], jaccard=1, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:14",
+      "demo_id": 14,
+      "demo_name": "Bej Trençkot",
+      "demo_category": "dis-giyim",
+      "demo_price_try": 1099.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": true,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [], ayırt edici: [], jaccard=0, fiyat_yakin=true). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:15",
+      "demo_id": 15,
+      "demo_name": "Oversize Deri Ceket",
+      "demo_category": "dis-giyim",
+      "demo_price_try": 1249.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 30569990,
+        "shopier_name": "Blazer ceket",
+        "shopier_price": 1700,
+        "shared_tokens": [
+          "ceket"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.25,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [ceket], ayırt edici: [], jaccard=0.25, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:16",
+      "demo_id": 16,
+      "demo_name": "Kapüşonlu Şişme Mont",
+      "demo_category": "dis-giyim",
+      "demo_price_try": 899.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 34432859,
+        "shopier_name": "Mini goyard",
+        "shopier_price": 850,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": true,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [], ayırt edici: [], jaccard=0, fiyat_yakin=true). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:17",
+      "demo_id": 17,
+      "demo_name": "Boğazlı Triko Kazak",
+      "demo_category": "triko",
+      "demo_price_try": 329.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 40232102,
+        "shopier_name": "Laci triko takım",
+        "shopier_price": 4500,
+        "shared_tokens": [
+          "triko"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.2,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Laci triko takım\" id=40232102, jaccard=0.2). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:18",
+      "demo_id": 18,
+      "demo_name": "Oversize Örgü Hırka",
+      "demo_category": "triko",
+      "demo_price_try": 449.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 31599347,
+        "shopier_name": "Latte hırka",
+        "shopier_price": 1200,
+        "shared_tokens": [
+          "hirka"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.25,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [hirka], ayırt edici: [], jaccard=0.25, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:19",
+      "demo_id": 19,
+      "demo_name": "V Yaka İnce Kazak",
+      "demo_category": "triko",
+      "demo_price_try": 289.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 42086106,
+        "shopier_name": "Puf kazak",
+        "shopier_price": 950,
+        "shared_tokens": [
+          "kazak"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.25,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [kazak], ayırt edici: [], jaccard=0.25, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:20",
+      "demo_id": 20,
+      "demo_name": "Blazer Pantolon Takım",
+      "demo_category": "takim",
+      "demo_price_try": 1199.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": true,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [], ayırt edici: [], jaccard=0, fiyat_yakin=true). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:21",
+      "demo_id": 21,
+      "demo_name": "Triko İkili Takım",
+      "demo_category": "takim",
+      "demo_price_try": 699.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 40232102,
+        "shopier_name": "Laci triko takım",
+        "shopier_price": 4500,
+        "shared_tokens": [
+          "triko",
+          "takim"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.5,
+        "price_within_10pct": false,
+        "score": 2
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [triko, takim], ayırt edici: [], jaccard=0.5, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:22",
+      "demo_id": 22,
+      "demo_name": "Saten Gömlek Şort Takım",
+      "demo_category": "takim",
+      "demo_price_try": 649.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29176324,
+        "shopier_name": "Tasarım takım",
+        "shopier_price": 2500,
+        "shared_tokens": [
+          "takim"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.2,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Tasarım takım\" id=29176324, jaccard=0.2). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:23",
+      "demo_id": 23,
+      "demo_name": "Deri Omuz Çantası",
+      "demo_category": "aksesuar",
+      "demo_price_try": 549.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": false,
+        "score": 0
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:24",
+      "demo_id": 24,
+      "demo_name": "Mini Çapraz Çanta",
+      "demo_category": "aksesuar",
+      "demo_price_try": 379.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 34432859,
+        "shopier_name": "Mini goyard",
+        "shopier_price": 850,
+        "shared_tokens": [
+          "mini"
+        ],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0.25,
+        "price_within_10pct": false,
+        "score": 1
+      },
+      "classification": "manual-review",
+      "confidence": "low",
+      "reason": "Zayıf/belirsiz sinyal (ortak token: [mini], ayırt edici: [], jaccard=0.25, fiyat_yakin=false). Kesin eşleşme kanıtlanamadı → OTOMATİK KALDIRILMAZ, insan incelemesine bırakıldı."
+    },
+    {
+      "medusa_external_id": "izbutik:product:25",
+      "demo_id": 25,
+      "demo_name": "Hasır Plaj Çantası",
+      "demo_category": "aksesuar",
+      "demo_price_try": 259.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": false,
+        "score": 0
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    },
+    {
+      "medusa_external_id": "izbutik:product:26",
+      "demo_id": 26,
+      "demo_name": "Tote Bag",
+      "demo_category": "aksesuar",
+      "demo_price_try": 229.9,
+      "demo_image_host": "images.unsplash.com",
+      "best_shopier_match": {
+        "shopier_id": 29092947,
+        "shopier_name": "Retro çiçek elbise",
+        "shopier_price": 1100,
+        "shared_tokens": [],
+        "distinctive_shared_tokens": [],
+        "jaccard": 0,
+        "price_within_10pct": false,
+        "score": 0
+      },
+      "classification": "archive-demo",
+      "confidence": "high",
+      "reason": "Unsplash stok görseli (images.unsplash.com) + jenerik pazarlama ismi + Shopier 29 stokta ürününde ayırt edici ortak token YOK (en iyi aday: \"Retro çiçek elbise\" id=29092947, jaccard=0). Shopier'de karşılığı olmayan kesin demo → geri alınabilir şekilde arşivlenecek."
+    }
+  ],
+  "shopier_new_products_to_add": [
+    {
+      "shopier_id": 29092947,
+      "name": "Retro çiçek elbise",
+      "price_try": 1100
+    },
+    {
+      "shopier_id": 29176324,
+      "name": "Tasarım takım",
+      "price_try": 2500
+    },
+    {
+      "shopier_id": 30569990,
+      "name": "Blazer ceket",
+      "price_try": 1700
+    },
+    {
+      "shopier_id": 31150786,
+      "name": "Zara yüksek bel pantolon",
+      "price_try": 1050
+    },
+    {
+      "shopier_id": 31599347,
+      "name": "Latte hırka",
+      "price_try": 1200
+    },
+    {
+      "shopier_id": 32032298,
+      "name": "Black kadife elbise",
+      "price_try": 1600
+    },
+    {
+      "shopier_id": 33213500,
+      "name": "Kot tunik",
+      "price_try": 2399
+    },
+    {
+      "shopier_id": 34240431,
+      "name": "Poplin tasarım gömlek",
+      "price_try": 1299
+    },
+    {
+      "shopier_id": 34243186,
+      "name": "Şölen Keten elbise",
+      "price_try": 2600
+    },
+    {
+      "shopier_id": 34245895,
+      "name": "Mürdüm elbise",
+      "price_try": 3100
+    },
+    {
+      "shopier_id": 34300423,
+      "name": "Trenç elbise",
+      "price_try": 2499
+    },
+    {
+      "shopier_id": 34432859,
+      "name": "Mini goyard",
+      "price_try": 850
+    },
+    {
+      "shopier_id": 34433728,
+      "name": "Miu miu çanta",
+      "price_try": 1000
+    },
+    {
+      "shopier_id": 36381158,
+      "name": "Haki Müslin elbise",
+      "price_try": 2799
+    },
+    {
+      "shopier_id": 40232102,
+      "name": "Laci triko takım",
+      "price_try": 4500
+    },
+    {
+      "shopier_id": 40232188,
+      "name": "Bomber ceket",
+      "price_try": 4400
+    },
+    {
+      "shopier_id": 40232329,
+      "name": "Tasarım elbise",
+      "price_try": 4550
+    },
+    {
+      "shopier_id": 40233085,
+      "name": "Tasarım panço",
+      "price_try": 4399
+    },
+    {
+      "shopier_id": 40233420,
+      "name": "Black dress",
+      "price_try": 5499
+    },
+    {
+      "shopier_id": 40233722,
+      "name": "İpek kupra elbise",
+      "price_try": 5399
+    },
+    {
+      "shopier_id": 40234102,
+      "name": "Yelekli takım",
+      "price_try": 5499
+    },
+    {
+      "shopier_id": 40234247,
+      "name": "Spor takım",
+      "price_try": 5499
+    },
+    {
+      "shopier_id": 40234486,
+      "name": "Modal takım",
+      "price_try": 1999
+    },
+    {
+      "shopier_id": 40334911,
+      "name": "Premium spor takım bej",
+      "price_try": 3699
+    },
+    {
+      "shopier_id": 40491941,
+      "name": "Siyah balon etek",
+      "price_try": 1500
+    },
+    {
+      "shopier_id": 42085493,
+      "name": "Angora hırka",
+      "price_try": 1999
+    },
+    {
+      "shopier_id": 42085555,
+      "name": "Angora hırka lacivert",
+      "price_try": 1999
+    },
+    {
+      "shopier_id": 42085779,
+      "name": "Meva pantolon",
+      "price_try": 1400
+    },
+    {
+      "shopier_id": 42086106,
+      "name": "Puf kazak",
+      "price_try": 950
+    }
+  ],
+  "category_map_suggestion": {
+    "Etek": "alt-giyim",
+    "Pantolon": "alt-giyim",
+    "Hırka": "triko",
+    "Sweat": "triko",
+    "Elbise": "elbise",
+    "Tunik": "elbise",
+    "Gömlek": "ust-giyim",
+    "Ceket": "dis-giyim",
+    "Takım": "takim",
+    "Çanta": "aksesuar",
+    "Tasarım ürünler": "manual-review"
+  },
+  "notes": [
+    "Tüm demo ürünler Unsplash stok görseli + jenerik pazarlama ismi taşır; Shopier gerçek ürünleriyle isim/görsel örtüşmesi yoktur.",
+    "Belirsiz eşleşmeler archive-demo YAPILMAZ; manual-review'de bırakılır (spec kuralı).",
+    "Arşivleme Task 5/7'de geri alınabilir unpublish (status=draft) olarak uygulanır; kalıcı silme yapılmaz.",
+    "Shopier ürün-bazı kategori vermediğinden kategori eşlemesi öneri düzeyindedir; kesinleştirme Task 5 sync aracında ürün türünden yapılır."
+  ],
+  "gate": {
+    "every_demo_classified": true,
+    "no_ambiguous_auto_archived": true,
+    "counts_sum_ok": true,
+    "pass": true
+  }
+}

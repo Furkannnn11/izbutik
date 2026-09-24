@@ -1,0 +1,2507 @@
+{
+  "generated_at": "2026-09-24T14:59:48.211Z",
+  "task": "T03_product_detail_manifest",
+  "shop": "izbutik20",
+  "source": "public read-only Shopier storefront detail pages (og meta + embedded $product JSON + gallery slider)",
+  "input_stock_count": 29,
+  "extracted_count": 29,
+  "store_category_taxonomy": {
+    "1876803": "Etek",
+    "1876804": "Hırka",
+    "1876806": "Elbise",
+    "1876807": "Tunik",
+    "1876808": "Pantolon",
+    "1876809": "Tasarım ürünler",
+    "1876814": "Gömlek",
+    "1876815": "Takım",
+    "1876818": "Ceket",
+    "1906954": "Çanta",
+    "1907710": "Sweat"
+  },
+  "category_note": "Per-product Shopier category is NOT publicly exposed; shopier_resolved=false for all. Category mapping is Task 4's responsibility (map to existing Medusa 7-category taxonomy).",
+  "totals": {
+    "products": 29,
+    "total_gallery_photos": 133,
+    "total_variants": 68,
+    "variationless_products": [
+      {
+        "id": 34432859,
+        "name": "Mini goyard"
+      },
+      {
+        "id": 34433728,
+        "name": "Miu miu çanta"
+      }
+    ]
+  },
+  "gates": {
+    "count_matches_task2_instock": true,
+    "all_availability_instock": true,
+    "all_have_at_least_one_photo": true,
+    "all_variation_axes_parsed": true,
+    "all_have_price": true,
+    "all_have_name": true,
+    "zero_integrity_problems": true
+  },
+  "problems": [],
+  "products": [
+    {
+      "id": 29092947,
+      "name": "Retro çiçek elbise",
+      "link": "https://www.shopier.com/29092947",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 3,
+      "price": {
+        "code_formatted": "1.100 TL",
+        "try": 1100,
+        "kurus": 110000,
+        "currency": "TRY",
+        "og_amount": 1100
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "%70 pamuktur \nİç göstermez \nTam kalıptır \nYaka ve inci düğme detayları ile zamansız ve şık bir elbisedir",
+        "html": "%70 pamuktur <br />İç göstermez <br />Tam kalıptır <br />Yaka ve inci düğme detayları ile zamansız ve şık bir elbisedir",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143508,
+            "name": "38",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143509,
+            "name": "40",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143510,
+            "name": "42",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 3,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_1b3f7fcea77a784e7c09e31fd71a9725.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_548251f9af492fb2074cd7db8014b0fb.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_64b9c9be6163cf21a573163f13fde2d1.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_e88f0ddef977df86149248d6a4c05e9b.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_1b3f7fcea77a784e7c09e31fd71a9725.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_548251f9af492fb2074cd7db8014b0fb.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_64b9c9be6163cf21a573163f13fde2d1.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_e88f0ddef977df86149248d6a4c05e9b.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_1b3f7fcea77a784e7c09e31fd71a9725.jpeg",
+          "izbutik20_548251f9af492fb2074cd7db8014b0fb.jpeg",
+          "izbutik20_64b9c9be6163cf21a573163f13fde2d1.jpeg",
+          "izbutik20_e88f0ddef977df86149248d6a4c05e9b.jpeg"
+        ],
+        "count": 4,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_1b3f7fcea77a784e7c09e31fd71a9725.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/29092947.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 29176324,
+      "name": "Tasarım takım",
+      "link": "https://www.shopier.com/29176324",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "2.500 TL",
+        "try": 2500,
+        "kurus": 250000,
+        "currency": "TRY",
+        "og_amount": 2500
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Kumaşı %100 ham pamuktur \nÖzel bir kumaş dokusu vardır \nTasarım üründür \n30 derecede yıkama yapılmalıdır \nÇekme yapmaz \nNormal kalıptır \nKumaşta esneklik yoktur",
+        "html": "Kumaşı %100 ham pamuktur <br />Özel bir kumaş dokusu vardır <br />Tasarım üründür <br />30 derecede yıkama yapılmalıdır <br />Çekme yapmaz <br />Normal kalıptır <br />Kumaşta esneklik yoktur",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143503,
+            "name": "M",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143504,
+            "name": "L",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143505,
+            "name": "XL",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143506,
+            "name": "36",
+            "stock": 0,
+            "order": 0
+          }
+        ],
+        "count": 5,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_f149c9ebf03b6d6c284eaf415bd8629b.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_8a275a93236697b9cd1112c168490aae.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_5d82a40c3443043e8eb9a793e8e4264f.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_d41aa8e996cef8a68d2158436f7ce1b5.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_f149c9ebf03b6d6c284eaf415bd8629b.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_8a275a93236697b9cd1112c168490aae.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_5d82a40c3443043e8eb9a793e8e4264f.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d41aa8e996cef8a68d2158436f7ce1b5.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_f149c9ebf03b6d6c284eaf415bd8629b.jpeg",
+          "izbutik20_8a275a93236697b9cd1112c168490aae.jpeg",
+          "izbutik20_5d82a40c3443043e8eb9a793e8e4264f.jpeg",
+          "izbutik20_d41aa8e996cef8a68d2158436f7ce1b5.jpeg"
+        ],
+        "count": 4,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_f149c9ebf03b6d6c284eaf415bd8629b.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/29176324.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 30569990,
+      "name": "Blazer ceket",
+      "link": "https://www.shopier.com/30569990",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "1.700 TL",
+        "try": 1700,
+        "kurus": 170000,
+        "currency": "TRY",
+        "og_amount": 1700
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "İçi astarlıdır \nBelden oturan ve ince gösteren bir modeldir \nBoyu 70 cm dir",
+        "html": "İçi astarlıdır <br />Belden oturan ve ince gösteren bir modeldir <br />Boyu 70 cm dir <br />",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143503,
+            "name": "M",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_21c4836ad443ca571b28bee72a76cdb3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_f9496acdc2a4f52d544d68c23abded02.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_95ae3474dabc85033d26e5a1298c15d3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_ab9d26f4f5437e8368002585c72e3c74.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_d199f698ad5c52fba547cdbd36dd2692.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_21c4836ad443ca571b28bee72a76cdb3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_f9496acdc2a4f52d544d68c23abded02.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_95ae3474dabc85033d26e5a1298c15d3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_ab9d26f4f5437e8368002585c72e3c74.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d199f698ad5c52fba547cdbd36dd2692.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_21c4836ad443ca571b28bee72a76cdb3.jpeg",
+          "izbutik20_f9496acdc2a4f52d544d68c23abded02.jpeg",
+          "izbutik20_95ae3474dabc85033d26e5a1298c15d3.jpeg",
+          "izbutik20_ab9d26f4f5437e8368002585c72e3c74.jpeg",
+          "izbutik20_d199f698ad5c52fba547cdbd36dd2692.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_21c4836ad443ca571b28bee72a76cdb3.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/30569990.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 31150786,
+      "name": "Zara yüksek bel pantolon",
+      "link": "https://www.shopier.com/31150786",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "1.050 TL",
+        "try": 1050,
+        "kurus": 105000,
+        "currency": "TRY",
+        "og_amount": 1050
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Pantolonumuz yüksek beldir \nTam kalıptır \nToparlayıcı özelliği vardır \nHafif likrası vardır \nUzunluğu 95 cm dir \n34-42 beden seçenekleri mevcuttur \nMankenin üzerindeki 34 beden olup paça boyu mankene göre kısaltılmıştır \nManken boy 1.65 kilo 50",
+        "html": "Pantolonumuz yüksek beldir <br />Tam kalıptır <br />Toparlayıcı özelliği vardır <br />Hafif likrası vardır <br />Uzunluğu 95 cm dir <br />34-42 beden seçenekleri mevcuttur <br />Mankenin üzerindeki 34 beden olup paça boyu mankene göre kısaltılmıştır <br />Manken boy 1.65 kilo 50",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2296141,
+            "name": "34",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 1,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_7430fc86916971218182153902a98920.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_d0a00d776667db336c4c82a241560819.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_363b6894653ec053bf177afcef6840fa.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_81362b11f0c0959cb6bc7b4c073baf5f.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_9635a694bf31bcb5e8ae185c88de57cc.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_7430fc86916971218182153902a98920.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d0a00d776667db336c4c82a241560819.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_363b6894653ec053bf177afcef6840fa.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_81362b11f0c0959cb6bc7b4c073baf5f.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_9635a694bf31bcb5e8ae185c88de57cc.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_7430fc86916971218182153902a98920.jpeg",
+          "izbutik20_d0a00d776667db336c4c82a241560819.jpeg",
+          "izbutik20_363b6894653ec053bf177afcef6840fa.jpeg",
+          "izbutik20_81362b11f0c0959cb6bc7b4c073baf5f.jpeg",
+          "izbutik20_9635a694bf31bcb5e8ae185c88de57cc.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_7430fc86916971218182153902a98920.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/31150786.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 31599347,
+      "name": "Latte hırka",
+      "link": "https://www.shopier.com/31599347",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "1.200 TL",
+        "try": 1200,
+        "kurus": 120000,
+        "currency": "TRY",
+        "og_amount": 1200
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Hırkamız soğuk trikodur \nTüylenme yapmaz \nUzunluğu 74 cm dir \n1 ve 2 bedendir \nGeniş kalıptır",
+        "html": "Hırkamız soğuk trikodur <br />Tüylenme yapmaz <br />Uzunluğu 74 cm dir <br />1 ve 2 bedendir <br />Geniş kalıptır",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143526,
+            "name": "1",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143527,
+            "name": "2",
+            "stock": 0,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_1112702935cad3cb9e3393ddd86607ce.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_fc9e721f9b528fea0c3cf101bb4897f4.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_86d110b5de70f6c9b24329871883e2b8.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_d1dce029f6010391d46e2e22eb937823.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_96cd7b1cee108fc392cc0bb12be1ff53.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_1112702935cad3cb9e3393ddd86607ce.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_fc9e721f9b528fea0c3cf101bb4897f4.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_86d110b5de70f6c9b24329871883e2b8.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d1dce029f6010391d46e2e22eb937823.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_96cd7b1cee108fc392cc0bb12be1ff53.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_1112702935cad3cb9e3393ddd86607ce.jpeg",
+          "izbutik20_fc9e721f9b528fea0c3cf101bb4897f4.jpeg",
+          "izbutik20_86d110b5de70f6c9b24329871883e2b8.jpeg",
+          "izbutik20_d1dce029f6010391d46e2e22eb937823.jpeg",
+          "izbutik20_96cd7b1cee108fc392cc0bb12be1ff53.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_1112702935cad3cb9e3393ddd86607ce.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/31599347.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 32032298,
+      "name": "Black kadife elbise",
+      "link": "https://www.shopier.com/32032298",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 6,
+      "price": {
+        "code_formatted": "1.600 TL",
+        "try": 1600,
+        "kurus": 160000,
+        "currency": "TRY",
+        "og_amount": 1600
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Elbisemiz tasarımdır \nÜst kısmı kadife kumaş olup, alt kısmı paraşüt kumaştır \nÜtü gerektirmez \nElbise arkadan fermuarlıdır \nS M L XL bedenleri vardır",
+        "html": "Elbisemiz tasarımdır <br />Üst kısmı kadife kumaş olup, alt kısmı paraşüt kumaştır <br />Ütü gerektirmez <br />Elbise arkadan fermuarlıdır <br />S M L XL bedenleri vardır <br />",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 3,
+            "order": 0
+          },
+          {
+            "id": 2143504,
+            "name": "L",
+            "stock": 3,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_31d88a868339647b89a0682634cd151a.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_a520cdedf65e2a1121bc1c061d8e67a6.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_f5e65d726487797285f19ba8100ca8fb.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_8f5a4de51d6f3e100b49e1da91def048.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_70819da28d1f0d4950a8bed023617d2a.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_31d88a868339647b89a0682634cd151a.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_a520cdedf65e2a1121bc1c061d8e67a6.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_f5e65d726487797285f19ba8100ca8fb.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_8f5a4de51d6f3e100b49e1da91def048.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_70819da28d1f0d4950a8bed023617d2a.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_31d88a868339647b89a0682634cd151a.jpeg",
+          "izbutik20_a520cdedf65e2a1121bc1c061d8e67a6.jpeg",
+          "izbutik20_f5e65d726487797285f19ba8100ca8fb.jpeg",
+          "izbutik20_8f5a4de51d6f3e100b49e1da91def048.jpeg",
+          "izbutik20_70819da28d1f0d4950a8bed023617d2a.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_31d88a868339647b89a0682634cd151a.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/32032298.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 33213500,
+      "name": "Kot tunik",
+      "link": "https://www.shopier.com/33213500",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "2.399 TL",
+        "try": 2399,
+        "kurus": 239900,
+        "currency": "TRY",
+        "og_amount": 2399
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Ürünümüz kendimden likralı ve kaliteli kot kumaştır \nİster tunik ister gömlek olarak çok rahat kombin yapabilirsiniz \nKalıbı geniştir \nUzunluk 75 cm dir \nS-M ve L-XL bedenlidir",
+        "html": "Ürünümüz kendimden likralı ve kaliteli kot kumaştır <br />İster tunik ister gömlek olarak çok rahat kombin yapabilirsiniz <br />Kalıbı geniştir <br />Uzunluk 75 cm dir <br />S-M ve L-XL bedenlidir",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2331654,
+            "name": "S/M",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2331658,
+            "name": "L/XL",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_fef2ca5850066ef462c7ca1edc551e39.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_007c8f11512450c604c81f511c76139f.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_a1d52136b293a6cc155edca2a39f806b.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_c1acda1fae3627a0f3e2299189215b90.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_f4efbd04c6a8dd336f6eb5eea7264500.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_fef2ca5850066ef462c7ca1edc551e39.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_007c8f11512450c604c81f511c76139f.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_a1d52136b293a6cc155edca2a39f806b.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_c1acda1fae3627a0f3e2299189215b90.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_f4efbd04c6a8dd336f6eb5eea7264500.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_fef2ca5850066ef462c7ca1edc551e39.jpeg",
+          "izbutik20_007c8f11512450c604c81f511c76139f.jpeg",
+          "izbutik20_a1d52136b293a6cc155edca2a39f806b.jpeg",
+          "izbutik20_c1acda1fae3627a0f3e2299189215b90.jpeg",
+          "izbutik20_f4efbd04c6a8dd336f6eb5eea7264500.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_fef2ca5850066ef462c7ca1edc551e39.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/33213500.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 34240431,
+      "name": "Poplin tasarım gömlek",
+      "link": "https://www.shopier.com/34240431",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 4,
+      "price": {
+        "code_formatted": "1.299 TL",
+        "try": 1299,
+        "kurus": 129900,
+        "currency": "TRY",
+        "og_amount": 1299
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Gömleğimiz yüzde yüz pamuklu kumaştır \nYakmaz terletmez \nArkasında ki tasarım detayı sayesinde sizi tarz gösterir \nStandart bedendir \nHer türlü pantolonla kombin yapabileceğiniz bir üründür \n36-38-40 beden olanlar tercih edebilir \nGömlek ön uzunluk 70 cm \nArka uzunluk 80 cm dir",
+        "html": "Gömleğimiz yüzde yüz pamuklu kumaştır <br />Yakmaz terletmez <br />Arkasında ki tasarım detayı sayesinde sizi tarz gösterir <br />Standart bedendir <br />Her türlü pantolonla kombin yapabileceğiniz bir üründür <br />36-38-40 beden olanlar tercih edebilir <br />Gömlek ön uzunluk 70 cm <br />Arka uzunluk 80 cm dir",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143514,
+            "name": "STD",
+            "stock": 4,
+            "order": 0
+          }
+        ],
+        "count": 1,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_5027181416fd1ebad6fc0d0ed695cbc6.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_60ea9cc1ff4a3e24902f5ce3fe577e1e.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_1bc949f047938af7d4825d91ba95fba1.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_d5d432d8eab3bae6e71bddb46bf6e5a0.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_80430c67ea3c953af74d264be552112a.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_5027181416fd1ebad6fc0d0ed695cbc6.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_60ea9cc1ff4a3e24902f5ce3fe577e1e.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_1bc949f047938af7d4825d91ba95fba1.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d5d432d8eab3bae6e71bddb46bf6e5a0.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_80430c67ea3c953af74d264be552112a.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_5027181416fd1ebad6fc0d0ed695cbc6.jpeg",
+          "izbutik20_60ea9cc1ff4a3e24902f5ce3fe577e1e.jpeg",
+          "izbutik20_1bc949f047938af7d4825d91ba95fba1.jpeg",
+          "izbutik20_d5d432d8eab3bae6e71bddb46bf6e5a0.jpeg",
+          "izbutik20_80430c67ea3c953af74d264be552112a.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_5027181416fd1ebad6fc0d0ed695cbc6.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/34240431.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 34243186,
+      "name": "Şölen Keten elbise",
+      "link": "https://www.shopier.com/34243186",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "2.600 TL",
+        "try": 2600,
+        "kurus": 260000,
+        "currency": "TRY",
+        "og_amount": 2600
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar efendim",
+        "html": "Merhabalar efendim",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143514,
+            "name": "STD",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 1,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_7a198900c6eb86260dabdfeb333f18e6.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_0c019368bc26ee340102963e841ee2cd.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_6c33184ccd5dc123c390463abb004e9b.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_a6e3020f761dc87c07513ffe413d9500.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_099b3667cef047e99d5cb4a6d4045621.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_7a198900c6eb86260dabdfeb333f18e6.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_0c019368bc26ee340102963e841ee2cd.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_6c33184ccd5dc123c390463abb004e9b.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_a6e3020f761dc87c07513ffe413d9500.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_099b3667cef047e99d5cb4a6d4045621.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_7a198900c6eb86260dabdfeb333f18e6.jpeg",
+          "izbutik20_0c019368bc26ee340102963e841ee2cd.jpeg",
+          "izbutik20_6c33184ccd5dc123c390463abb004e9b.jpeg",
+          "izbutik20_a6e3020f761dc87c07513ffe413d9500.jpeg",
+          "izbutik20_099b3667cef047e99d5cb4a6d4045621.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_7a198900c6eb86260dabdfeb333f18e6.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/34243186.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 34245895,
+      "name": "Mürdüm elbise",
+      "link": "https://www.shopier.com/34245895",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "3.100 TL",
+        "try": 3100,
+        "kurus": 310000,
+        "currency": "TRY",
+        "og_amount": 3100
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Elbisemiz belden oturan bir modeldir \nKendi kumaşından yapılmış kemeri mevcuttur \nİthal krep kumaştır \nDört mevsim kullanılabilir \nZamansız bir modeldir \nElbise uzunluk 134 cm dir \n36-38-40-42 bedenleri mevcuttur",
+        "html": "Elbisemiz belden oturan bir modeldir <br />Kendi kumaşından yapılmış kemeri mevcuttur <br />İthal krep kumaştır <br />Dört mevsim kullanılabilir <br />Zamansız bir modeldir <br />Elbise uzunluk 134 cm dir <br />36-38-40-42 bedenleri mevcuttur",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143506,
+            "name": "36",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143508,
+            "name": "38",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143509,
+            "name": "40",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143510,
+            "name": "42",
+            "stock": 0,
+            "order": 0
+          }
+        ],
+        "count": 4,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_860b9d53cc3dd485e922676b28c48650.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_1ad320eafd90e7704b01638483803550.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_0f2684c370434c29ed0611411d6a09bf.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_cc90f5713433a631b7b31d83014ce50f.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_cddb55aa04701967c2b3ca0fb4165484.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_860b9d53cc3dd485e922676b28c48650.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_1ad320eafd90e7704b01638483803550.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_0f2684c370434c29ed0611411d6a09bf.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_cc90f5713433a631b7b31d83014ce50f.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_cddb55aa04701967c2b3ca0fb4165484.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_860b9d53cc3dd485e922676b28c48650.jpeg",
+          "izbutik20_1ad320eafd90e7704b01638483803550.jpeg",
+          "izbutik20_0f2684c370434c29ed0611411d6a09bf.jpeg",
+          "izbutik20_cc90f5713433a631b7b31d83014ce50f.jpeg",
+          "izbutik20_cddb55aa04701967c2b3ca0fb4165484.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_860b9d53cc3dd485e922676b28c48650.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/34245895.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 34300423,
+      "name": "Trenç elbise",
+      "link": "https://www.shopier.com/34300423",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 3,
+      "price": {
+        "code_formatted": "2.499 TL",
+        "try": 2499,
+        "kurus": 249900,
+        "currency": "TRY",
+        "og_amount": 2499
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Trenç elbisemiz tasarım bir üründür \nKendi kumaşından kemeri mevcuttur \nHafif bir üründür \nKumaşı incedir \nYakmaz \nUzunluk 135 cm dir \nGeniş kalıptır \n1 ve 2 bedenlidir",
+        "html": "Trenç elbisemiz tasarım bir üründür <br />Kendi kumaşından kemeri mevcuttur <br />Hafif bir üründür <br />Kumaşı incedir <br />Yakmaz <br />Uzunluk 135 cm dir <br />Geniş kalıptır <br />1 ve 2 bedenlidir",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143526,
+            "name": "1",
+            "stock": 2,
+            "order": 0
+          },
+          {
+            "id": 2143527,
+            "name": "2",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_8eca69c72898a4e1e55a353f6806f65f.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_65737db074ec3576a5e5ced846d3579e.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_ee1922b9bae71dcff640875d2742bf24.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_aa3daff42965659d323ed18ddf13f545.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_cfad67e3d84abee7e2d1c0c7f61f5d5b.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_8eca69c72898a4e1e55a353f6806f65f.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_65737db074ec3576a5e5ced846d3579e.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_ee1922b9bae71dcff640875d2742bf24.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_aa3daff42965659d323ed18ddf13f545.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_cfad67e3d84abee7e2d1c0c7f61f5d5b.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_8eca69c72898a4e1e55a353f6806f65f.jpeg",
+          "izbutik20_65737db074ec3576a5e5ced846d3579e.jpeg",
+          "izbutik20_ee1922b9bae71dcff640875d2742bf24.jpeg",
+          "izbutik20_aa3daff42965659d323ed18ddf13f545.jpeg",
+          "izbutik20_cfad67e3d84abee7e2d1c0c7f61f5d5b.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_8eca69c72898a4e1e55a353f6806f65f.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/34300423.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 34432859,
+      "name": "Mini goyard",
+      "link": "https://www.shopier.com/34432859",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "850 TL",
+        "try": 850,
+        "kurus": 85000,
+        "currency": "TRY",
+        "og_amount": 850
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Çantamız ithal üründür",
+        "html": "Çantamız ithal üründür <br />",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": false,
+        "variation_name": null,
+        "options": [],
+        "count": 0,
+        "variations_field": "null"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_8b55ce9e7c6a17b7a68fba6cc47b38e5.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_da2b63291a297534db8971c5d19d230d.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_c25a1f923b463890bf32584ba22b8da2.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_8b55ce9e7c6a17b7a68fba6cc47b38e5.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_da2b63291a297534db8971c5d19d230d.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_c25a1f923b463890bf32584ba22b8da2.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_8b55ce9e7c6a17b7a68fba6cc47b38e5.jpeg",
+          "izbutik20_da2b63291a297534db8971c5d19d230d.jpeg",
+          "izbutik20_c25a1f923b463890bf32584ba22b8da2.jpeg"
+        ],
+        "count": 3,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_8b55ce9e7c6a17b7a68fba6cc47b38e5.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/34432859.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 34433728,
+      "name": "Miu miu çanta",
+      "link": "https://www.shopier.com/34433728",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "1.000 TL",
+        "try": 1000,
+        "kurus": 100000,
+        "currency": "TRY",
+        "og_amount": 1000
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Çantamız ithal üründür\nİçinde uzun askısı mevcuttur",
+        "html": "Çantamız ithal üründür<br />İçinde uzun askısı mevcuttur",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": false,
+        "variation_name": null,
+        "options": [],
+        "count": 0,
+        "variations_field": "null"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_35ed17e440f3ce2c12a62527d2769fe3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_2d30a1d176f836fb691063f3a30c8764.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_2291a724b652bcf368b582a30a7e00d7.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_35ed17e440f3ce2c12a62527d2769fe3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_2d30a1d176f836fb691063f3a30c8764.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_2291a724b652bcf368b582a30a7e00d7.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_35ed17e440f3ce2c12a62527d2769fe3.jpeg",
+          "izbutik20_2d30a1d176f836fb691063f3a30c8764.jpeg",
+          "izbutik20_2291a724b652bcf368b582a30a7e00d7.jpeg"
+        ],
+        "count": 3,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_35ed17e440f3ce2c12a62527d2769fe3.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/34433728.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 36381158,
+      "name": "Haki Müslin elbise",
+      "link": "https://www.shopier.com/36381158",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 3,
+      "price": {
+        "code_formatted": "2.799 TL",
+        "try": 2799,
+        "kurus": 279900,
+        "currency": "TRY",
+        "og_amount": 2799
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Haki Müslin kumaş elbise",
+        "html": "Haki Müslin kumaş elbise",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2331654,
+            "name": "S/M",
+            "stock": 2,
+            "order": 0
+          },
+          {
+            "id": 2331658,
+            "name": "L/XL",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_9ecb46a1f6aa8290191631d3eaf750e3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_45bce2c7d9ac69966829e009c2556460.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_37e5280934fbabec93dba36c4c5d9ab1.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_3b298a867b0d1c12594e6a40be93061c.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_56af2cc9064741d4f7a1eadbf4ab2cd1.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_9ecb46a1f6aa8290191631d3eaf750e3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_45bce2c7d9ac69966829e009c2556460.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_37e5280934fbabec93dba36c4c5d9ab1.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_3b298a867b0d1c12594e6a40be93061c.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_56af2cc9064741d4f7a1eadbf4ab2cd1.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_9ecb46a1f6aa8290191631d3eaf750e3.jpeg",
+          "izbutik20_45bce2c7d9ac69966829e009c2556460.jpeg",
+          "izbutik20_37e5280934fbabec93dba36c4c5d9ab1.jpeg",
+          "izbutik20_3b298a867b0d1c12594e6a40be93061c.jpeg",
+          "izbutik20_56af2cc9064741d4f7a1eadbf4ab2cd1.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_9ecb46a1f6aa8290191631d3eaf750e3.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/36381158.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40232102,
+      "name": "Laci triko takım",
+      "link": "https://www.shopier.com/40232102",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 3,
+      "price": {
+        "code_formatted": "4.500 TL",
+        "try": 4500,
+        "kurus": 450000,
+        "currency": "TRY",
+        "og_amount": 4500
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Zamansız şıklığın en zarif hali",
+        "html": "Zamansız şıklığın en zarif hali",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143526,
+            "name": "1",
+            "stock": 2,
+            "order": 0
+          },
+          {
+            "id": 2143527,
+            "name": "2",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_96c9104b58d9d5a1aa5374058195ab90.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_018ea4f2134e72fdabe748a020fd897a.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_2204e7c4a4849a5167b5ae2b7feb774b.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_ab41a97989cc5b360c4aed5f4a9e43f4.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_ab50e3d1c71bf0d8d32b3e6af23ac31d.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_96c9104b58d9d5a1aa5374058195ab90.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_018ea4f2134e72fdabe748a020fd897a.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_2204e7c4a4849a5167b5ae2b7feb774b.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_ab41a97989cc5b360c4aed5f4a9e43f4.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_ab50e3d1c71bf0d8d32b3e6af23ac31d.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_96c9104b58d9d5a1aa5374058195ab90.jpeg",
+          "izbutik20_018ea4f2134e72fdabe748a020fd897a.jpeg",
+          "izbutik20_2204e7c4a4849a5167b5ae2b7feb774b.jpeg",
+          "izbutik20_ab41a97989cc5b360c4aed5f4a9e43f4.jpeg",
+          "izbutik20_ab50e3d1c71bf0d8d32b3e6af23ac31d.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_96c9104b58d9d5a1aa5374058195ab90.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40232102.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40232188,
+      "name": "Bomber ceket",
+      "link": "https://www.shopier.com/40232188",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "4.400 TL",
+        "try": 4400,
+        "kurus": 440000,
+        "currency": "TRY",
+        "og_amount": 4400
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Seçkin tasarım=modern çizgi=güçlü duruş",
+        "html": "Seçkin tasarım=modern çizgi=güçlü duruş",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143526,
+            "name": "1",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143527,
+            "name": "2",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 2,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_218c4a6470db3a422cb01f1c4986e634.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_313b28940fa6120ad736275b5f151c10.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_3e04980bae978b127e761bfda323ed09.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_a9c0984a51afa561ad2260b85a5f0ab0.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_089ec961cad1fd1303af78ac5a6194b0.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_218c4a6470db3a422cb01f1c4986e634.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_313b28940fa6120ad736275b5f151c10.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_3e04980bae978b127e761bfda323ed09.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_a9c0984a51afa561ad2260b85a5f0ab0.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_089ec961cad1fd1303af78ac5a6194b0.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_218c4a6470db3a422cb01f1c4986e634.jpeg",
+          "izbutik20_313b28940fa6120ad736275b5f151c10.jpeg",
+          "izbutik20_3e04980bae978b127e761bfda323ed09.jpeg",
+          "izbutik20_a9c0984a51afa561ad2260b85a5f0ab0.jpeg",
+          "izbutik20_089ec961cad1fd1303af78ac5a6194b0.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_218c4a6470db3a422cb01f1c4986e634.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40232188.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40232329,
+      "name": "Tasarım elbise",
+      "link": "https://www.shopier.com/40232329",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "4.550 TL",
+        "try": 4550,
+        "kurus": 455000,
+        "currency": "TRY",
+        "og_amount": 4550
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Black dress",
+        "html": "Black dress",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143503,
+            "name": "M",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143504,
+            "name": "L",
+            "stock": 0,
+            "order": 0
+          }
+        ],
+        "count": 3,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_9e5b93a3b440877c8db10b4fa0dffda2.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_819c2758d840311758a9334ea2518613.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_246974bc9875070f455ac5b646789b4d.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_38babbe61ac976c766de8426400a3bd3.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_9e5b93a3b440877c8db10b4fa0dffda2.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_819c2758d840311758a9334ea2518613.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_246974bc9875070f455ac5b646789b4d.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_38babbe61ac976c766de8426400a3bd3.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_9e5b93a3b440877c8db10b4fa0dffda2.jpeg",
+          "izbutik20_819c2758d840311758a9334ea2518613.jpeg",
+          "izbutik20_246974bc9875070f455ac5b646789b4d.jpeg",
+          "izbutik20_38babbe61ac976c766de8426400a3bd3.jpeg"
+        ],
+        "count": 4,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_9e5b93a3b440877c8db10b4fa0dffda2.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40232329.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40233085,
+      "name": "Tasarım panço",
+      "link": "https://www.shopier.com/40233085",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "4.399 TL",
+        "try": 4399,
+        "kurus": 439900,
+        "currency": "TRY",
+        "og_amount": 4399
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar",
+        "html": "Merhabalar",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143503,
+            "name": "M",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143505,
+            "name": "XL",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 3,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_6a81a6cd99eed88404085fd82633349e.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_bff28c0e4b5d4c5e8f19d95b2d94fdd0.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_cbd6de2143d0808a06c0209ef1d206c9.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_8c7f694d203fb4c9613eded1f9ed1c62.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_a934ab20d9800b842ed6421b592f32a0.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_6a81a6cd99eed88404085fd82633349e.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_bff28c0e4b5d4c5e8f19d95b2d94fdd0.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_cbd6de2143d0808a06c0209ef1d206c9.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_8c7f694d203fb4c9613eded1f9ed1c62.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_a934ab20d9800b842ed6421b592f32a0.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_6a81a6cd99eed88404085fd82633349e.jpeg",
+          "izbutik20_bff28c0e4b5d4c5e8f19d95b2d94fdd0.jpeg",
+          "izbutik20_cbd6de2143d0808a06c0209ef1d206c9.jpeg",
+          "izbutik20_8c7f694d203fb4c9613eded1f9ed1c62.jpeg",
+          "izbutik20_a934ab20d9800b842ed6421b592f32a0.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_6a81a6cd99eed88404085fd82633349e.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40233085.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40233420,
+      "name": "Black dress",
+      "link": "https://www.shopier.com/40233420",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "5.499 TL",
+        "try": 5499,
+        "kurus": 549900,
+        "currency": "TRY",
+        "og_amount": 5499
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar elbisemiz marka ve tasarım bir üründür \nSiyahın asaleti ve zamansızlığı \nBelindeki detayı sayesinde ince ve zarif gösterir \nBel kısmına kadar düğme detaylıdır \nİçinde kendine ait yüzde yüz pamuk astarı mevcuttur \nRahat kalıptır \nElbise uzunluk 136 cm dir \n1-2-3 beden seçenekleri mevcuttur",
+        "html": "Merhabalar elbisemiz marka ve tasarım bir üründür <br />Siyahın asaleti ve zamansızlığı <br />Belindeki detayı sayesinde ince ve zarif gösterir  <br />Bel kısmına kadar düğme detaylıdır <br />İçinde kendine ait yüzde yüz pamuk astarı mevcuttur <br />Rahat kalıptır <br />Elbise uzunluk 136 cm dir <br />1-2-3 beden seçenekleri mevcuttur <br />",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143503,
+            "name": "M",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143504,
+            "name": "L",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 3,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_7a0c67d492a461a4b1080f5685a9d9ee.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_9241d9063be649bfdc6dd5449aa99813.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_217813df24dd1bd6ba09db9f431adc64.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_c0916afe48730d0980b9c0ac9322b5bc.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_345a85e4fc90e53f89c98b388804ffca.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_7a0c67d492a461a4b1080f5685a9d9ee.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_9241d9063be649bfdc6dd5449aa99813.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_217813df24dd1bd6ba09db9f431adc64.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_c0916afe48730d0980b9c0ac9322b5bc.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_345a85e4fc90e53f89c98b388804ffca.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_7a0c67d492a461a4b1080f5685a9d9ee.jpeg",
+          "izbutik20_9241d9063be649bfdc6dd5449aa99813.jpeg",
+          "izbutik20_217813df24dd1bd6ba09db9f431adc64.jpeg",
+          "izbutik20_c0916afe48730d0980b9c0ac9322b5bc.jpeg",
+          "izbutik20_345a85e4fc90e53f89c98b388804ffca.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_7a0c67d492a461a4b1080f5685a9d9ee.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40233420.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40233722,
+      "name": "İpek kupra elbise",
+      "link": "https://www.shopier.com/40233722",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "5.399 TL",
+        "try": 5399,
+        "kurus": 539900,
+        "currency": "TRY",
+        "og_amount": 5399
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar",
+        "html": "Merhabalar",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143526,
+            "name": "1",
+            "stock": 2,
+            "order": 0
+          },
+          {
+            "id": 2143527,
+            "name": "2",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2898241,
+            "name": "3",
+            "stock": 0,
+            "order": 0
+          }
+        ],
+        "count": 3,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_c25a0db0c9d4fb61e99292f4dd0b680d.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_2aff10acf9e0345c72fabbaafb43bacb.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_dfaf03fad35c8251e7080b50dbece1b3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_171be3d096a36ebc1e6df527002111df.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_6ba20b7510008fe2902c956933f12671.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_c25a0db0c9d4fb61e99292f4dd0b680d.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_2aff10acf9e0345c72fabbaafb43bacb.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_dfaf03fad35c8251e7080b50dbece1b3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_171be3d096a36ebc1e6df527002111df.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_6ba20b7510008fe2902c956933f12671.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_c25a0db0c9d4fb61e99292f4dd0b680d.jpeg",
+          "izbutik20_2aff10acf9e0345c72fabbaafb43bacb.jpeg",
+          "izbutik20_dfaf03fad35c8251e7080b50dbece1b3.jpeg",
+          "izbutik20_171be3d096a36ebc1e6df527002111df.jpeg",
+          "izbutik20_6ba20b7510008fe2902c956933f12671.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_c25a0db0c9d4fb61e99292f4dd0b680d.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40233722.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40234102,
+      "name": "Yelekli takım",
+      "link": "https://www.shopier.com/40234102",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 5,
+      "price": {
+        "code_formatted": "5.499 TL",
+        "try": 5499,
+        "kurus": 549900,
+        "currency": "TRY",
+        "og_amount": 5499
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar \nMinimal dokunuş \nGüçlü stil \nKendini özgür bırak ve iyi hisset \nÜçlü takımımız markadır\nYelek uzunluk 80 cm \nTunik uzunluk 70 cm \nPantolon uzunluk 95 cm \nS-M-L-XL-XXL beden seçenekleri ile \nRahat kalıptır",
+        "html": "Merhabalar <br />Minimal dokunuş <br />Güçlü stil <br />Kendini özgür bırak ve iyi hisset <br />Üçlü takımımız markadır<br />Yelek uzunluk 80 cm <br />Tunik uzunluk 70 cm <br />Pantolon uzunluk 95 cm <br />S-M-L-XL-XXL beden seçenekleri ile <br />Rahat kalıptır",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143503,
+            "name": "M",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143504,
+            "name": "L",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2331658,
+            "name": "L/XL",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2898243,
+            "name": "XL-XXL",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 5,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_a7cb5c1eeeed00ad1d29605041a64ac4.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_a64b90336d78b042a03ed4931bb5c74a.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_7a09e2f5fda8acc00d09c27a71d2182b.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_16f12a3fda84cba7a13da816c35c94ef.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_07f41de73531ec342420354938d86a90.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_a7cb5c1eeeed00ad1d29605041a64ac4.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_a64b90336d78b042a03ed4931bb5c74a.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_7a09e2f5fda8acc00d09c27a71d2182b.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_16f12a3fda84cba7a13da816c35c94ef.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_07f41de73531ec342420354938d86a90.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_a7cb5c1eeeed00ad1d29605041a64ac4.jpeg",
+          "izbutik20_a64b90336d78b042a03ed4931bb5c74a.jpeg",
+          "izbutik20_7a09e2f5fda8acc00d09c27a71d2182b.jpeg",
+          "izbutik20_16f12a3fda84cba7a13da816c35c94ef.jpeg",
+          "izbutik20_07f41de73531ec342420354938d86a90.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_a7cb5c1eeeed00ad1d29605041a64ac4.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40234102.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40234247,
+      "name": "Spor takım",
+      "link": "https://www.shopier.com/40234247",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 3,
+      "price": {
+        "code_formatted": "5.499 TL",
+        "try": 5499,
+        "kurus": 549900,
+        "currency": "TRY",
+        "og_amount": 5499
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "New season",
+        "html": "New season",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143502,
+            "name": "S",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2331658,
+            "name": "L/XL",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2898243,
+            "name": "XL-XXL",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 3,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_bcc927c2855b4b3adaf148267849b4fb.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_456acbc5e65bb17089905e90594d1c86.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_305e9f08848c03b65a8c477753ce9a8e.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_b9a58675c16548fedb97b1ea581aa219.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_5c47af075cfb82c1c55e334b37937fb5.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_bcc927c2855b4b3adaf148267849b4fb.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_456acbc5e65bb17089905e90594d1c86.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_305e9f08848c03b65a8c477753ce9a8e.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_b9a58675c16548fedb97b1ea581aa219.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_5c47af075cfb82c1c55e334b37937fb5.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_bcc927c2855b4b3adaf148267849b4fb.jpeg",
+          "izbutik20_456acbc5e65bb17089905e90594d1c86.jpeg",
+          "izbutik20_305e9f08848c03b65a8c477753ce9a8e.jpeg",
+          "izbutik20_b9a58675c16548fedb97b1ea581aa219.jpeg",
+          "izbutik20_5c47af075cfb82c1c55e334b37937fb5.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_bcc927c2855b4b3adaf148267849b4fb.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40234247.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40234486,
+      "name": "Modal takım",
+      "link": "https://www.shopier.com/40234486",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "1.999 TL",
+        "try": 1999,
+        "kurus": 199900,
+        "currency": "TRY",
+        "og_amount": 1999
+      },
+      "discount": {
+        "is_discounted": true,
+        "rate": "20",
+        "original_price_code_formatted": "2.499 TL"
+      },
+      "description": {
+        "text": "Stilini yansıt ✨\nRahatlığından ödün vermek istemiyorsan bu takım gardolabının vazgeçilmezi olmalı \nTek renktir \nPantolon uzunluk 95 cm dir \nTunik uzunluk 85 cm dir \nS-M-L bedenlidir",
+        "html": "Stilini yansıt ✨<br />Rahatlığından ödün vermek istemiyorsan bu takım gardolabının vazgeçilmezi olmalı <br />Tek renktir <br />Pantolon uzunluk 95 cm dir <br />Tunik uzunluk 85 cm dir <br />S-M-L bedenlidir",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2331654,
+            "name": "S/M",
+            "stock": 2,
+            "order": 0
+          }
+        ],
+        "count": 1,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_f6705dfd82c0b715c97b38572122b725.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_eac574aa491869dc82638114db851223.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_13bd8faedb9a7b07d93c336ac80522f3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_05ba6f28f710fe2d147e28f415eec838.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_f6705dfd82c0b715c97b38572122b725.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_eac574aa491869dc82638114db851223.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_13bd8faedb9a7b07d93c336ac80522f3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_05ba6f28f710fe2d147e28f415eec838.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_f6705dfd82c0b715c97b38572122b725.jpeg",
+          "izbutik20_eac574aa491869dc82638114db851223.jpeg",
+          "izbutik20_13bd8faedb9a7b07d93c336ac80522f3.jpeg",
+          "izbutik20_05ba6f28f710fe2d147e28f415eec838.jpeg"
+        ],
+        "count": 4,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_f6705dfd82c0b715c97b38572122b725.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40234486.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40334911,
+      "name": "Premium spor takım bej",
+      "link": "https://www.shopier.com/40334911",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 4,
+      "price": {
+        "code_formatted": "3.699 TL",
+        "try": 3699,
+        "kurus": 369900,
+        "currency": "TRY",
+        "og_amount": 3699
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Spor giyimde Premium kalite olur mu \nBizde olur",
+        "html": "Spor giyimde Premium kalite olur mu <br />Bizde olur",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143526,
+            "name": "1",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143527,
+            "name": "2",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2898241,
+            "name": "3",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2898242,
+            "name": "4",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 4,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_2c4139a5281af5d589f5c1a7f5419d24.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_47848086d63f5d32fb084184b937afcd.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_b95a64a7da3abbe202ce94a65ab5c22a.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_139b5d3771b36b24f9a6973794367885.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_2c4139a5281af5d589f5c1a7f5419d24.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_47848086d63f5d32fb084184b937afcd.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_b95a64a7da3abbe202ce94a65ab5c22a.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_139b5d3771b36b24f9a6973794367885.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_2c4139a5281af5d589f5c1a7f5419d24.jpeg",
+          "izbutik20_47848086d63f5d32fb084184b937afcd.jpeg",
+          "izbutik20_b95a64a7da3abbe202ce94a65ab5c22a.jpeg",
+          "izbutik20_139b5d3771b36b24f9a6973794367885.jpeg"
+        ],
+        "count": 4,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_2c4139a5281af5d589f5c1a7f5419d24.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40334911.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 40491941,
+      "name": "Siyah balon etek",
+      "link": "https://www.shopier.com/40491941",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "1.500 TL",
+        "try": 1500,
+        "kurus": 150000,
+        "currency": "TRY",
+        "og_amount": 1500
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Eteğimiz markadır \nİçi astarlıdır iç göstermez \nDört mevsim kullanıma uygundur\nTam kalıptır \n36-38-40-42 beden seçenekleri ile\nEtek uzunluk 90 cm dir",
+        "html": "Eteğimiz markadır <br />İçi astarlıdır iç göstermez <br />Dört mevsim kullanıma uygundur<br />Tam kalıptır  <br />36-38-40-42 beden seçenekleri ile<br />Etek uzunluk 90 cm dir",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143506,
+            "name": "36",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143508,
+            "name": "38",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143509,
+            "name": "40",
+            "stock": 0,
+            "order": 0
+          },
+          {
+            "id": 2143510,
+            "name": "42",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 4,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_5bb9d34a1cce6ac714bf2f15a6fe064e.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_fc4b75fdd54ead0bf4e50dfe7a488904.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_c9fca29f25b07256c14440b7387662b6.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_5daa7ff3bfca59481d41ccd0bd23c512.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_086f8a34fb7f4b47532acc60293ada5c.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_5bb9d34a1cce6ac714bf2f15a6fe064e.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_fc4b75fdd54ead0bf4e50dfe7a488904.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_c9fca29f25b07256c14440b7387662b6.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_5daa7ff3bfca59481d41ccd0bd23c512.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_086f8a34fb7f4b47532acc60293ada5c.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_5bb9d34a1cce6ac714bf2f15a6fe064e.jpeg",
+          "izbutik20_fc4b75fdd54ead0bf4e50dfe7a488904.jpeg",
+          "izbutik20_c9fca29f25b07256c14440b7387662b6.jpeg",
+          "izbutik20_5daa7ff3bfca59481d41ccd0bd23c512.jpeg",
+          "izbutik20_086f8a34fb7f4b47532acc60293ada5c.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_5bb9d34a1cce6ac714bf2f15a6fe064e.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/40491941.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 42085493,
+      "name": "Angora hırka",
+      "link": "https://www.shopier.com/42085493",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 2,
+      "price": {
+        "code_formatted": "1.999 TL",
+        "try": 1999,
+        "kurus": 199900,
+        "currency": "TRY",
+        "og_amount": 1999
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar \nCeketimiz angoradır \nKaban görevi görür sıcacık tutar \nTüylenme yapmaz \nStandart bedendir \nUzunluk 85 cm dir \n36-44 bedenlere uyumludur",
+        "html": "Merhabalar <br />Ceketimiz angoradır <br />Kaban görevi görür sıcacık tutar <br />Tüylenme yapmaz <br />Standart bedendir <br />Uzunluk 85 cm dir <br />36-44 bedenlere uyumludur",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143514,
+            "name": "STD",
+            "stock": 2,
+            "order": 0
+          }
+        ],
+        "count": 1,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_6a7b758b3b7ee92b04f99a5522021de0.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_dbecf790f231c71c06c2cb001e1de277.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_8f9b761dcb01bf4948ec4d39b10b1a52.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_d12c48763bd2c41e66bf3f136e43127b.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_d42da238617f7df8ff613af6b2093e48.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_6a7b758b3b7ee92b04f99a5522021de0.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_dbecf790f231c71c06c2cb001e1de277.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_8f9b761dcb01bf4948ec4d39b10b1a52.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d12c48763bd2c41e66bf3f136e43127b.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d42da238617f7df8ff613af6b2093e48.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_6a7b758b3b7ee92b04f99a5522021de0.jpeg",
+          "izbutik20_dbecf790f231c71c06c2cb001e1de277.jpeg",
+          "izbutik20_8f9b761dcb01bf4948ec4d39b10b1a52.jpeg",
+          "izbutik20_d12c48763bd2c41e66bf3f136e43127b.jpeg",
+          "izbutik20_d42da238617f7df8ff613af6b2093e48.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_6a7b758b3b7ee92b04f99a5522021de0.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/42085493.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 42085555,
+      "name": "Angora hırka lacivert",
+      "link": "https://www.shopier.com/42085555",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "1.999 TL",
+        "try": 1999,
+        "kurus": 199900,
+        "currency": "TRY",
+        "og_amount": 1999
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar \nCeketimiz angoradır \nKaban görevi görür sıcacık tutar \nTüylenme yapmaz \nStandart bedendir \nUzunluk 85 cm dir \n36-44 bedenlere uyumludur",
+        "html": "Merhabalar <br />Ceketimiz angoradır <br />Kaban görevi görür sıcacık tutar <br />Tüylenme yapmaz <br />Standart bedendir <br />Uzunluk 85 cm dir <br />36-44 bedenlere uyumludur",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143514,
+            "name": "STD",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 1,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_afdd757a116f56ccb6f41c6bf425a03e.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_2e657021df35e1bad43161e6e644abc1.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_daf13f224ee28757abd2ed2492f82fa3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_1870c488a0b46ce4b10c58a86e14ddb3.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_afdd757a116f56ccb6f41c6bf425a03e.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_2e657021df35e1bad43161e6e644abc1.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_daf13f224ee28757abd2ed2492f82fa3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_1870c488a0b46ce4b10c58a86e14ddb3.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_afdd757a116f56ccb6f41c6bf425a03e.jpeg",
+          "izbutik20_2e657021df35e1bad43161e6e644abc1.jpeg",
+          "izbutik20_daf13f224ee28757abd2ed2492f82fa3.jpeg",
+          "izbutik20_1870c488a0b46ce4b10c58a86e14ddb3.jpeg"
+        ],
+        "count": 4,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_afdd757a116f56ccb6f41c6bf425a03e.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/42085555.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 42085779,
+      "name": "Meva pantolon",
+      "link": "https://www.shopier.com/42085779",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 5,
+      "price": {
+        "code_formatted": "1.400 TL",
+        "try": 1400,
+        "kurus": 140000,
+        "currency": "TRY",
+        "og_amount": 1400
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Merhabalar",
+        "html": "Merhabalar",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143508,
+            "name": "38",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143509,
+            "name": "40",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143510,
+            "name": "42",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143511,
+            "name": "44",
+            "stock": 1,
+            "order": 0
+          },
+          {
+            "id": 2143512,
+            "name": "46",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 5,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_c8cbbe7feaea11392e9b9a2ef9660fe3.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_39916c66df1aeeb215453c4861c27400.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_cb48fe6b5dcbcc7040e2920cfcd4fdee.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_c8cbbe7feaea11392e9b9a2ef9660fe3.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_39916c66df1aeeb215453c4861c27400.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_cb48fe6b5dcbcc7040e2920cfcd4fdee.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_c8cbbe7feaea11392e9b9a2ef9660fe3.jpeg",
+          "izbutik20_39916c66df1aeeb215453c4861c27400.jpeg",
+          "izbutik20_cb48fe6b5dcbcc7040e2920cfcd4fdee.jpeg"
+        ],
+        "count": 3,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_c8cbbe7feaea11392e9b9a2ef9660fe3.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/42085779.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "id": 42086106,
+      "name": "Puf kazak",
+      "link": "https://www.shopier.com/42086106",
+      "availability": "instock",
+      "in_stock": true,
+      "product_level_stock": 1,
+      "price": {
+        "code_formatted": "950 TL",
+        "try": 950,
+        "kurus": 95000,
+        "currency": "TRY",
+        "og_amount": 950
+      },
+      "discount": {
+        "is_discounted": false,
+        "rate": 0,
+        "original_price_code_formatted": "0 TL"
+      },
+      "description": {
+        "text": "Kazağımız sıcacık tutar \nÇok güzel bir kumaş dokusu vardır \nStandart bedendir \nÖn uzunluk 62 cm dir\nArka uzunluk 68 cm dir",
+        "html": "Kazağımız sıcacık tutar <br />Çok güzel bir kumaş dokusu vardır <br />Standart bedendir <br />Ön uzunluk 62 cm dir<br />Arka uzunluk 68 cm dir",
+        "source": "product-description block"
+      },
+      "category": {
+        "shopier_resolved": false,
+        "reason": "Shopier public storefront exposes no per-product category (no breadcrumb, no category_id in product JSON, search_product `filter` param does not filter by category). Category assignment deferred to Task 4 against Medusa taxonomy.",
+        "store_taxonomy_ref": "see manifest.store_category_taxonomy"
+      },
+      "variants": {
+        "has_variation_axis": true,
+        "variation_name": "BEDEN",
+        "options": [
+          {
+            "id": 2143514,
+            "name": "STD",
+            "stock": 1,
+            "order": 0
+          }
+        ],
+        "count": 1,
+        "variations_field": "object"
+      },
+      "photos": {
+        "gallery_large": [
+          "https://cdn.shopier.app/pictures_large/izbutik20_d6609a25195ea0aeb5a6a8758e25b082.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_bc0402f75b695a52e4843d54946b1cf7.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_8f80a47f48a893cbdc0bb45052551cf8.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_3b7eeaef6ad1dba47596ad82896d9e57.jpeg",
+          "https://cdn.shopier.app/pictures_large/izbutik20_7f8e513e27903ec51d5ab77a5a2b10d9.jpeg"
+        ],
+        "gallery_scaledoriginal": [
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_d6609a25195ea0aeb5a6a8758e25b082.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_bc0402f75b695a52e4843d54946b1cf7.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_8f80a47f48a893cbdc0bb45052551cf8.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_3b7eeaef6ad1dba47596ad82896d9e57.jpeg",
+          "https://cdn.shopier.app/scaledoriginal/izbutik20_7f8e513e27903ec51d5ab77a5a2b10d9.jpeg"
+        ],
+        "image_hashes": [
+          "izbutik20_d6609a25195ea0aeb5a6a8758e25b082.jpeg",
+          "izbutik20_bc0402f75b695a52e4843d54946b1cf7.jpeg",
+          "izbutik20_8f80a47f48a893cbdc0bb45052551cf8.jpeg",
+          "izbutik20_3b7eeaef6ad1dba47596ad82896d9e57.jpeg",
+          "izbutik20_7f8e513e27903ec51d5ab77a5a2b10d9.jpeg"
+        ],
+        "count": 5,
+        "primary": "https://cdn.shopier.app/pictures_large/izbutik20_d6609a25195ea0aeb5a6a8758e25b082.jpeg"
+      },
+      "evidence": {
+        "detail_html": "raw/detail/42086106.html",
+        "http_status": 200,
+        "product_json_present": true
+      },
+      "integrity": {
+        "ok": true,
+        "issues": []
+      }
+    }
+  ]
+}

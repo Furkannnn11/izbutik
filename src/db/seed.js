@@ -151,6 +151,35 @@ function slugify(str) {
 }
 
 async function seed() {
+  // GÜVENLİK KAPISI (legacy-dev-only):
+  // Bu dosya Unsplash CDN'den ALINAN DEMO/ÇAKMA ürünleri ekler. Gerçek katalog
+  // artık Shopier -> Medusa senkronizasyonundan (medusa-backend sync-shopier-catalog)
+  // gelir. Bu demo seed'i varsayılan/production akışta ÇALIŞMAMALIDIR; aksi hâlde
+  // kaldırılan çakma ürünleri yeniden oluşturur.
+  //
+  // Çalıştırmak için açık opt-in gerekir:
+  //   IZBUTIK_ALLOW_LEGACY_DEMO_SEED=1   VE   NODE_ENV !== 'production'
+  // Bu kapı yalnızca ürün EKLER; hiçbir mevcut ürün/sipariş/veriyi SİLMEZ.
+  const allowLegacyDemoSeed =
+    process.env.IZBUTIK_ALLOW_LEGACY_DEMO_SEED === '1' &&
+    process.env.NODE_ENV !== 'production';
+
+  if (!allowLegacyDemoSeed) {
+    console.warn(
+      '[seed] Atlandı: Unsplash demo seed varsayılan/production akışta devre dışı ' +
+        '(legacy-dev-only). Gerçek katalog için Shopier->Medusa senkronizasyonunu ' +
+        '(medusa-backend: npm run sync:shopier) kullanın. Bu demo seed\'i bilinçli ' +
+        'çalıştırmak için: NODE_ENV != production ve IZBUTIK_ALLOW_LEGACY_DEMO_SEED=1. ' +
+        'Mevcut ürün/sipariş verisine dokunulmadı.'
+    );
+    await pool.end();
+    return;
+  }
+  console.warn(
+    '[seed] UYARI: legacy-dev-only Unsplash DEMO seed çalıştırılıyor ' +
+      '(IZBUTIK_ALLOW_LEGACY_DEMO_SEED=1). Bu veriler GERÇEK ürün değildir.'
+  );
+
   const client = await getClient();
   try {
     await client.query('BEGIN');
