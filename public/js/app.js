@@ -44,8 +44,35 @@
     }
     const res = await fetch(API + path, request);
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || data.detail || 'İstek başarısız: ' + path);
+    if (!res.ok) {
+      const err = new Error(data.error || data.detail || 'İstek başarısız: ' + path);
+      err.status = res.status;
+      err.detail = data.detail || data.error || '';
+      throw err;
+    }
     return data;
+  }
+
+  // Backend/teknik hata mesajlarını kullanıcıya açık Türkçe metne çevir (BUG-4).
+  function friendlyCartError(err) {
+    const raw = String((err && (err.detail || err.message)) || '');
+    if (/required inventory|not have the required|insufficient|out of stock/i.test(raw)) {
+      return 'Seçtiğin beden için stokta yeterli adet yok.';
+    }
+    if (/cart id not found|not found/i.test(raw)) {
+      return 'Sepetin güncellenemedi, lütfen tekrar dener misin?';
+    }
+    if (/variant_id/i.test(raw)) {
+      return 'Lütfen bir beden seç.';
+    }
+    return 'Sepet işlemi tamamlanamadı, lütfen tekrar dene.';
+  }
+
+  // Bir hatanın "sepet artık geçersiz" anlamına gelip gelmediğini belirle (BUG-3).
+  function isStaleCartError(err) {
+    if (!err) return false;
+    if (err.status === 404 || err.status === 409) return true;
+    return /cart id not found|not found/i.test(String(err.detail || err.message || ''));
   }
 
   function syncCart(cart) {
@@ -67,11 +94,33 @@
     updateCartUI();
   }
 
-  async function ensureCart() {
+  // ensureCart TEK-UÇUŞ (single-flight): state.cartId null iken eşzamanlı çağrılar
+  // TEK bir POST /cart paylaşır; aksi halde hızlı çift tık birden çok sepet yaratır
+  // ve eklemeler orphan olurdu (BUG-2 P0).
+  let _cartCreatePromise = null;
+  async function ensureCart(forceNew = false) {
+    if (forceNew) {
+      state.cartId = null;
+      localStorage.removeItem(CART_ID_KEY);
+      _cartCreatePromise = null;
+    }
     if (state.cartId) return state.cartId;
-    const data = await api('/cart', { method: 'POST', body: {} });
-    syncCart(data.cart);
-    return state.cartId;
+    if (!_cartCreatePromise) {
+      _cartCreatePromise = api('/cart', { method: 'POST', body: {} })
+        .then((data) => { syncCart(data.cart); return state.cartId; })
+        .finally(() => { _cartCreatePromise = null; });
+    }
+    return _cartCreatePromise;
+  }
+
+  // Tüm sepet mutasyonlarını SERİ kuyruğa al: aynı anda yalnız bir mutasyon çalışır,
+  // böylece eşzamanlı ekleme/güncelleme/silme yarışmaz (BUG-2 sağlamlaştırma).
+  let _cartOpChain = Promise.resolve();
+  function queueCartOp(fn) {
+    const run = _cartOpChain.then(fn, fn);
+    // Kuyruğun bir hatada kırılmamasını sağla.
+    _cartOpChain = run.then(() => {}, () => {});
+    return run;
   }
 
   // ====================================================
@@ -192,7 +241,7 @@
   function cartCount() { return state.cart.reduce((s, i) => s + i.quantity, 0); }
   function cartTotal() { return state.cart.reduce((s, i) => s + i.price * i.quantity, 0); }
 
-  async function addToCart(productId, size = null, qty = 1) {
+  async function addToCart(productId, size = null, qty = 1, btn = null) {
     const p = state.products.find((x) => String(x.id) === String(productId));
     if (!p) return;
     const variants = p.variants || [];
@@ -206,49 +255,105 @@
       // Stokta olan İLK varyantı tercih et; hiçbiri stokta değilse ilkine düş.
       variant = variants.find(inStock) || variants[0];
     }
-    if (!variant) { toast('Bu ürün için satılabilir varyant bulunamadı.'); return; }
-    if (!inStock(variant)) { toast(`${p.name} için stokta beden kalmadı.`); return; }
+    if (!variant) { toast('Bu ürün için satılabilir varyant bulunamadı.'); return false; }
+    if (!variant.id) { toast('Lütfen bir beden seç.'); return false; }
+    if (!inStock(variant)) { toast(`${p.name} için stokta beden kalmadı.`); return false; }
 
+    // Buton kilidi (BUG-3a besleyen / BUG-2): istek uçarken tekrar tıklanamaz.
+    const lock = beginBtnLoading(btn);
     try {
-      const cartId = await ensureCart();
-      const data = await api(`/cart/${cartId}/items`, {
-        method: 'POST',
-        body: { variant_id: variant.id, quantity: qty },
+      const result = await queueCartOp(async () => {
+        // Bir kez stale-cart kurtarma: 404/409'da yeni sepet oluşturup TEK sefer retry.
+        for (let attempt = 0; attempt < 2; attempt++) {
+          const cartId = await ensureCart(attempt === 1);
+          try {
+            const data = await api(`/cart/${cartId}/items`, {
+              method: 'POST',
+              body: { variant_id: variant.id, quantity: Math.max(1, Number(qty) || 1) },
+            });
+            syncCart(data.cart);
+            return true;
+          } catch (err) {
+            if (attempt === 0 && isStaleCartError(err)) continue; // sepet geçersiz -> yenile ve bir kez dene
+            throw err;
+          }
+        }
+        return false;
       });
-      syncCart(data.cart);
-      toast(`${p.name} sepete eklendi ✦`);
-      bumpCart();
+      if (result) {
+        toast(`${p.name} sepete eklendi ✦`);
+        bumpCart();
+      }
+      return result;
     } catch (err) {
-      toast('Sepet hatası: ' + err.message);
+      toast(friendlyCartError(err));
+      return false;
+    } finally {
+      lock();
     }
   }
 
-  async function changeQty(key, delta) {
+  // Buton loading/disabled durumu (BUG-3a). Geri döndürülebilir kilit fonksiyonu verir.
+  function beginBtnLoading(btn) {
+    if (!btn) return () => {};
+    const prevDisabled = btn.disabled;
+    const prevText = btn.textContent;
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+    btn.classList.add('loading');
+    return () => {
+      btn.disabled = prevDisabled;
+      btn.removeAttribute('aria-busy');
+      btn.classList.remove('loading');
+      if (btn.textContent !== prevText && prevText != null) btn.textContent = prevText;
+    };
+  }
+
+  async function changeQty(key, delta, btn = null) {
     const item = state.cart.find((i) => i.key === key);
     if (!item || !state.cartId) return;
     const quantity = item.quantity + delta;
     if (quantity <= 0) return removeItem(key);
 
+    const lock = beginBtnLoading(btn);
     try {
-      const data = await api(`/cart/${state.cartId}/items/${item.line_id}`, {
-        method: 'POST',
-        body: { quantity },
+      await queueCartOp(async () => {
+        for (let attempt = 0; attempt < 2; attempt++) {
+          try {
+            const data = await api(`/cart/${state.cartId}/items/${item.line_id}`, {
+              method: 'POST',
+              body: { quantity },
+            });
+            syncCart(data.cart);
+            return;
+          } catch (err) {
+            // Satır güncelleme, sepet geçersizse yeniden oluşturulamaz (satır kaybolur);
+            // kullanıcıya nazik Türkçe mesaj göster.
+            throw err;
+          }
+        }
       });
-      syncCart(data.cart);
     } catch (err) {
-      toast('Sepet güncellenemedi: ' + err.message);
+      toast(friendlyCartError(err));
+    } finally {
+      lock();
     }
   }
-  async function removeItem(key) {
+  async function removeItem(key, btn = null) {
     const item = state.cart.find((i) => i.key === key);
     if (!item || !state.cartId) return;
+    const lock = beginBtnLoading(btn);
     try {
-      const data = await api(`/cart/${state.cartId}/items/${item.line_id}`, {
-        method: 'DELETE',
+      await queueCartOp(async () => {
+        const data = await api(`/cart/${state.cartId}/items/${item.line_id}`, {
+          method: 'DELETE',
+        });
+        syncCart(data.cart);
       });
-      syncCart(data.cart);
     } catch (err) {
-      toast('Ürün kaldırılamadı: ' + err.message);
+      toast(friendlyCartError(err));
+    } finally {
+      lock();
     }
   }
 
@@ -364,10 +469,15 @@
         chosen = b.dataset.size;
       })
     );
-    $('#pdAdd', dialog).addEventListener('click', () => {
-      addToCart(p.id, chosen, 1);
-      closeModal('#productModal');
-      openCart();
+    $('#pdAdd', dialog).addEventListener('click', async (ev) => {
+      const btn = ev.currentTarget;
+      // İstek settle olmadan modal kapatma / sepet açma (BUG-1). Buton loading (BUG-3a).
+      const ok = await addToCart(p.id, chosen, 1, btn);
+      if (ok) {
+        closeModal('#productModal');
+        openCart();
+      }
+      // Hata olursa modal açık kalır; kullanıcı toast'taki Türkçe mesajı görür.
     });
 
     openModal('#productModal');
@@ -513,7 +623,7 @@
       const navCat = t.closest('[data-nav-cat]');
       const dropdownToggle = t.closest('[data-dropdown-toggle]');
 
-      if (add) { e.stopPropagation(); addToCart(add.dataset.add); return; }
+      if (add) { e.stopPropagation(); addToCart(add.dataset.add, null, 1, add); return; }
       if (fav) { e.stopPropagation(); fav.classList.toggle('active'); return; }
       if (quick && !add && !fav) { openProduct(quick.dataset.quickview); return; }
       if (navCat) { setCategory(navCat.dataset.navCat); $('#navCatDropdown').classList.remove('open'); $('#navLinks').classList.remove('open'); return; }
@@ -524,8 +634,8 @@
       }
       if (pill) { setCategory(pill.dataset.pill); return; }
       if (catCard) { setCategory(catCard.dataset.cat); $('#urunler').scrollIntoView({ behavior: 'smooth' }); return; }
-      if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta)); return; }
-      if (rem) { removeItem(rem.dataset.remove); return; }
+      if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta), qty); return; }
+      if (rem) { removeItem(rem.dataset.remove, rem); return; }
       if (t.closest('[data-close-modal]')) { closeModal('#productModal'); closeModal('#checkoutModal'); return; }
     });
 
@@ -584,7 +694,10 @@
   // ====================================================
   //  BAŞLAT
   // ====================================================
+  let _initialized = false;
   async function init() {
+    if (_initialized) return; // Çift DOMContentLoaded/çift init'e karşı koruma (UI state tutarlılığı).
+    _initialized = true;
     $('#year').textContent = new Date().getFullYear();
     state.favs = new Set();
     bindEvents();
