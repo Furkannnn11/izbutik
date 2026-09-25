@@ -371,7 +371,7 @@
         .map(
           (i) => `
         <div class="cart-item">
-          <img class="cart-item__img" src="${esc(i.image)}" alt="${esc(i.name)}" onerror="${imgErr}" />
+          <div class="cart-item__media"><img class="cart-item__img" src="${esc(i.image)}" alt="${esc(i.name)}" onerror="${imgErr}" /></div>
           <div>
             <div class="cart-item__name">${esc(i.name)}</div>
             <div class="cart-item__meta">Beden: ${esc(i.size)}</div>
@@ -415,9 +415,9 @@
       <button class="modal__close" data-close-modal>✕</button>
       <div class="pd">
         <div class="pd__gallery">
-          <img class="pd__main" id="pdMain" src="${esc(imgs[0])}" alt="${esc(p.name)}" onerror="${imgErr}" />
+          <div class="pd__main-frame"><img class="pd__main" id="pdMain" src="${esc(imgs[0])}" alt="${esc(p.name)}" onerror="${imgErr}" /></div>
           <div class="pd__thumbs">
-            ${imgs.map((u, idx) => `<img src="${esc(u)}" class="${idx === 0 ? 'active' : ''}" data-thumb="${esc(u)}" onerror="${imgErr}" />`).join('')}
+            ${imgs.map((u, idx) => `<div class="pd__thumb ${idx === 0 ? 'active' : ''}" data-thumb="${esc(u)}"><img src="${esc(u)}" alt="" onerror="${imgErr}" /></div>`).join('')}
           </div>
         </div>
         <div class="pd__info">
