@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import pool, { getClient } from '../db/index.js';
 import { isMedusaCommerce, medusaRequest } from '../lib/medusa.js';
+import { listCartShippingOptions } from './shipping.js';
 
 const router = Router();
 
@@ -12,7 +13,7 @@ function splitName(value = '') {
   };
 }
 
-async function completeMedusaOrder({ cart_id, customer }) {
+async function completeMedusaOrder({ cart_id, customer, shipping_option_id }) {
   if (!cart_id) {
     const error = new Error('Medusa cart_id zorunludur.');
     error.status = 400;
@@ -38,16 +39,24 @@ async function completeMedusaOrder({ cart_id, customer }) {
     },
   });
 
-  if (!cartData.cart?.shipping_methods?.length) {
-    const shippingData = await medusaRequest(
-      `/store/shipping-options?cart_id=${encodeURIComponent(cart_id)}`
-    );
-    const shippingOption = shippingData.shipping_options?.[0];
-    if (!shippingOption) {
-      const error = new Error('Bu sepet için uygun Medusa kargo seçeneği bulunamadı.');
-      error.status = 422;
-      throw error;
-    }
+  // Müşterinin seçtiği kargo seçeneği; yalnız bu sepet için geçerli
+  // seçenekler arasından kabul edilir. Seçim yoksa en ucuz seçenek kullanılır.
+  const options = await listCartShippingOptions(cart_id);
+  if (!options.length) {
+    const error = new Error('Bu sepet için uygun kargo seçeneği bulunamadı.');
+    error.status = 422;
+    throw error;
+  }
+  const shippingOption = shipping_option_id
+    ? options.find((option) => option.id === shipping_option_id)
+    : options[0];
+  if (!shippingOption) {
+    const error = new Error('Seçilen kargo seçeneği geçerli değil. Lütfen yeniden seçin.');
+    error.status = 400;
+    throw error;
+  }
+  const currentMethod = cartData.cart?.shipping_methods?.[0];
+  if (!currentMethod || currentMethod.shipping_option_id !== shippingOption.id) {
     cartData = await medusaRequest(
       `/store/carts/${encodeURIComponent(cart_id)}/shipping-methods`,
       { method: 'POST', body: { option_id: shippingOption.id } }
@@ -155,6 +164,8 @@ async function createLegacyOrder({ customer, items }) {
 // Yeni sipariş oluştur.
 router.post('/', async (req, res, next) => {
   const { cart_id, customer, items } = req.body || {};
+  const shipping_option_id =
+    typeof req.body?.shipping_option_id === 'string' ? req.body.shipping_option_id : undefined;
 
   if (!customer?.name || !customer?.email) {
     return res.status(400).json({ error: 'Ad ve e-posta zorunludur.' });
@@ -162,7 +173,7 @@ router.post('/', async (req, res, next) => {
 
   try {
     if (isMedusaCommerce()) {
-      const order = await completeMedusaOrder({ cart_id, customer });
+      const order = await completeMedusaOrder({ cart_id, customer, shipping_option_id });
       return res.status(201).json({
         id: order.display_id || order.id,
         medusa_id: order.id,

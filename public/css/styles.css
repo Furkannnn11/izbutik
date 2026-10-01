@@ -585,3 +585,21 @@ a.btn { text-decoration: none; text-align: center; justify-content: center; }
   .cart-item--page .cart-item__media { width: 72px; height: 94px; }
   .success--page { padding: 36px 20px; }
 }
+
+/* ===== Ürün sayfası paylaş düğmeleri ===== */
+.pd__share { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.pd__share-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: .85rem; cursor: pointer; text-decoration: none; transition: border-color .2s, color .2s; }
+.pd__share-btn:hover, .pd__share-btn:focus-visible { border-color: var(--rose); color: var(--rose-dark); }
+
+/* ===== Ödeme sayfası kargo seçimi ===== */
+.ship-opts { border: 0; padding: 0; margin: 4px 0 16px; }
+.ship-opts__title { font-size: .82rem; font-weight: 600; margin-bottom: 8px; padding: 0; }
+.ship-opt { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px; cursor: pointer; background: #fff; transition: border-color .2s, background .2s; }
+.ship-opt.active { border-color: var(--rose); background: var(--cream); }
+.ship-opt input { accent-color: var(--rose); margin: 0; }
+.ship-opt__body { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.ship-opt__name { font-weight: 600; }
+.ship-opt__eta { font-size: .8rem; color: var(--ink-soft); }
+.ship-opt__price { font-weight: 600; white-space: nowrap; }
+.ship-opts__msg { font-size: .85rem; color: var(--ink-soft); margin: 0; }
+.ship-opts__msg--err { color: var(--rose-dark); }

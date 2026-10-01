@@ -10,6 +10,7 @@ import categoriesRouter from './routes/categories.js';
 import productsRouter from './routes/products.js';
 import cartRouter from './routes/cart.js';
 import ordersRouter from './routes/orders.js';
+import shippingRouter from './routes/shipping.js';
 import {
   getMedusaProductByHandle,
   isMedusaCommerce,
@@ -40,6 +41,7 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/shipping-options', shippingRouter);
 
 // Statik frontend
 const publicDir = path.join(__dirname, '..', 'public');

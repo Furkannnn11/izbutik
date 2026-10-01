@@ -188,6 +188,56 @@ test('ROUTE: ürün eklenince /sepet sayfası satırı gösterir, /odeme formu a
 });
 
 // -------------------------------------------------------------------
+// Ödeme sayfası kargo seçimi ve ürün sayfası paylaş düğmesi
+test('CHECKOUT: kargo seçenekleri listelenir, seçim toplamı günceller', async () => {
+  const { window } = await boot();
+  const addBtn = window.document.querySelector('#productGrid [data-add]');
+  addBtn.dispatchEvent(new window.Event('click', { bubbles: true }));
+  for (let i = 0; i < 60 && !window.document.querySelector('#cartBody .cart-item'); i++) await sleep(50);
+  window.history.pushState({}, '', '/odeme');
+  window.dispatchEvent(new window.PopStateEvent('popstate'));
+  let radios = [];
+  for (let i = 0; i < 80; i++) {
+    radios = [...window.document.querySelectorAll('#shipOpts input[name="shipping_option"]')];
+    if (radios.length) break;
+    await sleep(50);
+  }
+  assert.ok(radios.length >= 2, 'en az iki kargo seçeneği listelenmeli');
+  assert.equal(radios.filter((r) => r.checked).length, 1, 'varsayılan olarak tek seçenek seçili olmalı');
+  const btn = window.document.querySelector('#placeOrder');
+  assert.equal(btn.disabled, false, 'kargo yüklenince gönder düğmesi aktif olmalı');
+  const before = btn.textContent;
+
+  const other = radios.find((r) => !r.checked);
+  other.checked = true;
+  other.dispatchEvent(new window.Event('change', { bubbles: true }));
+  await sleep(20);
+  const after = window.document.querySelector('#placeOrder').textContent;
+  assert.notEqual(after, before, 'farklı kargo seçilince toplam değişmeli');
+  assert.match(window.document.querySelector('#checkoutSummary').textContent, /Kargo/, 'özette kargo satırı olmalı');
+  assert.ok(window.document.querySelector('#shipOpts input:checked').value === other.value, 'seçim korunmalı');
+});
+
+test('SHARE: ürün sayfasında paylaş düğmesi linki kopyalar (Web Share yoksa)', async () => {
+  const { window, toasts } = await boot();
+  let copied = null;
+  Object.defineProperty(window.navigator, 'clipboard', { value: { writeText: async (t) => { copied = t; } }, configurable: true });
+  const quick = window.document.querySelector('#productGrid [data-quickview]');
+  const slug = quick.dataset.quickview;
+  quick.dispatchEvent(new window.Event('click', { bubbles: true }));
+  let share = null;
+  for (let i = 0; i < 40 && !(share = window.document.querySelector('#pageView #pdShare')); i++) await sleep(50);
+  assert.ok(share, 'paylaş düğmesi olmalı');
+  const wa = window.document.querySelector('#pdShareWa');
+  assert.match(wa.href, /^https:\/\/wa\.me\/\?text=/, 'WhatsApp linki olmalı');
+  share.dispatchEvent(new window.Event('click', { bubbles: true }));
+  for (let i = 0; i < 20 && !copied; i++) await sleep(25);
+  await sleep(10); // kopyalama sonrası toast
+  assert.equal(copied, BFF + '/urun/' + encodeURIComponent(slug), 'ürünün tam linki kopyalanmalı');
+  assert.ok(toasts.some((t) => /kopyalandı/.test(t)), 'kullanıcıya bildirim gösterilmeli');
+});
+
+// -------------------------------------------------------------------
 // BUG-2 (P0): ensureCart yarışı -> hızlı çift tık birden çok Medusa sepeti yaratıyor.
 // DOĞRU davranış: tek çift-tık YALNIZ 1 adet POST /cart yapmalı.
 test('FE-BUG2: hızlı çift tıklama yalnız TEK sepet oluşturur (ensureCart tek-uçuş)', async () => {

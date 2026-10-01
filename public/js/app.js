@@ -20,6 +20,8 @@
     filter: { category: 'all', search: '', sort: 'featured' },
     cart: loadCart(),
     cartId: localStorage.getItem(CART_ID_KEY),
+    // Ödeme sayfası kargo seçimi: Medusa'dan gelen seçenekler + müşterinin seçimi
+    shipping: { options: [], selectedId: null, status: 'idle', cartId: null },
   };
 
   // ---- Yardımcılar ----
@@ -373,7 +375,7 @@
     if (r === 'cart') renderCartPage($('#pageView'));
     else if (r === 'checkout' && !state.lastOrder) {
       if (!state.cart.length) renderCheckoutPage($('#pageView'));
-      else { const sum = $('#checkoutSummary'); if (sum) sum.innerHTML = checkoutSummaryHtml(); }
+      else refreshCheckoutTotals();
     }
   }
 
@@ -568,6 +570,17 @@
           <div class="pd__actions">
             <button class="btn btn--primary btn--block" id="pdAdd" data-id="${p.id}">Sepete Ekle</button>
           </div>
+          <div class="pd__share">
+            <button type="button" class="pd__share-btn" id="pdShare" aria-label="Bu ürünü paylaş">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+              <span>Paylaş</span>
+            </button>
+            <a class="pd__share-btn" id="pdShareWa" target="_blank" rel="noopener noreferrer"
+               href="https://wa.me/?text=${encodeURIComponent(`${p.name} · İzbutik ${shareUrl(p)}`)}" aria-label="WhatsApp ile gönder">
+              <span>WhatsApp</span>
+            </a>
+            <button type="button" class="pd__share-btn" id="pdCopy" aria-label="Ürün linkini kopyala"><span>Linki Kopyala</span></button>
+          </div>
         </div>
       </div>`;
 
@@ -598,6 +611,33 @@
       // Hata olursa sayfada kalınır; kullanıcı toast'taki Türkçe mesajı görür.
     });
 
+    // Paylaş: telefonda sistem paylaşım menüsü; yoksa link panoya kopyalanır.
+    $('#pdShare', dialog).addEventListener('click', async () => {
+      const data = { title: `${p.name} · İzbutik`, text: `${p.name} · ${fmt(p.price)}`, url: shareUrl(p) };
+      if (navigator.share) {
+        try { await navigator.share(data); return; } catch (err) { if (err && err.name === 'AbortError') return; }
+      }
+      copyLink(data.url);
+    });
+    $('#pdCopy', dialog).addEventListener('click', () => copyLink(shareUrl(p)));
+  }
+
+  function shareUrl(p) { return location.origin + productUrl(p.slug); }
+
+  async function copyLink(url) {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast('Ürün linki kopyalandı ✦');
+    } catch {
+      // Pano izni yoksa: geçici alanla eski yöntem
+      const ta = document.createElement('textarea');
+      ta.value = url; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch { ok = false; }
+      ta.remove();
+      toast(ok ? 'Ürün linki kopyalandı ✦' : 'Link kopyalanamadı: ' + url);
+    }
   }
 
   // ====================================================
@@ -617,7 +657,7 @@
         <aside class="shop-summary">
           <h2 class="shop-summary__title">Sipariş Özeti</h2>
           <div class="row"><span>Ürünler (${count})</span><span>${fmt(cartTotal())}</span></div>
-          <div class="row"><span>Kargo</span><span>Siparişten sonra netleşir</span></div>
+          <div class="row"><span>Kargo</span><span>Sonraki adımda seçilir</span></div>
           <div class="row row--total"><span>Ürün toplamı</span><strong>${fmt(cartTotal())}</strong></div>
           <a class="btn btn--primary btn--block" href="/odeme">Siparişi Tamamla</a>
           <a class="btn btn--ghost btn--block" href="/#urunler">Alışverişe Devam Et</a>
@@ -629,10 +669,69 @@
   // ====================================================
   //  ÖDEME / SİPARİŞ SAYFASI (/odeme)
   // ====================================================
+  function selectedShipping() {
+    return state.shipping.options.find((o) => o.id === state.shipping.selectedId) || null;
+  }
+  function orderTotal() {
+    const s = selectedShipping();
+    return cartTotal() + (s ? s.amount : 0);
+  }
+
   function checkoutSummaryHtml() {
+    const s = selectedShipping();
     return `${state.cart.map((i) => `<div class="row"><span>${esc(i.name)} × ${i.quantity} (${esc(i.size)})</span><span>${fmt(i.price * i.quantity)}</span></div>`).join('')}
-      <div class="row row--total"><span>Ürün toplamı</span><strong>${fmt(cartTotal())}</strong></div>
+      <div class="row"><span>Kargo${s ? ` (${esc(s.name)})` : ''}</span><span>${s ? (s.amount > 0 ? fmt(s.amount) : 'Ücretsiz') : 'Seçilmedi'}</span></div>
+      <div class="row row--total"><span>Toplam</span><strong>${fmt(orderTotal())}</strong></div>
       <a class="shop-summary__edit" href="/sepet">Sepeti düzenle</a>`;
+  }
+
+  function shippingOptionsHtml() {
+    const sh = state.shipping;
+    if (sh.status === 'loading' || sh.status === 'idle') return '<p class="ship-opts__msg">Kargo seçenekleri yükleniyor…</p>';
+    if (sh.status === 'error' || !sh.options.length) {
+      return '<p class="ship-opts__msg ship-opts__msg--err">Kargo seçenekleri şu an alınamadı. Sayfayı yenileyip tekrar dene.</p>';
+    }
+    return sh.options.map((o) => `
+      <label class="ship-opt ${o.id === sh.selectedId ? 'active' : ''}">
+        <input type="radio" name="shipping_option" value="${esc(o.id)}" ${o.id === sh.selectedId ? 'checked' : ''} required />
+        <span class="ship-opt__body">
+          <span class="ship-opt__name">${esc(o.name)}</span>
+          ${o.description ? `<span class="ship-opt__eta">${esc(o.description)}</span>` : ''}
+        </span>
+        <span class="ship-opt__price">${o.amount > 0 ? fmt(o.amount) : 'Ücretsiz'}</span>
+      </label>`).join('');
+  }
+
+  // Seçim değişince yalnız ilgili parçaları güncelle (form alanları silinmesin).
+  function refreshCheckoutTotals() {
+    const opts = $('#shipOpts');
+    if (opts) opts.innerHTML = shippingOptionsHtml();
+    const sum = $('#checkoutSummary');
+    if (sum) sum.innerHTML = checkoutSummaryHtml();
+    const btn = $('#placeOrder');
+    if (btn && !btn.disabled) btn.textContent = `Sipariş Talebi Gönder · ${fmt(orderTotal())}`;
+    if (btn) btn.disabled = !selectedShipping() || state.shipping.status !== 'ready';
+  }
+
+  async function loadShippingOptions() {
+    const sh = state.shipping;
+    if (!state.cartId) { sh.status = 'error'; refreshCheckoutTotals(); return; }
+    if (sh.status === 'ready' && sh.cartId === state.cartId) { refreshCheckoutTotals(); return; }
+    sh.status = 'loading';
+    sh.cartId = state.cartId;
+    refreshCheckoutTotals();
+    try {
+      const res = await fetch(`${API}/shipping-options?cart_id=${encodeURIComponent(state.cartId)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Kargo seçenekleri alınamadı');
+      sh.options = data.shipping_options || [];
+      if (!sh.options.some((o) => o.id === sh.selectedId)) sh.selectedId = sh.options[0]?.id || null;
+      sh.status = 'ready';
+    } catch {
+      sh.options = [];
+      sh.status = 'error';
+    }
+    refreshCheckoutTotals();
   }
 
   function renderCheckoutPage(page) {
@@ -645,8 +744,9 @@
           <div class="check">✓</div>
           <h1 class="section__title">Sipariş talebin alındı!</h1>
           <p>Talep No: <strong>#${esc(o.id)}</strong></p>
-          <p>Ürün toplamı: <strong>${fmt(o.total)}</strong></p>
-          <p style="margin-top:14px">Teşekkürler! Ödeme ve kargo detayları için @izbutik20 üzerinden en kısa sürede seninle iletişime geçeceğiz ✦</p>
+          <p>Toplam (kargo dahil): <strong>${fmt(o.total)}</strong></p>
+          ${o.shippingName ? `<p>Kargo: <strong>${esc(o.shippingName)}</strong></p>` : ''}
+          <p style="margin-top:14px">Teşekkürler! Ödeme detayları için @izbutik20 üzerinden en kısa sürede seninle iletişime geçeceğiz ✦</p>
           <a class="btn btn--primary" style="margin-top:22px" href="/#urunler">Alışverişe Devam Et</a>
         </div></div></section>`;
       return;
@@ -674,8 +774,12 @@
             <div class="field"><label for="coCity">Şehir</label><input id="coCity" name="city" autocomplete="address-level1" placeholder="İstanbul" /></div>
             <div class="field"><label for="coPostal">Posta Kodu</label><input id="coPostal" name="postal_code" inputmode="numeric" autocomplete="postal-code" placeholder="34000" /></div>
           </div>
-          <p class="checkout__note">Ödeme ve kargo bu mağazada henüz manuel yürütülüyor. Formu gönderdiğinde sipariş talebin bize ulaşır; ödeme yöntemi ve kargo ücreti @izbutik20 üzerinden seninle netleştirilir. Bu adımda kart bilgisi alınmaz ve tahsilat yapılmaz.</p>
-          <button type="submit" class="btn btn--primary btn--block" id="placeOrder">Sipariş Talebi Gönder · ${fmt(cartTotal())}</button>
+          <fieldset class="ship-opts">
+            <legend class="ship-opts__title">Kargo Seçimi *</legend>
+            <div id="shipOpts">${shippingOptionsHtml()}</div>
+          </fieldset>
+          <p class="checkout__note">Ödeme bu mağazada henüz manuel yürütülüyor. Formu gönderdiğinde sipariş talebin seçtiğin kargo ücretiyle birlikte bize ulaşır; ödeme yöntemi @izbutik20 üzerinden seninle netleştirilir. Bu adımda kart bilgisi alınmaz ve tahsilat yapılmaz.</p>
+          <button type="submit" class="btn btn--primary btn--block" id="placeOrder" disabled>Sipariş Talebi Gönder · ${fmt(orderTotal())}</button>
         </form>
         <aside class="shop-summary">
           <h2 class="shop-summary__title">Sipariş Özeti</h2>
@@ -684,6 +788,12 @@
       </div>
     </div></section>`;
     $('#checkoutForm', page).addEventListener('submit', submitOrder);
+    $('#shipOpts', page).addEventListener('change', (e) => {
+      if (e.target.name !== 'shipping_option') return;
+      state.shipping.selectedId = e.target.value;
+      refreshCheckoutTotals();
+    });
+    loadShippingOptions();
   }
 
   async function submitOrder(e) {
@@ -699,7 +809,9 @@
         city: fd.get('city') || undefined, postal_code: fd.get('postal_code') || undefined,
       },
       items: state.cart.map((i) => ({ id: i.id, size: i.size, quantity: i.quantity })),
+      shipping_option_id: state.shipping.selectedId || undefined,
     };
+    if (!payload.shipping_option_id) { toast('Lütfen bir kargo seçeneği seç.'); return; }
     btn.disabled = true;
     btn.textContent = 'Sipariş talebi gönderiliyor...';
     try {
@@ -711,9 +823,11 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Sipariş oluşturulamadı');
       // Başarı ekranı (aynı /odeme sayfasında)
-      state.lastOrder = { id: data.id, total: data.total };
+      const ship = selectedShipping();
+      state.lastOrder = { id: data.id, total: data.total, shippingName: ship?.name || null };
       state.cart = [];
       state.cartId = null;
+      state.shipping = { options: [], selectedId: null, status: 'idle', cartId: null };
       localStorage.removeItem(CART_ID_KEY);
       saveCart();
       updateCartUI();
