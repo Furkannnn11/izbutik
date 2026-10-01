@@ -42,7 +42,7 @@ struct LoginView: View {
                         .foregroundStyle(BrandColor.textSecondary)
 
                     field(title: "E-posta", systemImage: "envelope") {
-                        TextField("admin@izbutik.local", text: $email)
+                        TextField("E-posta adresinizi yazın", text: $email)
                             .textContentType(.username)
                             .keyboardType(.emailAddress)
                             .textInputAutocapitalization(.never)

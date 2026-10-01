@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Kontrol paneli: yayınlanan/draft ürün, düşük stok ve sipariş sayıları.
 /// Sayılar liste endpoint'lerinin `count` alanından türetilir (§6). Düşük stok
-/// eşiği uygulama tarafında (varsayılan `available <= 5`), inventory item'lar
+/// eşiği uygulama tarafında (varsayılan `available <= 1`), inventory item'lar
 /// üzerinden hesaplanır. Pull-to-refresh ile yenilenir.
 @MainActor
 final class DashboardViewModel: ObservableObject {
@@ -10,11 +10,12 @@ final class DashboardViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published var errorMessage: String?
 
-    /// Düşük stok eşiği (ayarlanabilir; varsayılan 5).
+    /// Düşük stok eşiği (ayarlanabilir; varsayılan 1). Butikte beden başına
+    /// stok genelde 1-3 adettir; 5 eşiği tüm varyantları uyarıya düşürüyordu.
     let lowStockThreshold: Int
     private let client: MedusaAPIClient
 
-    init(client: MedusaAPIClient, lowStockThreshold: Int = 5) {
+    init(client: MedusaAPIClient, lowStockThreshold: Int = 1) {
         self.client = client
         self.lowStockThreshold = lowStockThreshold
     }

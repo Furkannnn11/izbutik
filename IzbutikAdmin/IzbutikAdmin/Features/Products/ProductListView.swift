@@ -7,7 +7,7 @@ import SwiftUI
 @MainActor
 final class ProductListViewModel: ObservableObject {
     @Published var query: String = ""
-    @Published var statusFilter: ProductStatus? = nil   // nil = tümü
+    @Published var statusFilter: ProductStatus? = .published   // nil = tümü; varsayılan yayındakiler
     @Published private(set) var products: [Product] = []
     @Published private(set) var isLoading = false
     @Published private(set) var isLoadingMore = false
