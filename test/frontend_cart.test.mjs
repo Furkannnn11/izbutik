@@ -21,7 +21,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { JSDOM, VirtualConsole } from 'jsdom';
 
-const WT = '/Users/furkanatmaca/workplace/.kirocrew-work/TASK_e44d5515';
+// Aktif proje kökü (eski görev worktree'si değil)
+const WT = new URL('..', import.meta.url).pathname.replace(/\/$/, '');
 const BFF = 'http://127.0.0.1:3001';
 const CART_ID_KEY = 'izbutik_medusa_cart_id';
 
@@ -106,37 +107,49 @@ async function boot({ seedCartId, slowFirstCartPost } = {}) {
 const ls = (window, k) => window.localStorage.getItem(k);
 
 // -------------------------------------------------------------------
-// BUG-1 (P1): Ürün detayında addToCart await edilmiyor.
-// DOĞRU davranış: "Sepete Ekle" tıklandığında ekleme isteği SETTLE OLMADAN
-// modal kapanmamalı / sepet açılmamalı. Şu an handler senkron -> KIRMIZI.
-test('FE-BUG1: ürün detayı "Sepete Ekle" isteği bitmeden modal kapanmaz / sepet açılmaz', async () => {
+// BUG-1 (P1): Ürün detayında addToCart await edilmeli.
+// Ürün artık gerçek sayfada (/urun/:slug) açılıyor; "Sepete Ekle" isteği
+// SETTLE OLMADAN sepet çekmecesi açılmamalı.
+test('FE-BUG1: ürün sayfası açılır ve "Sepete Ekle" isteği bitmeden sepet açılmaz', async () => {
   const { window, netlog } = await boot();
   const quick = window.document.querySelector('#productGrid [data-quickview]');
   assert.ok(quick, 'en az bir ürün kartı render olmalı');
+  const slug = quick.dataset.quickview;
   quick.dispatchEvent(new window.Event('click', { bubbles: true }));
 
   let pdAdd = null;
-  for (let i = 0; i < 40; i++) { pdAdd = window.document.querySelector('#pdAdd'); if (pdAdd) break; await sleep(50); }
-  assert.ok(pdAdd, 'ürün detay modalı ve #pdAdd butonu açılmalı');
+  for (let i = 0; i < 40; i++) { pdAdd = window.document.querySelector('#pageView #pdAdd'); if (pdAdd) break; await sleep(50); }
+  assert.ok(pdAdd, 'ürün sayfası ve #pdAdd butonu açılmalı');
+  assert.equal(window.location.pathname, '/urun/' + encodeURIComponent(slug), 'URL ürün sayfasına geçmeli');
+  assert.equal(window.document.querySelector('#homeView').hidden, true, 'ana sayfa gizlenmeli');
 
-  const modal = window.document.querySelector('#productModal');
   const cart = window.document.querySelector('#cart');
   const nb = netlog.length;
-
   pdAdd.dispatchEvent(new window.Event('click', { bubbles: true }));
   await sleep(0); // handler dönüşünün hemen ardından ölç
 
   const addSettled = netlog.slice(nb).some((n) => /\/items$/.test(n.url) && n.method === 'POST' && n.ok);
-  const cartOpened = cart.classList.contains('open');
-  const modalClosed = !modal.classList.contains('open');
-
-  // DOĞRU sözleşme: istek settle olmadan UI değişmemeli.
-  // Eğer istek daha bitmemişken sepet açıldıysa VEYA modal kapandıysa -> hata.
-  assert.ok(
-    addSettled || (!cartOpened && !modalClosed),
-    'ekleme isteği settle olmadan sepet açıldı/modal kapandı (BUG-1: addToCart await edilmiyor)'
-  );
+  assert.ok(addSettled || !cart.classList.contains('open'),
+    'ekleme isteği settle olmadan sepet açıldı (BUG-1: addToCart await edilmiyor)');
   await sleep(1200); // pending istekleri drenaj
+});
+
+// Gerçek sayfalar: kategori URL'si, geri tuşu ve doğrudan ürün linki
+test('ROUTE: kategori sayfası açılır ve geri tuşu ana sayfaya döner', async () => {
+  const { window } = await boot();
+  const catLink = window.document.querySelector('#categoryGrid a.cat-card');
+  assert.ok(catLink, 'kategori kartı link olmalı');
+  catLink.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }));
+  await sleep(50);
+  assert.match(window.location.pathname, /^\/kategori\//, 'URL kategori sayfasına geçmeli');
+  assert.ok(window.document.querySelector('#pageView h1'), 'kategori başlığı olmalı');
+  assert.ok(window.document.querySelectorAll('#pageView .product-card').length > 0, 'kategori ürünleri listelenmeli');
+
+  window.history.back();
+  for (let i = 0; i < 40 && window.location.pathname !== '/'; i++) await sleep(25);
+  await sleep(50);
+  assert.equal(window.location.pathname, '/', 'geri tuşu ana sayfaya dönmeli');
+  assert.equal(window.document.querySelector('#homeView').hidden, false, 'ana sayfa görünmeli');
 });
 
 // -------------------------------------------------------------------

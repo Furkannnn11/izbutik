@@ -153,7 +153,7 @@
         </div>
         <div class="product-card__body">
           <span class="product-card__cat">${esc(p.category_name || '')}</span>
-          <h3 class="product-card__name" data-quickview="${p.slug}">${esc(p.name)}</h3>
+          <h3 class="product-card__name"><a href="${productUrl(p.slug)}">${esc(p.name)}</a></h3>
           <div class="product-card__price">
             <span class="now">${fmt(p.price)}</span>
             ${p.old_price ? `<span class="old">${fmt(p.old_price)}</span>` : ''}
@@ -170,14 +170,14 @@
     grid.innerHTML = state.categories
       .map(
         (c) => `
-      <div class="cat-card reveal" data-cat="${c.slug}">
+      <a class="cat-card reveal" href="${categoryUrl(c.slug)}" data-cat="${c.slug}">
         <div class="cat-card__img" style="background-image:url('${esc(c.image_url)}')"></div>
         <div class="cat-card__body">
           <h3>${esc(c.name)}</h3>
           <span>${c.product_count} ürün</span>
           <div class="cat-card__cta">Keşfet →</div>
         </div>
-      </div>`
+      </a>`
       )
       .join('');
     observeReveal();
@@ -188,7 +188,7 @@
     if (!menu) return;
     menu.innerHTML = state.categories
       .map(
-        (c) => `<a href="#urunler" data-nav-cat="${c.slug}">${esc(c.name)}<span>${c.product_count}</span></a>`
+        (c) => `<a href="${categoryUrl(c.slug)}" data-nav-cat="${c.slug}">${esc(c.name)}<span>${c.product_count}</span></a>`
       )
       .join('');
   }
@@ -402,18 +402,123 @@
   function closeCart() { $('#cart').classList.remove('open'); $('#overlay').classList.remove('show'); }
 
   // ====================================================
-  //  ÜRÜN DETAY MODAL
+  //  YÖNLENDİRME (gerçek sayfalar: /, /urun/:slug, /kategori/:slug)
   // ====================================================
-  async function openProduct(slug) {
+  const BASE_TITLE = document.title;
+  let homeScrollY = 0;
+  function productUrl(slug) { return '/urun/' + encodeURIComponent(slug); }
+  function categoryUrl(slug) { return '/kategori/' + encodeURIComponent(slug); }
+
+  function currentRoute() {
+    let path = location.pathname.replace(/\/+$/, '') || '/';
+    try { path = decodeURIComponent(path); } catch { /* bozuk URL: olduğu gibi kullan */ }
+    let m;
+    if ((m = path.match(/^\/urun\/([^/]+)$/))) return { name: 'product', slug: m[1] };
+    if ((m = path.match(/^\/kategori\/([^/]+)$/))) return { name: 'category', slug: m[1] };
+    if (path === '/' || path === '/index.html') return { name: 'home' };
+    return { name: 'notfound' };
+  }
+
+  function navigate(url, { replace = false } = {}) {
+    if (currentRoute().name === 'home') homeScrollY = window.scrollY;
+    history[replace ? 'replaceState' : 'pushState']({}, '', url);
+    route();
+  }
+
+  function scrollToHash() {
+    const el = location.hash && document.getElementById(location.hash.slice(1));
+    if (el) requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth' }));
+    return Boolean(el);
+  }
+
+  let routeSeq = 0;
+  async function route() {
+    const seq = ++routeSeq;
+    const r = currentRoute();
+    const home = $('#homeView');
+    const page = $('#pageView');
+    closeCart();
+    $('#navLinks')?.classList.remove('open');
+    $('#navCatDropdown')?.classList.remove('open');
+    if (r.name === 'home') {
+      page.hidden = true;
+      page.innerHTML = '';
+      home.hidden = false;
+      document.title = BASE_TITLE;
+      if (!scrollToHash()) window.scrollTo({ top: homeScrollY, behavior: 'instant' });
+      return;
+    }
+    home.hidden = true;
+    page.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (r.name === 'product') await renderProductPage(r.slug, page, seq);
+    else if (r.name === 'category') renderCategoryPage(r.slug, page);
+    else renderNotFound(page);
+    observeReveal();
+  }
+
+  function crumbs(items) {
+    return `<nav class="crumbs" aria-label="Sayfa yolu"><a href="/">Ana Sayfa</a>${items
+      .map((it) => `<span aria-hidden="true">/</span>${it.href ? `<a href="${it.href}">${esc(it.label)}</a>` : `<span aria-current="page">${esc(it.label)}</span>`}`)
+      .join('')}</nav>`;
+  }
+
+  function renderNotFound(page) {
+    document.title = 'Sayfa bulunamadı · İzbutik';
+    page.innerHTML = `<section class="section page-section"><div class="container page-empty">
+      <h1 class="section__title">Aradığın sayfa bulunamadı</h1>
+      <p class="section__desc">Ürün kaldırılmış ya da adres hatalı olabilir.</p>
+      <a class="btn btn--primary" href="/#urunler">Tüm Ürünlere Dön</a></div></section>`;
+  }
+
+  function renderCategoryPage(slug, page) {
+    const cat = state.categories.find((c) => c.slug === slug);
+    if (!cat) return renderNotFound(page);
+    const list = state.products.filter((p) => p.category_slug === slug);
+    document.title = `${cat.name} · İzbutik`;
+    const pills = `<a class="pill" href="/#urunler">Tümü</a>` + state.categories
+      .map((c) => `<a class="pill ${c.slug === slug ? 'active' : ''}" href="${categoryUrl(c.slug)}"${c.slug === slug ? ' aria-current="page"' : ''}>${esc(c.name)}</a>`)
+      .join('');
+    page.innerHTML = `<section class="section page-section"><div class="container">
+      ${crumbs([{ label: cat.name }])}
+      <div class="section__head">
+        <p class="eyebrow">KATEGORİ</p>
+        <h1 class="section__title">${esc(cat.name)}</h1>
+        <p class="section__desc">${list.length} ürün</p>
+      </div>
+      <div class="toolbar"><div class="filter-pills">${pills}</div></div>
+      ${list.length ? `<div class="product-grid">${list.map(productCard).join('')}</div>`
+        : '<div class="empty"><p>Bu kategoride şu an ürün yok.</p></div>'}
+    </div></section>`;
+  }
+
+  // ====================================================
+  //  ÜRÜN DETAY SAYFASI
+  // ====================================================
+  async function renderProductPage(slug, page, seq) {
     let p = state.products.find((x) => x.slug === slug);
-    try { p = await api('/products/' + slug); } catch { /* listedeki veriyi kullan */ }
-    if (!p) return;
+    if (!p) page.innerHTML = '<section class="section page-section"><div class="container"><div class="skeleton" style="height:420px"></div></div></section>';
+    try { p = await api('/products/' + encodeURIComponent(slug)); } catch { /* listedeki veriyi kullan */ }
+    if (seq !== routeSeq) return; // kullanıcı bu arada başka sayfaya geçti
+    if (!p) return renderNotFound(page);
+    const cat = state.categories.find((c) => c.slug === p.category_slug);
+    const related = state.products.filter((x) => x.category_slug === p.category_slug && x.slug !== p.slug).slice(0, 4);
+    document.title = `${p.name} · İzbutik`;
+    page.innerHTML = `<section class="section page-section"><div class="container">
+      ${crumbs([...(cat ? [{ label: cat.name, href: categoryUrl(cat.slug) }] : []), { label: p.name }])}
+      <div id="pdRoot"></div>
+      ${related.length ? `<div class="related"><h2 class="section__title related__title">Benzer Ürünler</h2>
+        <div class="product-grid">${related.map(productCard).join('')}</div></div>` : ''}
+    </div></section>`;
+    renderProductDetail(p, $('#pdRoot', page));
+  }
+
+  function renderProductDetail(p, root) {
     const imgs = p.images && p.images.length ? p.images : [FALLBACK_IMG];
     const disc = discount(p);
-    const dialog = $('#modalDialog');
+    const dialog = root;
     dialog.innerHTML = `
-      <button class="modal__close" data-close-modal>✕</button>
-      <div class="pd">
+      <div class="pd pd--page">
         <div class="pd__gallery">
           <div class="pd__main-frame"><img class="pd__main" id="pdMain" src="${esc(imgs[0])}" alt="${esc(p.name)}" onerror="${imgErr}" /></div>
           <div class="pd__thumbs">
@@ -422,7 +527,7 @@
         </div>
         <div class="pd__info">
           <div class="pd__cat">${esc(p.category_name || '')}</div>
-          <h2 class="pd__name">${esc(p.name)}</h2>
+          <h1 class="pd__name">${esc(p.name)}</h1>
           <div class="pd__price">
             <span class="now">${fmt(p.price)}</span>
             ${p.old_price ? `<span class="old">${fmt(p.old_price)}</span>` : ''}
@@ -473,14 +578,10 @@
       const btn = ev.currentTarget;
       // İstek settle olmadan modal kapatma / sepet açma (BUG-1). Buton loading (BUG-3a).
       const ok = await addToCart(p.id, chosen, 1, btn);
-      if (ok) {
-        closeModal('#productModal');
-        openCart();
-      }
-      // Hata olursa modal açık kalır; kullanıcı toast'taki Türkçe mesajı görür.
+      if (ok) openCart();
+      // Hata olursa sayfada kalınır; kullanıcı toast'taki Türkçe mesajı görür.
     });
 
-    openModal('#productModal');
   }
 
   // ====================================================
@@ -625,15 +726,29 @@
 
       if (add) { e.stopPropagation(); addToCart(add.dataset.add, null, 1, add); return; }
       if (fav) { e.stopPropagation(); fav.classList.toggle('active'); return; }
-      if (quick && !add && !fav) { openProduct(quick.dataset.quickview); return; }
-      if (navCat) { setCategory(navCat.dataset.navCat); $('#navCatDropdown').classList.remove('open'); $('#navLinks').classList.remove('open'); return; }
+      if (quick && !add && !fav) { navigate(productUrl(quick.dataset.quickview)); return; }
+      if (navCat) { e.preventDefault(); navigate(categoryUrl(navCat.dataset.navCat)); return; }
       if (dropdownToggle && window.matchMedia('(max-width: 680px)').matches) {
         e.preventDefault();
         $('#navCatDropdown').classList.toggle('open');
         return;
       }
+      // Site içi bağlantılar: tam sayfa yenilemeden gerçek URL'ye geç (yeni sekme/⌘-tık korunur)
+      const link = t.closest('a[href]');
+      if (link && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey && link.target !== '_blank') {
+        const url = new URL(link.href, location.href);
+        if (url.origin === location.origin && !url.pathname.startsWith('/api/')) {
+          e.preventDefault();
+          if (url.pathname === location.pathname && url.hash && currentRoute().name === 'home') {
+            history.replaceState({}, '', url.pathname + url.hash);
+            scrollToHash();
+          } else {
+            navigate(url.pathname + url.hash);
+          }
+          return;
+        }
+      }
       if (pill) { setCategory(pill.dataset.pill); return; }
-      if (catCard) { setCategory(catCard.dataset.cat); $('#urunler').scrollIntoView({ behavior: 'smooth' }); return; }
       if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta), qty); return; }
       if (rem) { removeItem(rem.dataset.remove, rem); return; }
       if (t.closest('[data-close-modal]')) { closeModal('#productModal'); closeModal('#checkoutModal'); return; }
@@ -659,6 +774,7 @@
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => {
         state.filter.search = e.target.value;
+        if (currentRoute().name !== 'home') navigate('/#urunler');
         if (e.target.value.trim()) { state.filter.category = 'all'; renderFilterPills(); }
         renderProducts();
         if (e.target.value.trim()) document.getElementById('urunler').scrollIntoView({ behavior: 'smooth' });
@@ -674,6 +790,9 @@
       if (a.hasAttribute('data-dropdown-toggle')) return; // dropdown açma/kapama kendi mantığında yönetilir
       a.addEventListener('click', () => { $('#navLinks').classList.remove('open'); $('#navCatDropdown').classList.remove('open'); });
     });
+
+    // Tarayıcı geri/ileri
+    window.addEventListener('popstate', route);
 
     // Navbar scroll
     const nav = $('#nav');
@@ -705,6 +824,10 @@
     observeReveal();
     animateCounters();
 
+    // Alt sayfa ile açıldıysa ana sayfayı veri gelene kadar gösterme (titreme olmasın)
+    if (currentRoute().name !== 'home') $('#homeView').hidden = true;
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
     // İskelet (skeleton) yükleme
     $('#productGrid').innerHTML = Array.from({ length: 8 }).map(() => '<div class="skeleton"></div>').join('');
 
@@ -730,8 +853,10 @@
       renderNewRail();
       renderProducts();
       observeReveal();
+      route();
     } catch (err) {
       console.error(err);
+      $('#homeView').hidden = false;
       $('#productGrid').innerHTML = `<div class="empty" style="grid-column:1/-1"><p>Ürünler yüklenemedi. Sunucu ve veritabanı çalışıyor mu?</p></div>`;
     }
   }

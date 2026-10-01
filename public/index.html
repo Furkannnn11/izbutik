@@ -26,20 +26,20 @@
       <button class="nav__toggle" id="navToggle" aria-label="Menü">
         <span></span><span></span><span></span>
       </button>
-      <a href="#" class="brand" data-scroll>
+      <a href="/" class="brand">
         <span class="brand__mark">İZ</span>BUTİK
       </a>
       <nav class="nav__links" id="navLinks">
         <div class="nav__dropdown" id="navCatDropdown">
-          <a href="#kategoriler" data-scroll data-dropdown-toggle>
+          <a href="/#kategoriler" data-scroll data-dropdown-toggle>
             Kategoriler
             <svg class="nav__chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </a>
           <div class="nav__dropdown-menu" id="navCatMenu"></div>
         </div>
-        <a href="#yeni" data-scroll>Yeni Gelenler</a>
-        <a href="#urunler" data-scroll>Tüm Ürünler</a>
-        <a href="#hikaye" data-scroll>Hakkımızda</a>
+        <a href="/#yeni" data-scroll>Yeni Gelenler</a>
+        <a href="/#urunler" data-scroll>Tüm Ürünler</a>
+        <a href="/#hikaye" data-scroll>Hakkımızda</a>
       </nav>
       <div class="nav__actions">
         <button class="icon-btn" id="searchToggle" aria-label="Ara">
@@ -59,6 +59,7 @@
     </div>
   </header>
 
+  <main id="homeView">
   <!-- HERO -->
   <section class="hero">
     <div class="hero__bg">
@@ -77,8 +78,8 @@
           İzbutik ile gardırobunu yenile. Trend parçalar, özenle seçilmiş koleksiyonlar ve sana özel şıklık.
         </p>
         <div class="hero__cta reveal" style="--d:.45s">
-          <a href="#urunler" class="btn btn--primary" data-scroll>Koleksiyonu Keşfet</a>
-          <a href="#kategoriler" class="btn btn--ghost" data-scroll>Kategoriler</a>
+          <a href="/#urunler" class="btn btn--primary" data-scroll>Koleksiyonu Keşfet</a>
+          <a href="/#kategoriler" class="btn btn--ghost" data-scroll>Kategoriler</a>
         </div>
         <div class="hero__stats reveal" style="--d:.6s">
           <div><strong data-count="29">0</strong><span>Gerçek Ürün</span></div>
@@ -194,11 +195,16 @@
     </div>
   </section>
 
+  </main>
+
+  <!-- ALT SAYFALAR: /urun/:slug, /kategori/:slug -->
+  <main id="pageView" class="page" hidden></main>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__col footer__brand">
-        <a href="#" class="brand brand--light" data-scroll><span class="brand__mark">İZ</span>BUTİK</a>
+        <a href="/" class="brand brand--light"><span class="brand__mark">İZ</span>BUTİK</a>
         <p>Kadın giyimde trend ve şıklık. Gardırobunu İzbutik ile yenile.</p>
         <a href="https://www.instagram.com/izbutik20/" target="_blank" rel="noopener" class="footer__ig">
           <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
@@ -207,9 +213,9 @@
       </div>
       <div class="footer__col">
         <h4>Mağaza</h4>
-        <a href="#kategoriler" data-scroll>Kategoriler</a>
-        <a href="#yeni" data-scroll>Yeni Gelenler</a>
-        <a href="#urunler" data-scroll>Tüm Ürünler</a>
+        <a href="/#kategoriler" data-scroll>Kategoriler</a>
+        <a href="/#yeni" data-scroll>Yeni Gelenler</a>
+        <a href="/#urunler" data-scroll>Tüm Ürünler</a>
       </div>
       <div class="footer__col">
         <h4>Yardım</h4>

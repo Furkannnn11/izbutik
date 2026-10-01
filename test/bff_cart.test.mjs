@@ -35,7 +35,8 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import express from 'express';
 
-const WT = '/Users/furkanatmaca/workplace/.kirocrew-work/TASK_e44d5515';
+// Aktif proje kökü (eski görev worktree'si değil)
+const WT = new URL('..', import.meta.url).pathname.replace(/\/$/, '');
 
 // --- Testin kontrol ettiği sahte upstream Medusa ---
 let upstreamHandler = null; // (req, bodyText) => { status, json }
