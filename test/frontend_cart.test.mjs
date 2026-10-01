@@ -153,6 +153,41 @@ test('ROUTE: kategori sayfası açılır ve geri tuşu ana sayfaya döner', asyn
 });
 
 // -------------------------------------------------------------------
+// Sepet (/sepet) ve sipariş (/odeme) ayrı sayfalar
+test('ROUTE: ürün eklenince /sepet sayfası satırı gösterir, /odeme formu açılır', async () => {
+  const { window } = await boot();
+  const addBtn = window.document.querySelector('#productGrid [data-add]');
+  addBtn.dispatchEvent(new window.Event('click', { bubbles: true }));
+  for (let i = 0; i < 60 && !window.document.querySelector('#cartBody .cart-item'); i++) await sleep(50);
+  assert.ok(window.document.querySelector('#cartBody .cart-item'), 'çekmecede ürün olmalı');
+
+  const goCart = window.document.querySelector('#cartPageBtn');
+  goCart.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }));
+  await sleep(50);
+  assert.equal(window.location.pathname, '/sepet');
+  assert.equal(window.document.title, 'Sepetim · İzbutik');
+  assert.ok(window.document.querySelectorAll('#pageView .cart-item--page').length >= 1, 'sepet sayfasında satır olmalı');
+  assert.equal(window.document.querySelector('#cart').classList.contains('open'), false, 'çekmece kapanmalı');
+
+  const toCheckout = window.document.querySelector('#pageView a[href="/odeme"]');
+  toCheckout.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }));
+  await sleep(50);
+  assert.equal(window.location.pathname, '/odeme');
+  assert.ok(window.document.querySelector('#pageView #checkoutForm input[name="email"]'), 'sipariş formu olmalı');
+  assert.ok(window.document.querySelector('#checkoutSummary .row--total'), 'sipariş özeti olmalı');
+
+  // Satırı kaldırınca ödeme sayfası boş-sepet durumuna geçer (sipariş oluşturulmaz)
+  const key = window.document.querySelector('#cartBody [data-remove]').dataset.remove;
+  window.document.querySelector(`#cartBody [data-remove="${key}"]`).dispatchEvent(new window.Event('click', { bubbles: true }));
+  for (let i = 0; i < 60 && window.document.querySelector('#checkoutForm'); i++) await sleep(50);
+  assert.equal(window.document.querySelector('#checkoutForm'), null, 'boş sepette form gösterilmemeli');
+
+  window.history.back();
+  for (let i = 0; i < 40 && window.location.pathname !== '/sepet'; i++) await sleep(25);
+  assert.equal(window.location.pathname, '/sepet', 'geri tuşu sepete dönmeli');
+});
+
+// -------------------------------------------------------------------
 // BUG-2 (P0): ensureCart yarışı -> hızlı çift tık birden çok Medusa sepeti yaratıyor.
 // DOĞRU davranış: tek çift-tık YALNIZ 1 adet POST /cart yapmalı.
 test('FE-BUG2: hızlı çift tıklama yalnız TEK sepet oluşturur (ensureCart tek-uçuş)', async () => {

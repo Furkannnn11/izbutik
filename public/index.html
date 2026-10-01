@@ -3,8 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="İzbutik - Kadın giyimde trend ve şıklık. Elbise, üst giyim, dış giyim ve daha fazlası." />
+  <!-- share-meta:start -->
   <title>İzbutik · Modern Kadın Giyim</title>
+  <meta name="description" content="İzbutik - Kadın giyimde trend ve şıklık. Elbise, üst giyim, dış giyim ve daha fazlası." />
+  <meta property="og:site_name" content="İzbutik" />
+  <meta property="og:locale" content="tr_TR" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="İzbutik · Modern Kadın Giyim" />
+  <meta property="og:description" content="İzbutik - Kadın giyimde trend ve şıklık. Elbise, üst giyim, dış giyim ve daha fazlası." />
+  <meta property="og:image" content="https://cdn.shopier.app/pictures_large/izbutik20_1b3f7fcea77a784e7c09e31fd71a9725.jpeg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- share-meta:end -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -244,21 +253,10 @@
     <div class="cart__body" id="cartBody"></div>
     <div class="cart__foot">
       <div class="cart__total"><span>Ürün toplamı</span><strong id="cartTotal">0,00 ₺</strong></div>
-      <button class="btn btn--primary btn--block" id="checkoutBtn">Sipariş Talebi Oluştur</button>
+      <a class="btn btn--primary btn--block" id="checkoutBtn" href="/odeme">Siparişi Tamamla</a>
+      <a class="btn btn--ghost btn--block cart__view" id="cartPageBtn" href="/sepet">Sepete Git</a>
     </div>
   </aside>
-
-  <!-- ÜRÜN DETAY MODAL -->
-  <div class="modal" id="productModal" aria-hidden="true">
-    <div class="modal__backdrop" data-close-modal></div>
-    <div class="modal__dialog" id="modalDialog"></div>
-  </div>
-
-  <!-- CHECKOUT MODAL -->
-  <div class="modal" id="checkoutModal" aria-hidden="true">
-    <div class="modal__backdrop" data-close-modal></div>
-    <div class="modal__dialog modal__dialog--form" id="checkoutDialog"></div>
-  </div>
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>

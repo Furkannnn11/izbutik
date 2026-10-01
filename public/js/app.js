@@ -83,6 +83,7 @@
       key: item.id,
       line_id: item.id,
       variant_id: item.variant_id,
+      slug: item.product_handle || null,
       id: item.product_id,
       name: item.product_title || item.title,
       price: Number(item.unit_price || 0),
@@ -364,30 +365,40 @@
     badge.classList.toggle('show', count > 0);
 
     const body = $('#cartBody');
-    if (!state.cart.length) {
-      body.innerHTML = `<div class="cart__empty"><div class="big">🛍️</div><p>Sepetin henüz boş.</p><p style="font-size:.85rem">Beğendiğin parçaları keşfetmeye başla!</p></div>`;
-    } else {
-      body.innerHTML = state.cart
-        .map(
-          (i) => `
-        <div class="cart-item">
+    body.innerHTML = state.cart.length ? state.cart.map((i) => cartItemHtml(i)).join('') : cartEmptyHtml();
+    $('#cartTotal').textContent = fmt(cartTotal());
+
+    // Sepet / ödeme sayfası açıksa onları da güncel tut
+    const r = currentRoute().name;
+    if (r === 'cart') renderCartPage($('#pageView'));
+    else if (r === 'checkout' && !state.lastOrder) {
+      if (!state.cart.length) renderCheckoutPage($('#pageView'));
+      else { const sum = $('#checkoutSummary'); if (sum) sum.innerHTML = checkoutSummaryHtml(); }
+    }
+  }
+
+  function cartEmptyHtml() {
+    return `<div class="cart__empty"><div class="big">🛍️</div><p>Sepetin henüz boş.</p><p style="font-size:.85rem">Beğendiğin parçaları keşfetmeye başla!</p></div>`;
+  }
+
+  function cartItemHtml(i, { page = false } = {}) {
+    const link = i.slug ? productUrl(i.slug) : null;
+    const name = link ? `<a href="${link}">${esc(i.name)}</a>` : esc(i.name);
+    return `
+        <div class="cart-item${page ? ' cart-item--page' : ''}">
           <div class="cart-item__media"><img class="cart-item__img" src="${esc(i.image)}" alt="${esc(i.name)}" onerror="${imgErr}" /></div>
           <div>
-            <div class="cart-item__name">${esc(i.name)}</div>
-            <div class="cart-item__meta">Beden: ${esc(i.size)}</div>
+            <div class="cart-item__name">${page ? name : esc(i.name)}</div>
+            <div class="cart-item__meta">Beden: ${esc(i.size)}${page ? ` · Birim: ${fmt(i.price)}` : ''}</div>
             <div class="qty">
-              <button data-qty="${i.key}" data-delta="-1">−</button>
+              <button data-qty="${i.key}" data-delta="-1" aria-label="Azalt">−</button>
               <span>${i.quantity}</span>
-              <button data-qty="${i.key}" data-delta="1">+</button>
+              <button data-qty="${i.key}" data-delta="1" aria-label="Artır">+</button>
             </div>
             <div><button class="cart-item__remove" data-remove="${i.key}">Kaldır</button></div>
           </div>
           <div class="cart-item__price">${fmt(i.price * i.quantity)}</div>
-        </div>`
-        )
-        .join('');
-    }
-    $('#cartTotal').textContent = fmt(cartTotal());
+        </div>`;
   }
 
   function bumpCart() {
@@ -415,6 +426,8 @@
     let m;
     if ((m = path.match(/^\/urun\/([^/]+)$/))) return { name: 'product', slug: m[1] };
     if ((m = path.match(/^\/kategori\/([^/]+)$/))) return { name: 'category', slug: m[1] };
+    if (path === '/sepet') return { name: 'cart' };
+    if (path === '/odeme') return { name: 'checkout' };
     if (path === '/' || path === '/index.html') return { name: 'home' };
     return { name: 'notfound' };
   }
@@ -451,8 +464,11 @@
     home.hidden = true;
     page.hidden = false;
     window.scrollTo({ top: 0, behavior: 'instant' });
+    if (r.name !== 'checkout') state.lastOrder = null;
     if (r.name === 'product') await renderProductPage(r.slug, page, seq);
     else if (r.name === 'category') renderCategoryPage(r.slug, page);
+    else if (r.name === 'cart') renderCartPage(page);
+    else if (r.name === 'checkout') renderCheckoutPage(page);
     else renderNotFound(page);
     observeReveal();
   }
@@ -585,35 +601,89 @@
   }
 
   // ====================================================
-  //  CHECKOUT
+  //  SEPET SAYFASI (/sepet)
   // ====================================================
-  function openCheckout() {
-    if (!state.cart.length) { toast('Sepetin boş 🛍️'); return; }
-    const dialog = $('#checkoutDialog');
-    dialog.innerHTML = `
-      <button class="modal__close" data-close-modal>✕</button>
-      <div class="checkout">
-        <h3>Sipariş Talebi Oluştur</h3>
-        <p class="sub">Bilgilerini gir, sipariş talebini bize ulaştıralım.</p>
-        <form id="checkoutForm">
-          <div class="field"><label>Ad Soyad *</label><input name="name" required placeholder="Adın Soyadın" /></div>
+  function renderCartPage(page) {
+    document.title = 'Sepetim · İzbutik';
+    const count = cartCount();
+    page.innerHTML = `<section class="section page-section"><div class="container">
+      ${crumbs([{ label: 'Sepetim' }])}
+      <div class="section__head">
+        <h1 class="section__title">Sepetim</h1>
+        <p class="section__desc">${count ? `${count} ürün` : 'Sepetin boş'}</p>
+      </div>
+      ${count ? `<div class="shop-layout">
+        <div class="shop-layout__main">${state.cart.map((i) => cartItemHtml(i, { page: true })).join('')}</div>
+        <aside class="shop-summary">
+          <h2 class="shop-summary__title">Sipariş Özeti</h2>
+          <div class="row"><span>Ürünler (${count})</span><span>${fmt(cartTotal())}</span></div>
+          <div class="row"><span>Kargo</span><span>Siparişten sonra netleşir</span></div>
+          <div class="row row--total"><span>Ürün toplamı</span><strong>${fmt(cartTotal())}</strong></div>
+          <a class="btn btn--primary btn--block" href="/odeme">Siparişi Tamamla</a>
+          <a class="btn btn--ghost btn--block" href="/#urunler">Alışverişe Devam Et</a>
+        </aside>
+      </div>` : `<div class="page-empty">${cartEmptyHtml()}<a class="btn btn--primary" href="/#urunler">Ürünleri Keşfet</a></div>`}
+    </div></section>`;
+  }
+
+  // ====================================================
+  //  ÖDEME / SİPARİŞ SAYFASI (/odeme)
+  // ====================================================
+  function checkoutSummaryHtml() {
+    return `${state.cart.map((i) => `<div class="row"><span>${esc(i.name)} × ${i.quantity} (${esc(i.size)})</span><span>${fmt(i.price * i.quantity)}</span></div>`).join('')}
+      <div class="row row--total"><span>Ürün toplamı</span><strong>${fmt(cartTotal())}</strong></div>
+      <a class="shop-summary__edit" href="/sepet">Sepeti düzenle</a>`;
+  }
+
+  function renderCheckoutPage(page) {
+    document.title = 'Siparişi Tamamla · İzbutik';
+    const trail = crumbs([{ label: 'Sepetim', href: '/sepet' }, { label: 'Siparişi Tamamla' }]);
+    if (state.lastOrder) {
+      const o = state.lastOrder;
+      page.innerHTML = `<section class="section page-section"><div class="container">${trail}
+        <div class="success success--page">
+          <div class="check">✓</div>
+          <h1 class="section__title">Sipariş talebin alındı!</h1>
+          <p>Talep No: <strong>#${esc(o.id)}</strong></p>
+          <p>Ürün toplamı: <strong>${fmt(o.total)}</strong></p>
+          <p style="margin-top:14px">Teşekkürler! Ödeme ve kargo detayları için @izbutik20 üzerinden en kısa sürede seninle iletişime geçeceğiz ✦</p>
+          <a class="btn btn--primary" style="margin-top:22px" href="/#urunler">Alışverişe Devam Et</a>
+        </div></div></section>`;
+      return;
+    }
+    if (!state.cart.length) {
+      page.innerHTML = `<section class="section page-section"><div class="container">${trail}
+        <div class="page-empty">${cartEmptyHtml()}<a class="btn btn--primary" href="/#urunler">Ürünleri Keşfet</a></div></div></section>`;
+      return;
+    }
+    page.innerHTML = `<section class="section page-section"><div class="container">
+      ${trail}
+      <div class="section__head">
+        <h1 class="section__title">Siparişi Tamamla</h1>
+        <p class="section__desc">Bilgilerini gir, sipariş talebini bize ulaştıralım.</p>
+      </div>
+      <div class="shop-layout">
+        <form id="checkoutForm" class="checkout checkout--page shop-layout__main">
+          <div class="field"><label for="coName">Ad Soyad *</label><input id="coName" name="name" required autocomplete="name" placeholder="Adın Soyadın" /></div>
           <div class="field--row">
-            <div class="field"><label>E-posta *</label><input type="email" name="email" required placeholder="ornek@mail.com" /></div>
-            <div class="field"><label>Telefon</label><input name="phone" placeholder="05XX XXX XX XX" /></div>
+            <div class="field"><label for="coEmail">E-posta *</label><input id="coEmail" type="email" name="email" required autocomplete="email" placeholder="ornek@mail.com" /></div>
+            <div class="field"><label for="coPhone">Telefon</label><input id="coPhone" type="tel" name="phone" autocomplete="tel" placeholder="05XX XXX XX XX" /></div>
           </div>
-          <div class="field"><label>Adres</label><textarea name="address" rows="2" placeholder="Teslimat adresi"></textarea></div>
-          <div class="checkout__summary">
-            ${state.cart.map((i) => `<div class="row"><span>${esc(i.name)} × ${i.quantity} (${esc(i.size)})</span><span>${fmt(i.price * i.quantity)}</span></div>`).join('')}
-            <div class="row" style="border-top:1px solid var(--line);margin-top:6px;padding-top:8px"><span>Ürün toplamı</span><strong>${fmt(cartTotal())}</strong></div>
+          <div class="field"><label for="coAddress">Adres</label><textarea id="coAddress" name="address" rows="3" autocomplete="street-address" placeholder="Teslimat adresi"></textarea></div>
+          <div class="field--row">
+            <div class="field"><label for="coCity">Şehir</label><input id="coCity" name="city" autocomplete="address-level1" placeholder="İstanbul" /></div>
+            <div class="field"><label for="coPostal">Posta Kodu</label><input id="coPostal" name="postal_code" inputmode="numeric" autocomplete="postal-code" placeholder="34000" /></div>
           </div>
           <p class="checkout__note">Ödeme ve kargo bu mağazada henüz manuel yürütülüyor. Formu gönderdiğinde sipariş talebin bize ulaşır; ödeme yöntemi ve kargo ücreti @izbutik20 üzerinden seninle netleştirilir. Bu adımda kart bilgisi alınmaz ve tahsilat yapılmaz.</p>
           <button type="submit" class="btn btn--primary btn--block" id="placeOrder">Sipariş Talebi Gönder · ${fmt(cartTotal())}</button>
         </form>
-      </div>`;
-
-    $('#checkoutForm', dialog).addEventListener('submit', submitOrder);
-    closeCart();
-    openModal('#checkoutModal');
+        <aside class="shop-summary">
+          <h2 class="shop-summary__title">Sipariş Özeti</h2>
+          <div id="checkoutSummary">${checkoutSummaryHtml()}</div>
+        </aside>
+      </div>
+    </div></section>`;
+    $('#checkoutForm', page).addEventListener('submit', submitOrder);
   }
 
   async function submitOrder(e) {
@@ -626,6 +696,7 @@
       customer: {
         name: fd.get('name'), email: fd.get('email'),
         phone: fd.get('phone'), address: fd.get('address'),
+        city: fd.get('city') || undefined, postal_code: fd.get('postal_code') || undefined,
       },
       items: state.cart.map((i) => ({ id: i.id, size: i.size, quantity: i.quantity })),
     };
@@ -639,21 +710,15 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Sipariş oluşturulamadı');
-      // Başarı ekranı
-      $('#checkoutDialog').innerHTML = `
-        <div class="success">
-          <div class="check">✓</div>
-          <h3>Sipariş talebin alındı!</h3>
-          <p>Talep No: <strong>#${data.id}</strong></p>
-          <p>Ürün toplamı: <strong>${fmt(data.total)}</strong></p>
-          <p style="margin-top:14px">Teşekkürler! Ödeme ve kargo detayları için @izbutik20 üzerinden en kısa sürede seninle iletişime geçeceğiz ✦</p>
-          <button class="btn btn--primary" style="margin-top:22px" data-close-modal>Alışverişe Devam Et</button>
-        </div>`;
+      // Başarı ekranı (aynı /odeme sayfasında)
+      state.lastOrder = { id: data.id, total: data.total };
       state.cart = [];
       state.cartId = null;
       localStorage.removeItem(CART_ID_KEY);
       saveCart();
       updateCartUI();
+      renderCheckoutPage($('#pageView'));
+      window.scrollTo({ top: 0, behavior: 'instant' });
     } catch (err) {
       toast('Hata: ' + err.message);
       btn.disabled = false;
@@ -664,8 +729,6 @@
   // ====================================================
   //  MODAL & TOAST yardımcıları
   // ====================================================
-  function openModal(sel) { $(sel).classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function closeModal(sel) { $(sel).classList.remove('open'); document.body.style.overflow = ''; }
   let toastTimer;
   function toast(msg) {
     const t = $('#toast');
@@ -751,18 +814,13 @@
       if (pill) { setCategory(pill.dataset.pill); return; }
       if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta), qty); return; }
       if (rem) { removeItem(rem.dataset.remove, rem); return; }
-      if (t.closest('[data-close-modal]')) { closeModal('#productModal'); closeModal('#checkoutModal'); return; }
     });
 
     // Sepet
     $('#cartToggle').addEventListener('click', openCart);
     $('#cartClose').addEventListener('click', closeCart);
     $('#overlay').addEventListener('click', () => { closeCart(); });
-    $('#checkoutBtn').addEventListener('click', openCheckout);
-
-    // Modal backdrop
-    $$('.modal__backdrop').forEach((b) => b.addEventListener('click', () => { closeModal('#productModal'); closeModal('#checkoutModal'); }));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal('#productModal'); closeModal('#checkoutModal'); closeCart(); } });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCart(); });
 
     // Sıralama
     $('#sortSelect').addEventListener('change', (e) => { state.filter.sort = e.target.value; renderProducts(); });
