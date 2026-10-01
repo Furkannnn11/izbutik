@@ -1,0 +1,10 @@
+#include "Base.xcconfig"
+
+// RELEASE — üretim. ATS localhost istisnası KAPALI; yalnız HTTPS trafik.
+// Kullanıcı ayarlı backend URL'i HTTPS olmak zorundadır (AppEnvironment).
+SWIFT_ACTIVE_COMPILATION_CONDITIONS =
+SWIFT_OPTIMIZATION_LEVEL = -O
+ONLY_ACTIVE_ARCH = NO
+
+// ATS: Release'de yerel HTTP istisnası YOK.
+ATS_ALLOWS_LOCAL = NO

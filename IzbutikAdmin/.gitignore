@@ -1,0 +1,7 @@
+# Xcode / build artefaktları
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+*.moved-aside

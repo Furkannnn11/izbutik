@@ -184,12 +184,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero__card--2 {
   width: 46%; height: 56%; bottom: 0; left: 0; z-index: 2;
   background-image: url('https://cdn.shopier.app/pictures_large/izbutik20_5027181416fd1ebad6fc0d0ed695cbc6.jpeg');
-  background-size: 165% auto;
+  /* Kaynak 1000x1000; ürün içeriği yalnız merkezdeki %56.3'lük bölümde (bbox 220-782),
+     yanlarda ~%22 gömülü stüdyo beyazı var. İçeriği kart genişliğine oturtmak için
+     gereken yatay ölçek = 1000/563 ≈ %177.6; güvenli pay ile %180. Görsel kare olduğu
+     için %180 auto ayrıca kartı dikeyde de tam kaplar (dikey beyaz zaten ~0). */
+  background-size: 180% auto;
+  background-position: center;
 }
 .hero__card--3 {
   width: 34%; height: 34%; top: 8%; left: 6%; z-index: 1; border-radius: 18px;
   background-image: url('https://cdn.shopier.app/pictures_large/izbutik20_7430fc86916971218182153902a98920.jpeg');
-  background-size: 165% auto;
+  /* Kaynak 1000x1000; içerik merkezdeki %75.5'lik bölümde (bbox 122-876), yanlarda ~%12.2
+     gömülü beyaz. Teorik min ölçek 1000/755 ≈ %132.5 çok darda kaldığından (sol kenarda
+     ~%13 piksel beyaz sızıntısı ölçüldü); kart-sol-kenarını beyaz payın dışına itmek için
+     güvenli pay ile %144. Ürüne kırpma toplam ~%8.7 (kenar başına ~%4.4), oran korunur. */
+  background-size: 144% auto;
+  background-position: center;
 }
 .hero__badge {
   position: absolute; bottom: 16%; right: 0; z-index: 3; background: #fff; color: var(--ink);

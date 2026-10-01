@@ -1,0 +1,12 @@
+#include "Base.xcconfig"
+
+// DEBUG — yerel geliştirme. ATS localhost istisnası YALNIZ burada Info.plist'e
+// eklenir (INFOPLIST_KEY üzerinden koşullu değil; ATS_ALLOWS_LOCAL bayrağı
+// Info.plist'te $(ATS_ALLOWS_LOCAL) ile okunur).
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
+GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+ONLY_ACTIVE_ARCH = YES
+
+// ATS: Debug'da yerel ağ (loopback) HTTP'ye izin ver.
+ATS_ALLOWS_LOCAL = YES

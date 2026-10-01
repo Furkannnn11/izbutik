@@ -1,0 +1,209 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXFileReference section */
+		C3EE96689C6045E2AD10D084 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "İzbutik Admin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8D48929B1674F4BA2413F26 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IzbutikAdminTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		70FC151AA12E4EC6A14B2A53 = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		6DFDEE34C3B84998976B2F55 = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		BD64E3C6EDED442EA00F5DA8 = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		70ACF437A04644A7BDC789F1 = {isa = PBXFileSystemSynchronizedBuildFileExceptionSet; membershipExceptions = (
+			Resources/Info.plist,
+		); target = 546F99E499E84B738325E55C; };
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		86A6B8CFABEC4711AD7AC4C9 = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (
+			70ACF437A04644A7BDC789F1,
+		); path = IzbutikAdmin; sourceTree = "<group>"; };
+		9A6DEC632BF746E0A38B6368 = {isa = PBXFileSystemSynchronizedRootGroup; path = IzbutikAdminTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F033B65D03974D16B266AEF9 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		5D5ADB4130434FF0974889D5 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B22291A4E3204A3E85A52697 = {isa = PBXGroup; children = (
+			520F968F63E445E5B630A4DB,
+			86A6B8CFABEC4711AD7AC4C9,
+			9A6DEC632BF746E0A38B6368,
+			0CA0092C37EE4E55B978611E,
+		); sourceTree = "<group>"; };
+		520F968F63E445E5B630A4DB = {isa = PBXGroup; children = (
+			70FC151AA12E4EC6A14B2A53,
+			6DFDEE34C3B84998976B2F55,
+			BD64E3C6EDED442EA00F5DA8,
+		); path = Config; sourceTree = "<group>"; };
+		0CA0092C37EE4E55B978611E = {isa = PBXGroup; children = (
+			C3EE96689C6045E2AD10D084,
+			B8D48929B1674F4BA2413F26,
+		); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		546F99E499E84B738325E55C = {isa = PBXNativeTarget; buildConfigurationList = 0C7AFD57B52649C081222E7C; buildPhases = (
+			9F6C379667B64348A1304664,
+			F033B65D03974D16B266AEF9,
+			3D9F9826381243E28F624732,
+		); buildRules = (); dependencies = (); fileSystemSynchronizedGroups = (
+			86A6B8CFABEC4711AD7AC4C9,
+		); name = IzbutikAdmin; productName = "İzbutik Admin"; productReference = C3EE96689C6045E2AD10D084; productType = "com.apple.product-type.application"; };
+		7AEF8C8F111F49C19DB0EF5D = {isa = PBXNativeTarget; buildConfigurationList = B70FD8EF38FE43A8B5A4761B; buildPhases = (
+			39362D4E84F54F8E97B0FA67,
+			5D5ADB4130434FF0974889D5,
+		); buildRules = (); dependencies = (
+			22E91342CD8B4F00A884C150,
+		); fileSystemSynchronizedGroups = (
+			9A6DEC632BF746E0A38B6368,
+		); name = IzbutikAdminTests; productName = IzbutikAdminTests; productReference = B8D48929B1674F4BA2413F26; productType = "com.apple.product-type.bundle.unit-test"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9392E4A7A14A4BC5B22B4E11 = {isa = PBXProject; attributes = {
+			BuildIndependentTargetsInParallel = 1;
+			LastSwiftUpdateCheck = 1710;
+			LastUpgradeCheck = 1710;
+			TargetAttributes = {
+				546F99E499E84B738325E55C = {CreatedOnToolsVersion = 17.0; };
+				7AEF8C8F111F49C19DB0EF5D = {CreatedOnToolsVersion = 17.0; TestTargetID = 546F99E499E84B738325E55C; };
+			};
+		}; buildConfigurationList = 0E69A57EBFD3464B8E6F45CB; compatibilityVersion = "Xcode 15.0"; developmentRegion = tr; hasScannedForEncodings = 0; knownRegions = (
+			tr,
+			Base,
+		); mainGroup = B22291A4E3204A3E85A52697; productRefGroup = 0CA0092C37EE4E55B978611E; projectDirPath = ""; projectRoot = ""; targets = (
+			546F99E499E84B738325E55C,
+			7AEF8C8F111F49C19DB0EF5D,
+		); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3D9F9826381243E28F624732 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9F6C379667B64348A1304664 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		39362D4E84F54F8E97B0FA67 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		22E91342CD8B4F00A884C150 = {isa = PBXTargetDependency; target = 546F99E499E84B738325E55C; targetProxy = 2162C3826F044131A6D7ACB5; };
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		2162C3826F044131A6D7ACB5 = {isa = PBXContainerItemProxy; containerPortal = 9392E4A7A14A4BC5B22B4E11; proxyType = 1; remoteGlobalIDString = 546F99E499E84B738325E55C; remoteInfo = IzbutikAdmin; };
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+		E212DB106A2C43C292481F7E = {isa = XCBuildConfiguration; baseConfigurationReference = 6DFDEE34C3B84998976B2F55; buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+			CLANG_ANALYZER_NONNULL = YES;
+			CLANG_ENABLE_MODULES = YES;
+			CLANG_ENABLE_OBJC_ARC = YES;
+			ENABLE_STRICT_OBJC_MSGSEND = YES;
+			ENABLE_TESTABILITY = YES;
+			GCC_C_LANGUAGE_STANDARD = gnu17;
+			SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+			SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			SDKROOT = iphoneos;
+			DEBUG_INFORMATION_FORMAT = dwarf;
+			ONLY_ACTIVE_ARCH = YES;
+		}; name = Debug; };
+		9182249D474245A083BD00D1 = {isa = XCBuildConfiguration; baseConfigurationReference = BD64E3C6EDED442EA00F5DA8; buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+			CLANG_ANALYZER_NONNULL = YES;
+			CLANG_ENABLE_MODULES = YES;
+			CLANG_ENABLE_OBJC_ARC = YES;
+			ENABLE_NS_ASSERTIONS = NO;
+			ENABLE_STRICT_OBJC_MSGSEND = YES;
+			GCC_C_LANGUAGE_STANDARD = gnu17;
+			SWIFT_COMPILATION_MODE = wholemodule;
+			SWIFT_OPTIMIZATION_LEVEL = "-O";
+			SDKROOT = iphoneos;
+			DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			VALIDATE_PRODUCT = YES;
+		}; name = Release; };
+		7F6FA0417D5142AF8F54519C = {isa = XCBuildConfiguration; baseConfigurationReference = 6DFDEE34C3B84998976B2F55; buildSettings = {
+			ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+			CODE_SIGN_STYLE = Automatic;
+			CURRENT_PROJECT_VERSION = 1;
+			ENABLE_PREVIEWS = YES;
+			GENERATE_INFOPLIST_FILE = NO;
+			INFOPLIST_FILE = IzbutikAdmin/Resources/Info.plist;
+			IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+			MARKETING_VERSION = 1.0.0;
+			PRODUCT_BUNDLE_IDENTIFIER = com.izbutik.admin;
+			PRODUCT_NAME = "İzbutik Admin";
+			PRODUCT_MODULE_NAME = IzbutikAdmin;
+			SWIFT_EMIT_LOC_STRINGS = YES;
+			SWIFT_VERSION = 5.10;
+			TARGETED_DEVICE_FAMILY = 1;
+		}; name = Debug; };
+		6A0D196B804C4AC486E9AC66 = {isa = XCBuildConfiguration; baseConfigurationReference = BD64E3C6EDED442EA00F5DA8; buildSettings = {
+			ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+			CODE_SIGN_STYLE = Automatic;
+			CURRENT_PROJECT_VERSION = 1;
+			ENABLE_PREVIEWS = YES;
+			GENERATE_INFOPLIST_FILE = NO;
+			INFOPLIST_FILE = IzbutikAdmin/Resources/Info.plist;
+			IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+			MARKETING_VERSION = 1.0.0;
+			PRODUCT_BUNDLE_IDENTIFIER = com.izbutik.admin;
+			PRODUCT_NAME = "İzbutik Admin";
+			PRODUCT_MODULE_NAME = IzbutikAdmin;
+			SWIFT_EMIT_LOC_STRINGS = YES;
+			SWIFT_VERSION = 5.10;
+			TARGETED_DEVICE_FAMILY = 1;
+		}; name = Release; };
+		C23B8C1A9B9F4618804B8F7A = {isa = XCBuildConfiguration; buildSettings = {
+			BUNDLE_LOADER = "$(TEST_HOST)";
+			CODE_SIGN_STYLE = Automatic;
+			GENERATE_INFOPLIST_FILE = YES;
+			IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			PRODUCT_BUNDLE_IDENTIFIER = com.izbutik.admin.tests;
+			PRODUCT_NAME = "$(TARGET_NAME)";
+			SWIFT_VERSION = 5.10;
+			TARGETED_DEVICE_FAMILY = 1;
+			TEST_HOST = "$(BUILT_PRODUCTS_DIR)/İzbutik Admin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/İzbutik Admin";
+		}; name = Debug; };
+		1CFE6A4E635B483398B1EAC4 = {isa = XCBuildConfiguration; buildSettings = {
+			BUNDLE_LOADER = "$(TEST_HOST)";
+			CODE_SIGN_STYLE = Automatic;
+			GENERATE_INFOPLIST_FILE = YES;
+			IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			PRODUCT_BUNDLE_IDENTIFIER = com.izbutik.admin.tests;
+			PRODUCT_NAME = "$(TARGET_NAME)";
+			SWIFT_VERSION = 5.10;
+			TARGETED_DEVICE_FAMILY = 1;
+			TEST_HOST = "$(BUILT_PRODUCTS_DIR)/İzbutik Admin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/İzbutik Admin";
+		}; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0E69A57EBFD3464B8E6F45CB = {isa = XCConfigurationList; buildConfigurations = (
+			E212DB106A2C43C292481F7E,
+			9182249D474245A083BD00D1,
+		); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		0C7AFD57B52649C081222E7C = {isa = XCConfigurationList; buildConfigurations = (
+			7F6FA0417D5142AF8F54519C,
+			6A0D196B804C4AC486E9AC66,
+		); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		B70FD8EF38FE43A8B5A4761B = {isa = XCConfigurationList; buildConfigurations = (
+			C23B8C1A9B9F4618804B8F7A,
+			1CFE6A4E635B483398B1EAC4,
+		); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = 9392E4A7A14A4BC5B22B4E11;
+}
