@@ -734,6 +734,87 @@
     refreshCheckoutTotals();
   }
 
+  // Ödeme formu doğrulaması. Kurallar sunucudaki src/lib/checkout-validation.js
+  // ile aynıdır; sunucu her isteği yine kendisi doğrular.
+  const TR_PROVINCES = [
+    'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Aksaray', 'Amasya', 'Ankara', 'Antalya',
+    'Ardahan', 'Artvin', 'Aydın', 'Balıkesir', 'Bartın', 'Batman', 'Bayburt', 'Bilecik',
+    'Bingöl', 'Bitlis', 'Bolu', 'Burdur', 'Bursa', 'Çanakkale', 'Çankırı', 'Çorum',
+    'Denizli', 'Diyarbakır', 'Düzce', 'Edirne', 'Elazığ', 'Erzincan', 'Erzurum', 'Eskişehir',
+    'Gaziantep', 'Giresun', 'Gümüşhane', 'Hakkâri', 'Hatay', 'Iğdır', 'Isparta', 'İstanbul',
+    'İzmir', 'Kahramanmaraş', 'Karabük', 'Karaman', 'Kars', 'Kastamonu', 'Kayseri', 'Kırıkkale',
+    'Kırklareli', 'Kırşehir', 'Kilis', 'Kocaeli', 'Konya', 'Kütahya', 'Malatya', 'Manisa',
+    'Mardin', 'Mersin', 'Muğla', 'Muş', 'Nevşehir', 'Niğde', 'Ordu', 'Osmaniye',
+    'Rize', 'Sakarya', 'Samsun', 'Siirt', 'Sinop', 'Sivas', 'Şanlıurfa', 'Şırnak',
+    'Tekirdağ', 'Tokat', 'Trabzon', 'Tunceli', 'Uşak', 'Van', 'Yalova', 'Yozgat', 'Zonguldak',
+  ];
+  const CO_FIELDS = {
+    name: 'coName', email: 'coEmail', phone: 'coPhone', address: 'coAddress',
+    province: 'coProvince', district: 'coDistrict', postal_code: 'coPostal',
+  };
+  const CO_MSG = {
+    name: 'Adını ve soyadını yaz.',
+    email: 'Geçerli bir e-posta adresi yaz.',
+    phone: 'Cep telefonunu 05XX XXX XX XX biçiminde yaz.',
+    address: 'Mahalle, cadde/sokak, bina ve daire numarasıyla açık adresini yaz.',
+    province: 'İlini seç.',
+    district: 'İlçeni yaz.',
+    postal_code: 'Posta kodu 5 haneli olmalı.',
+  };
+
+  function normalizeTrMobile(value) {
+    let digits = String(value ?? '').replace(/\D/g, '');
+    if (digits.length === 14 && digits.startsWith('0090')) digits = digits.slice(4);
+    else if (digits.length === 12 && digits.startsWith('90')) digits = digits.slice(2);
+    else if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
+    return /^5\d{9}$/.test(digits) ? '+90' + digits : null;
+  }
+
+  function validateCheckout(fd) {
+    const line = (k) => String(fd.get(k) ?? '').replace(/\s+/g, ' ').trim();
+    const errors = {};
+    const name = line('name');
+    if (name.length > 100 || name.split(' ').filter(Boolean).length < 2) errors.name = CO_MSG.name;
+    const email = line('email').toLowerCase();
+    if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = CO_MSG.email;
+    const phone = normalizeTrMobile(fd.get('phone'));
+    if (!phone) errors.phone = CO_MSG.phone;
+    const address = line('address');
+    if (address.length < 10 || address.length > 300) errors.address = CO_MSG.address;
+    const province = line('province');
+    if (!TR_PROVINCES.includes(province)) errors.province = CO_MSG.province;
+    const district = line('district');
+    if (!/^\p{L}[\p{L} .'-]{1,49}$/u.test(district)) errors.district = CO_MSG.district;
+    const postal = line('postal_code');
+    if (postal && !/^\d{5}$/.test(postal)) errors.postal_code = CO_MSG.postal_code;
+    return {
+      errors,
+      customer: { name, email, phone, address, province, district, postal_code: postal || undefined },
+    };
+  }
+
+  // Alan hatalarını gösterir/temizler; ilk hatalı alana odaklanır. Hata yoksa true.
+  function showCheckoutErrors(form, errors) {
+    let first = null;
+    for (const [field, id] of Object.entries(CO_FIELDS)) {
+      const input = $('#' + id, form);
+      const err = $('#' + id + 'Err', form);
+      if (!input || !err) continue;
+      const msg = errors[field] || '';
+      if (msg) input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
+      err.textContent = msg;
+      err.hidden = !msg;
+      if (msg && !first) first = input;
+    }
+    if (first) first.focus();
+    return !first;
+  }
+
+  function coField(id, label, control) {
+    return `<div class="field"><label for="${id}">${label}</label>${control}<p class="field__error" id="${id}Err" hidden></p></div>`;
+  }
+
   function renderCheckoutPage(page) {
     document.title = 'Siparişi Tamamla · İzbutik';
     const trail = crumbs([{ label: 'Sepetim', href: '/sepet' }, { label: 'Siparişi Tamamla' }]);
@@ -763,16 +844,18 @@
         <p class="section__desc">Bilgilerini gir, sipariş talebini bize ulaştıralım.</p>
       </div>
       <div class="shop-layout">
-        <form id="checkoutForm" class="checkout checkout--page shop-layout__main">
-          <div class="field"><label for="coName">Ad Soyad *</label><input id="coName" name="name" required autocomplete="name" placeholder="Adın Soyadın" /></div>
+        <form id="checkoutForm" class="checkout checkout--page shop-layout__main" novalidate>
+          <p class="checkout__req">* ile işaretli alanlar zorunlu.</p>
+          ${coField('coName', 'Ad Soyad *', '<input id="coName" name="name" required autocomplete="name" placeholder="Adın Soyadın" aria-describedby="coNameErr" />')}
           <div class="field--row">
-            <div class="field"><label for="coEmail">E-posta *</label><input id="coEmail" type="email" name="email" required autocomplete="email" placeholder="ornek@mail.com" /></div>
-            <div class="field"><label for="coPhone">Telefon</label><input id="coPhone" type="tel" name="phone" autocomplete="tel" placeholder="05XX XXX XX XX" /></div>
+            ${coField('coEmail', 'E-posta *', '<input id="coEmail" type="email" name="email" required autocomplete="email" placeholder="ornek@mail.com" aria-describedby="coEmailErr" />')}
+            ${coField('coPhone', 'Cep Telefonu *', '<input id="coPhone" type="tel" name="phone" required inputmode="tel" autocomplete="tel" placeholder="05XX XXX XX XX" aria-describedby="coPhoneErr" />')}
           </div>
-          <div class="field"><label for="coAddress">Adres</label><textarea id="coAddress" name="address" rows="3" autocomplete="street-address" placeholder="Teslimat adresi"></textarea></div>
-          <div class="field--row">
-            <div class="field"><label for="coCity">Şehir</label><input id="coCity" name="city" autocomplete="address-level1" placeholder="İstanbul" /></div>
-            <div class="field"><label for="coPostal">Posta Kodu</label><input id="coPostal" name="postal_code" inputmode="numeric" autocomplete="postal-code" placeholder="34000" /></div>
+          ${coField('coAddress', 'Açık Adres *', '<textarea id="coAddress" name="address" rows="3" required autocomplete="street-address" placeholder="Mahalle, cadde/sokak, bina no, daire no" aria-describedby="coAddressErr"></textarea>')}
+          <div class="field--row field--row-3">
+            ${coField('coProvince', 'İl *', `<select id="coProvince" name="province" required autocomplete="address-level1" aria-describedby="coProvinceErr"><option value="">İl seç</option>${TR_PROVINCES.map((p) => `<option>${esc(p)}</option>`).join('')}</select>`)}
+            ${coField('coDistrict', 'İlçe *', '<input id="coDistrict" name="district" required autocomplete="address-level2" placeholder="Kadıköy" aria-describedby="coDistrictErr" />')}
+            ${coField('coPostal', 'Posta Kodu', '<input id="coPostal" name="postal_code" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="34710" aria-describedby="coPostalErr" />')}
           </div>
           <fieldset class="ship-opts">
             <legend class="ship-opts__title">Kargo Seçimi *</legend>
@@ -788,6 +871,8 @@
       </div>
     </div></section>`;
     $('#checkoutForm', page).addEventListener('submit', submitOrder);
+    $('#checkoutForm', page).addEventListener('input', clearFieldError);
+    $('#checkoutForm', page).addEventListener('change', clearFieldError);
     $('#shipOpts', page).addEventListener('change', (e) => {
       if (e.target.name !== 'shipping_option') return;
       state.shipping.selectedId = e.target.value;
@@ -796,18 +881,24 @@
     loadShippingOptions();
   }
 
+  function clearFieldError(e) {
+    const err = e.target.id ? document.getElementById(e.target.id + 'Err') : null;
+    if (!err || err.hidden) return;
+    err.hidden = true;
+    err.textContent = '';
+    e.target.removeAttribute('aria-invalid');
+  }
+
   async function submitOrder(e) {
     e.preventDefault();
     const form = e.target;
     const btn = $('#placeOrder');
     const fd = new FormData(form);
+    const checked = validateCheckout(fd);
+    if (!showCheckoutErrors(form, checked.errors)) return;
     const payload = {
       cart_id: state.cartId,
-      customer: {
-        name: fd.get('name'), email: fd.get('email'),
-        phone: fd.get('phone'), address: fd.get('address'),
-        city: fd.get('city') || undefined, postal_code: fd.get('postal_code') || undefined,
-      },
+      customer: checked.customer,
       items: state.cart.map((i) => ({ id: i.id, size: i.size, quantity: i.quantity })),
       shipping_option_id: state.shipping.selectedId || undefined,
     };
@@ -821,7 +912,10 @@
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Sipariş oluşturulamadı');
+      if (!res.ok) {
+        if (data.fields) showCheckoutErrors(form, data.fields);
+        throw new Error(data.error || 'Sipariş oluşturulamadı');
+      }
       // Başarı ekranı (aynı /odeme sayfasında)
       const ship = selectedShipping();
       state.lastOrder = { id: data.id, total: data.total, shippingName: ship?.name || null };

@@ -603,3 +603,15 @@ a.btn { text-decoration: none; text-align: center; justify-content: center; }
 .ship-opt__price { font-weight: 600; white-space: nowrap; }
 .ship-opts__msg { font-size: .85rem; color: var(--ink-soft); margin: 0; }
 .ship-opts__msg--err { color: var(--rose-dark); }
+
+/* ===== Ödeme formu: zorunlu alanlar ve hata mesajları ===== */
+.checkout__req { font-size: .8rem; color: var(--ink-soft); margin-bottom: 14px; }
+.field select { width: 100%; padding: 13px 16px; border: 1.5px solid var(--line); border-radius: 12px; font-family: inherit; font-size: .95rem; background: #fff; color: var(--ink); }
+.field select:focus { outline: none; border-color: var(--ink); }
+.field [aria-invalid="true"] { border-color: #a3233f; }
+.field__error { margin-top: 6px; font-size: .8rem; line-height: 1.4; color: #a3233f; }
+.field--row-3 { grid-template-columns: 1.2fr 1fr .8fr; }
+@media (max-width: 430px) {
+  .field--row.field--row-3 { grid-template-columns: 1fr 1fr; }
+  .field--row-3 > .field:first-child { grid-column: 1 / -1; }
+}

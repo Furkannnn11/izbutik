@@ -40,7 +40,7 @@ test.before(async () => {
 });
 
 // Her senaryo için taze DOM+app örneği kur (Adım 2 harness ile aynı polyfill seti).
-async function boot({ seedCartId, slowFirstCartPost } = {}) {
+async function boot({ seedCartId, slowFirstCartPost, stubOrders } = {}) {
   const netlog = [];
   const toasts = [];
   const vc = new VirtualConsole();
@@ -80,6 +80,12 @@ async function boot({ seedCartId, slowFirstCartPost } = {}) {
     if (slowFirstCartPost && /\/cart$/.test(url) && (init.method || 'GET') === 'POST' && !firstCartPostSeen) {
       firstCartPostSeen = true;
       await sleep(slowFirstCartPost);
+    }
+    // Gerçek sipariş oluşturmamak için POST /orders yakalanır (istenirse).
+    if (stubOrders && /\/orders$/.test(url) && (init.method || 'GET') === 'POST') {
+      stubOrders.push(JSON.parse(init.body));
+      netlog.push({ url: url.replace(BFF, ''), method: 'POST', status: 201, ms: 0, ok: true, stub: true });
+      return new Response(JSON.stringify({ id: 9999, total: 1 }), { status: 201, headers: { 'Content-Type': 'application/json' } });
     }
     const t0 = Date.now();
     const res = await fetch(abs, init);
@@ -335,4 +341,66 @@ test('FE-BUG3b: runtime stale cart id ekleme sırasında otomatik yenilenir ve r
     !rawErrorToast,
     'stale kurtarma sırasında ham teknik hata toast\'ı gösterilmemeli (BUG-3)'
   );
+});
+
+// -------------------------------------------------------------------
+// Ödeme formu: telefon, adres, il ve ilçe zorunlu (S3)
+async function openCheckout(opts) {
+  const ctx = await boot(opts);
+  const { window } = ctx;
+  window.document.querySelector('#productGrid [data-add]').dispatchEvent(new window.Event('click', { bubbles: true }));
+  for (let i = 0; i < 60 && !window.document.querySelector('#cartBody .cart-item'); i++) await sleep(50);
+  window.history.pushState({}, '', '/odeme');
+  window.dispatchEvent(new window.PopStateEvent('popstate'));
+  for (let i = 0; i < 80; i++) {
+    const btn = window.document.querySelector('#placeOrder');
+    if (btn && !btn.disabled) break;
+    await sleep(50);
+  }
+  return ctx;
+}
+
+test('CHECKOUT: eksik bilgiyle istek gitmez, alan hataları gösterilir', async () => {
+  const { window, netlog } = await openCheckout();
+  const form = window.document.querySelector('#checkoutForm');
+  assert.ok(form.noValidate, 'form kendi Türkçe mesajlarını göstermeli (novalidate)');
+  form.querySelector('[name="name"]').value = 'Ayşe';
+  form.querySelector('[name="email"]').value = 'ayse@example.com';
+  form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true }));
+  await sleep(30);
+  assert.equal(netlog.filter((n) => n.url.endsWith('/orders')).length, 0, 'sipariş isteği gitmemeli');
+  for (const id of ['coName', 'coPhone', 'coAddress', 'coProvince', 'coDistrict']) {
+    assert.equal(window.document.getElementById(id + 'Err').hidden, false, id + ' hatası görünmeli');
+    assert.equal(window.document.getElementById(id).getAttribute('aria-invalid'), 'true', id);
+  }
+  assert.equal(window.document.getElementById('coEmailErr').hidden, true, 'geçerli e-postada hata olmamalı');
+  assert.equal(window.document.activeElement.id, 'coName', 'ilk hatalı alana odaklanmalı');
+
+  const phone = form.querySelector('[name="phone"]');
+  phone.value = '0532';
+  phone.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(window.document.getElementById('coPhoneErr').hidden, true, 'yazmaya başlayınca hata kalkmalı');
+});
+
+test('CHECKOUT: geçerli formda normalize edilmiş müşteri bilgisi gönderilir', async () => {
+  const sent = [];
+  const { window } = await openCheckout({ stubOrders: sent });
+  const form = window.document.querySelector('#checkoutForm');
+  const set = (name, value) => { form.querySelector(`[name="${name}"]`).value = value; };
+  set('name', 'Ayşe  Yılmaz');
+  set('email', 'Ayse@Example.com');
+  set('phone', '0532 123 45 67');
+  set('address', 'Moda Mah. Bahariye Cad. No: 12 D: 3');
+  set('province', 'İstanbul');
+  set('district', 'Kadıköy');
+  form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true }));
+  for (let i = 0; i < 40 && !sent.length; i++) await sleep(25);
+  assert.equal(sent.length, 1, 'tek sipariş isteği gitmeli');
+  assert.deepEqual(sent[0].customer, {
+    name: 'Ayşe Yılmaz', email: 'ayse@example.com', phone: '+905321234567',
+    address: 'Moda Mah. Bahariye Cad. No: 12 D: 3', province: 'İstanbul', district: 'Kadıköy',
+  });
+  assert.ok(sent[0].shipping_option_id, 'kargo seçimi gönderilmeli');
+  for (let i = 0; i < 40 && !window.document.querySelector('.success--page'); i++) await sleep(25);
+  assert.ok(window.document.querySelector('.success--page'), 'teşekkür ekranı açılmalı');
 });

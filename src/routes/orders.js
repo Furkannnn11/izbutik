@@ -2,6 +2,7 @@ import { Router } from 'express';
 import pool, { getClient } from '../db/index.js';
 import { isMedusaCommerce, medusaRequest } from '../lib/medusa.js';
 import { listCartShippingOptions } from './shipping.js';
+import { validateCheckoutCustomer } from '../lib/checkout-validation.js';
 
 const router = Router();
 
@@ -20,14 +21,17 @@ async function completeMedusaOrder({ cart_id, customer, shipping_option_id }) {
     throw error;
   }
 
+  // Müşteri bilgisi router'da doğrulandı: telefon, adres, il ve ilçe dolu.
+  // Türkiye eşlemesi: city = ilçe, province = il.
   const name = splitName(customer.name);
   const address = {
     ...name,
-    address_1: customer.address || 'Adres belirtilmedi',
-    city: customer.city || 'İstanbul',
-    postal_code: customer.postal_code || '34000',
+    address_1: customer.address,
+    city: customer.district,
+    province: customer.province,
+    postal_code: customer.postal_code,
     country_code: 'tr',
-    phone: customer.phone || undefined,
+    phone: customer.phone,
   };
 
   let cartData = await medusaRequest(`/store/carts/${encodeURIComponent(cart_id)}`, {
@@ -163,13 +167,15 @@ async function createLegacyOrder({ customer, items }) {
 
 // Yeni sipariş oluştur.
 router.post('/', async (req, res, next) => {
-  const { cart_id, customer, items } = req.body || {};
+  const { cart_id, items } = req.body || {};
   const shipping_option_id =
     typeof req.body?.shipping_option_id === 'string' ? req.body.shipping_option_id : undefined;
 
-  if (!customer?.name || !customer?.email) {
-    return res.status(400).json({ error: 'Ad ve e-posta zorunludur.' });
+  const checked = validateCheckoutCustomer(req.body?.customer);
+  if (!checked.ok) {
+    return res.status(400).json({ error: 'Lütfen işaretli alanları düzelt.', fields: checked.errors });
   }
+  const customer = checked.customer;
 
   try {
     if (isMedusaCommerce()) {

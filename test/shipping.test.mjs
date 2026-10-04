@@ -33,6 +33,11 @@ test('GET /api/shipping-options: sepet için ucuzdan pahalıya en az iki seçene
   assert.ok(opts.every((o) => o.id && o.name && o.description), 'her seçenekte ad ve teslim süresi olmalı');
 });
 
+const validCustomer = {
+  name: 'Test Kullanıcı', email: 'test@example.com', phone: '05321234567',
+  address: 'Moda Mah. Bahariye Cad. No: 12', province: 'İstanbul', district: 'Kadıköy',
+};
+
 test('POST /api/orders: geçersiz kargo seçeneği 400 döner, sipariş oluşmaz', async () => {
   const cart = await (await fetch(BFF + '/api/cart', { method: 'POST' })).json();
   const res = await fetch(BFF + '/api/orders', {
@@ -41,10 +46,22 @@ test('POST /api/orders: geçersiz kargo seçeneği 400 döner, sipariş oluşmaz
     body: JSON.stringify({
       cart_id: cart.cart.id,
       shipping_option_id: 'so_gecersiz',
-      customer: { name: 'Test Kullanıcı', email: 'test@example.com' },
+      customer: validCustomer,
     }),
   });
   assert.equal(res.status, 400);
   const body = await res.json();
   assert.match(body.error, /kargo/i);
+});
+
+test('POST /api/orders: telefon, adres, il ve ilçe yoksa 400 ve alan hataları döner', async () => {
+  const cart = await (await fetch(BFF + '/api/cart', { method: 'POST' })).json();
+  const res = await fetch(BFF + '/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cart_id: cart.cart.id, customer: { name: 'Test Kullanıcı', email: 'test@example.com' } }),
+  });
+  assert.equal(res.status, 400);
+  const body = await res.json();
+  assert.deepEqual(Object.keys(body.fields).sort(), ['address', 'district', 'phone', 'province']);
 });
